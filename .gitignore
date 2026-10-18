@@ -1,0 +1,20 @@
+# macOS
+.DS_Store
+*.swp
+*.localized
+
+# Swift Package Manager & App Build Outputs
+app/.build/
+app/build/
+app/.module-cache/
+.module-cache/
+.build/
+build/
+DerivedData/
+xcuserdata/
+
+# Node / Environment
+node_modules/
+.env
+.env.local
+.vercel/

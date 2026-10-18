@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "public": true,
+  "cleanUrls": true,
+  "outputDirectory": "web",
+  "routes": [
+    { "src": "/admin-keygen", "dest": "/admin-keygen.html" },
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
+}

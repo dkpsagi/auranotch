@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraNotch for Mac — The Intelligent Camera Notch & HUD</title>
+    <meta name="description" content="Turn your MacBook camera notch into an intelligent on-device workspace. 27 native tools: private AI chat, synced lyrics, file shelf, sales dashboard, teleprompter, and live AI usage meters.">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        apple: {
+                            bg: '#000000',
+                            card: '#161617',
+                            border: 'rgba(255, 255, 255, 0.12)',
+                            blue: '#2997ff',
+                            purple: '#a855f7',
+                            glow: '#7c3aed',
+                            subtext: '#86868b'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'Segoe UI', 'Roboto', 'sans-serif'],
+                        mono: ['SF Mono', 'Menlo', 'Monaco', 'Courier New', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+        .animate-glow {
+            animation: pulseGlow 6s ease-in-out infinite;
+        }
+        .glass-panel {
+            background: rgba(22, 22, 23, 0.75);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .notch-shadow {
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(124, 58, 237, 0.2);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body class="bg-black text-white font-sans antialiased selection:bg-purple-600 selection:text-white">
+
+    <!-- Flash Sale Announcement Ribbon -->
+    <div class="bg-gradient-to-r from-purple-900 via-indigo-900 to-blue-900 py-2.5 px-4 text-center text-xs sm:text-sm font-medium border-b border-purple-500/20">
+        <span class="inline-flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded-full bg-purple-500/30 text-purple-200 text-xs font-semibold uppercase tracking-wider">Launch Sale</span>
+            <span>AuraNotch 2.5 is here. Lifetime License for <strong>$5.00</strong> (normally $19.99).</span>
+            <a href="#pricing" class="underline underline-offset-4 hover:text-purple-200 transition-colors ml-1 font-bold">Claim Deal &rarr;</a>
+        </span>
+    </div>
+
+    <!-- Global Navigation -->
+    <header class="sticky top-0 z-50 glass-panel border-b border-white/10">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-2.5 group">
+                <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-purple-600 to-blue-500 flex items-center justify-center shadow-lg shadow-purple-500/30 group-hover:scale-105 transition-transform">
+                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                    </svg>
+                </div>
+                <span class="font-bold text-lg tracking-tight">AuraNotch</span>
+                <span class="text-[10px] font-mono uppercase bg-white/10 text-purple-300 px-1.5 py-0.5 rounded border border-white/10">PRO</span>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-7 text-xs font-medium text-apple-subtext">
+                <a href="#interactive-demo" class="hover:text-white transition-colors">Interactive Demo</a>
+                <a href="#features" class="hover:text-white transition-colors">27 Tools</a>
+                <a href="#compare" class="hover:text-white transition-colors">Comparison</a>
+                <a href="#pricing" class="hover:text-white transition-colors">Pricing</a>
+                <a href="#faq" class="hover:text-white transition-colors">FAQ</a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                <button onclick="openLicenseModal()" class="text-xs text-white/70 hover:text-white font-medium px-3 py-1.5 rounded-lg border border-white/10 hover:border-white/20 transition-all">
+                    Activate
+                </button>
+                <a href="#pricing" class="text-xs bg-white text-black hover:bg-neutral-200 font-semibold px-4 py-1.5 rounded-full transition-all shadow-md hover:shadow-white/20">
+                    Buy ($5)
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative pt-20 pb-16 md:pt-28 md:pb-24 overflow-hidden">
+        <!-- Glow Backdrops -->
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-gradient-to-tr from-purple-600/30 to-blue-500/20 blur-[120px] rounded-full pointer-events-none animate-glow"></div>
+
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center relative z-10">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-purple-300 mb-6 backdrop-blur-md">
+                <span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
+                <span>Reverse-Engineered & Enhanced for macOS Sequoia 15+</span>
+            </div>
+
+            <h1 class="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white mb-6">
+                Turn your Mac notch into <br>
+                <span class="bg-gradient-to-r from-purple-400 via-indigo-200 to-blue-400 bg-clip-text text-transparent">an intelligent command center.</span>
+            </h1>
+
+            <p class="max-w-2xl mx-auto text-base sm:text-lg text-apple-subtext mb-10 leading-relaxed">
+                27 native tools tucked invisibly right beneath your camera lens. Private on-device AI, synced lyrics, drag-and-drop file shelf, live AI limit meters, revenue tracking, and teleprompter. One hover away.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+                <a href="#pricing" class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-white text-black font-semibold text-sm hover:bg-neutral-200 transition-all shadow-xl shadow-white/10 flex items-center justify-center gap-2">
+                    <span>Get Lifetime Access — $5</span>
+                    <span class="text-xs text-neutral-500 line-through font-normal">$19.99</span>
+                </a>
+                <a href="#interactive-demo" class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-white/10 hover:bg-white/15 text-white font-medium text-sm transition-all border border-white/10 flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4 text-purple-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/>
+                    </svg>
+                    <span>Try Interactive Notch Simulator</span>
+                </a>
+            </div>
+
+            <div class="flex items-center justify-center gap-6 text-xs text-apple-subtext">
+                <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> 100% On-Device & Private</span>
+                <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> No Subscription · Pay Once</span>
+                <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Works on Notch & Notch-less Macs</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- LIVE INTERACTIVE NOTCH SIMULATOR -->
+    <section id="interactive-demo" class="py-12 px-4 max-w-5xl mx-auto">
+        <div class="text-center mb-8">
+            <h2 class="text-xs uppercase tracking-widest text-purple-400 font-semibold mb-2">Live Web Simulator</h2>
+            <h3 class="text-2xl sm:text-3xl font-bold">Experience the Notch in your browser right now</h3>
+            <p class="text-sm text-apple-subtext mt-1">Hover or click the notch below to test the fluid spring animation and tools.</p>
+        </div>
+
+        <!-- Simulated MacBook Display Bezel -->
+        <div class="relative rounded-t-3xl border-8 border-b-0 border-neutral-800 bg-neutral-950 p-6 pt-0 pb-16 min-h-[640px] shadow-2xl overflow-hidden">
+            <!-- Camera & Notch Bar -->
+            <div class="flex justify-center relative z-30">
+                <!-- Interactive Notch Element -->
+                <div id="sim-notch" 
+                     class="group cursor-pointer transition-all duration-300 ease-out bg-black border border-white/20 notch-shadow flex flex-col items-center"
+                     style="width: 240px; height: 38px; border-radius: 0 0 18px 18px;"
+                     onclick="toggleNotchSimulator()">
+                    
+                    <!-- Closed State Header (Inside Notch) -->
+                    <div id="notch-collapsed-content" class="w-full h-[38px] flex items-center justify-between px-3 text-xs">
+                        <div class="flex items-center gap-1 text-purple-400">
+                            <span class="inline-block w-1.5 h-3 bg-purple-500 rounded-full animate-bounce"></span>
+                            <span class="inline-block w-1.5 h-4 bg-purple-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></span>
+                            <span class="inline-block w-1.5 h-2 bg-purple-600 rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span id="sim-notch-title" class="font-semibold text-white/90 text-[11px]">AuraNotch Pro</span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                        </div>
+                        <div class="text-white/40 text-[10px] font-mono">
+                            ⌥+N
+                        </div>
+                    </div>
+
+                    <!-- Expanded State Container -->
+                    <div id="notch-expanded-content" class="hidden w-full flex-col justify-between h-full p-4 pt-2">
+                        <!-- Top Notch Clearance & Status Bar -->
+                        <div class="flex items-center justify-between border-b border-white/10 pb-2.5 mb-2 text-xs">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                                <span id="expanded-active-title" class="font-bold text-white text-xs">Home Dashboard</span>
+                                <span class="text-[10px] text-white/40 font-mono">· 100% On-Device</span>
+                            </div>
+
+                            <!-- Physical Camera Notch Mockup in Center -->
+                            <div class="hidden sm:flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-neutral-900 border border-white/10 text-[10px] text-white/50">
+                                <span class="w-2 h-2 rounded-full bg-black border border-white/30"></span>
+                                <span>Camera Safe Clearance</span>
+                            </div>
+
+                            <div class="flex items-center gap-3">
+                                <span class="text-[10px] px-2 py-0.5 rounded bg-green-500/20 text-green-400 font-semibold border border-green-500/30">VIP Lifetime</span>
+                                <span class="text-white/40 text-[10px] font-mono">⌥+N</span>
+                                <button onclick="event.stopPropagation(); toggleNotchSimulator()" class="text-white/50 hover:text-white text-sm font-bold">&times;</button>
+                            </div>
+                        </div>
+
+                        <!-- MAIN PANELS CONTAINER -->
+                        <div class="flex-1 overflow-y-auto custom-scrollbar my-1 text-left">
+                            
+                            <!-- PANEL: HOME (DEFAULT LANDING SCREEN - PROMINENT THEME ACCENT, MONOCHROMATIC FROSTED GLASS) -->
+                            <div id="panel-home" class="sim-panel space-y-3">
+                                <!-- Mission Control Header & Status Pills -->
+                                <div class="flex items-center justify-between bg-white/[0.03] rounded-xl p-2.5 border border-white/10 text-xs">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-2 h-2 rounded-full bg-purple-500 shadow-sm shadow-purple-500/50"></span>
+                                        <span class="font-bold text-white uppercase text-[10px] tracking-wider">Mission Control</span>
+                                        <span class="text-[10px] text-white/40">· Live Active Workspace</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <button onclick="event.stopPropagation(); toggleMic()" id="sim-mic-pill" class="px-2 py-0.5 rounded-md bg-purple-500/15 text-white text-[10px] font-semibold border border-purple-500/30 flex items-center gap-1.5 transition-all">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
+                                            <span id="sim-mic-text">Mic Live</span>
+                                        </button>
+                                        <button onclick="event.stopPropagation(); toggleDesk()" id="sim-desk-pill" class="px-2 py-0.5 rounded-md bg-white/[0.05] text-white/80 text-[10px] font-semibold border border-white/10 flex items-center gap-1.5 transition-all">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+                                            <span id="sim-desk-text">Desk Clean</span>
+                                        </button>
+                                        <span class="px-2 py-0.5 rounded-md bg-white/[0.05] text-white/70 text-[10px] font-mono border border-white/10">14 ms</span>
+                                    </div>
+                                </div>
+
+                                <!-- 2-Column Split: Active SoundCloud Player + Focus & Audio Engine -->
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <!-- Active SoundCloud Player (Hero Live Card - Unified Prominent Theme Accent) -->
+                                    <div class="bg-white/[0.03] rounded-xl p-3 border border-purple-500/40 relative overflow-hidden group">
+                                        <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-purple-500/10 rounded-full blur-xl pointer-events-none"></div>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="font-bold text-xs text-white flex items-center gap-1.5">
+                                                <span class="text-purple-400">☁️</span> SoundCloud Live Stream
+                                            </span>
+                                            <span class="text-[8px] font-black px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/40 flex items-center gap-1">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse"></span>
+                                                <span>ACTIVE</span>
+                                            </span>
+                                        </div>
+                                        <div class="flex items-center gap-2.5 mb-2.5">
+                                            <div class="w-11 h-11 rounded-lg bg-gradient-to-br from-purple-600/40 to-neutral-900 border border-purple-500/40 flex items-center justify-center text-lg shrink-0 shadow-md shadow-purple-500/20">
+                                                ☁️
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <div class="font-bold text-xs text-white truncate">Deep Wednesday (8-12-26)</div>
+                                                <div class="text-[10px] text-white/70 truncate">RaquElevate · SoundCloud Stream</div>
+                                                <div class="text-[9px] text-purple-400/90 font-medium">● Audio Detected · Zero Latency</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between text-xs pt-1.5 border-t border-white/5">
+                                            <!-- Dynamic Theme Accent Equalizer Animation -->
+                                            <div class="flex items-center gap-1" id="sim-eq-bars">
+                                                <span class="w-1 h-3.5 bg-purple-500 rounded-full animate-bounce"></span>
+                                                <span class="w-1 h-4 bg-purple-400 rounded-full animate-bounce" style="animation-delay: 0.15s"></span>
+                                                <span class="w-1 h-2 bg-indigo-400 rounded-full animate-bounce" style="animation-delay: 0.3s"></span>
+                                                <span class="w-1 h-3 bg-purple-600 rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
+                                            </div>
+                                            <div class="flex items-center gap-3">
+                                                <button onclick="event.stopPropagation()" class="text-white/60 hover:text-white text-xs transition-colors">⏮</button>
+                                                <button onclick="event.stopPropagation(); toggleMusicPlay()" id="sim-music-btn" class="w-6 h-6 rounded-full bg-purple-600 hover:bg-purple-500 text-white flex items-center justify-center font-bold text-[10px] shadow-sm shadow-purple-500/30 transition-all">⏸</button>
+                                                <button onclick="event.stopPropagation()" class="text-white/60 hover:text-white text-xs transition-colors">⏭</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Focus Timer & Audio Engine (Monochromatic Frosted Glass with Theme Accent) -->
+                                    <div class="bg-white/[0.03] rounded-xl p-3 border border-white/10">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="font-bold text-xs text-white flex items-center gap-1.5">
+                                                <span class="text-purple-400">⏱</span> Focus & Sound Engine
+                                            </span>
+                                            <span class="text-[8px] font-black px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30">ACTIVE</span>
+                                        </div>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <div id="sim-timer-display" class="text-2xl font-bold font-mono text-purple-300">25:00</div>
+                                            <div class="flex items-center gap-1">
+                                                <button onclick="event.stopPropagation(); adjustFocusTimer(-5)" class="px-1.5 py-0.5 bg-white/[0.06] hover:bg-white/[0.12] rounded text-[10px] font-bold text-white transition-colors">-5m</button>
+                                                <button onclick="event.stopPropagation(); adjustFocusTimer(-1)" class="px-1.5 py-0.5 bg-white/[0.06] hover:bg-white/[0.12] rounded text-[10px] text-white transition-colors">-1m</button>
+                                                <button onclick="event.stopPropagation(); adjustFocusTimer(1)" class="px-1.5 py-0.5 bg-white/[0.06] hover:bg-white/[0.12] rounded text-[10px] text-white transition-colors">+1m</button>
+                                                <button onclick="event.stopPropagation(); adjustFocusTimer(5)" class="px-1.5 py-0.5 bg-white/[0.06] hover:bg-white/[0.12] rounded text-[10px] font-bold text-white transition-colors">+5m</button>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between text-[10px] text-white/60 pt-2 border-t border-white/5">
+                                            <span class="flex items-center gap-1">🌧 <span>Rain & Storm (Lo-Fi Synced)</span></span>
+                                            <button onclick="event.stopPropagation(); toggleFocusPlay()" id="sim-focus-toggle-btn" class="text-purple-400 font-bold hover:text-purple-300 transition-colors">Pause</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Hardware Performance & Vitality Gauges (Sleek Monochromatic Frosted Cards) -->
+                                <div class="grid grid-cols-4 gap-2 text-left">
+                                    <div class="bg-white/[0.03] p-2 rounded-xl border border-white/10">
+                                        <div class="text-[9px] text-white/50 font-bold flex items-center gap-1">
+                                            <span class="text-purple-400">⚡️</span> CPU Load
+                                        </div>
+                                        <div class="text-xs font-bold text-white mt-0.5">18%</div>
+                                        <div class="text-[8px] text-white/40">Nominal · 38°C</div>
+                                    </div>
+
+                                    <div class="bg-white/[0.03] p-2 rounded-xl border border-white/10">
+                                        <div class="text-[9px] text-white/50 font-bold flex items-center gap-1">
+                                            <span class="text-purple-400">💾</span> RAM Free
+                                        </div>
+                                        <div class="text-xs font-bold text-white mt-0.5">16.4 GB</div>
+                                        <div class="text-[8px] text-white/40">of 36 GB Total</div>
+                                    </div>
+
+                                    <div class="bg-white/[0.03] p-2 rounded-xl border border-white/10">
+                                        <div class="text-[9px] text-white/50 font-bold flex items-center gap-1">
+                                            <span class="text-purple-400">🔋</span> Battery
+                                        </div>
+                                        <div class="text-xs font-bold text-white mt-0.5">98% ⚡️</div>
+                                        <div class="text-[8px] text-white/40">96W Adapter</div>
+                                    </div>
+
+                                    <div class="bg-white/[0.03] p-2 rounded-xl border border-white/10">
+                                        <div class="text-[9px] text-white/50 font-bold flex items-center gap-1">
+                                            <span class="text-purple-400">🌐</span> Throughput
+                                        </div>
+                                        <div class="text-xs font-bold text-white mt-0.5">↓ 1.8 MB/s</div>
+                                        <div class="text-[8px] text-white/40">↑ 140 KB/s · 14ms</div>
+                                    </div>
+                                </div>
+
+                                <!-- Active Tasks, Generation & Measuring Trackers (Prominent Theme Accent) -->
+                                <div class="bg-white/[0.03] rounded-xl p-3 border border-white/10 space-y-2">
+                                    <div class="flex items-center justify-between text-[11px]">
+                                        <span class="font-bold text-white flex items-center gap-1.5">
+                                            <span class="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
+                                            <span>Active Background Processes & Transfers</span>
+                                        </span>
+                                        <span class="text-purple-300 font-mono text-[10px]">48 tok/s · Antigravity & Gemini</span>
+                                    </div>
+
+                                    <!-- Staged File Transfers Progress -->
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10px]">
+                                        <div class="bg-black/50 p-2 rounded-lg border border-white/5 flex items-center justify-between">
+                                            <div class="flex items-center gap-2 truncate">
+                                                <span class="text-purple-400">🎬</span>
+                                                <span class="truncate text-white">Client_Demo_Keynote_v2.mov</span>
+                                            </div>
+                                            <span class="text-purple-300 font-mono font-bold shrink-0">74% Staged (2.1 GB)</span>
+                                        </div>
+                                        <div class="bg-black/50 p-2 rounded-lg border border-white/5 flex items-center justify-between">
+                                            <div class="flex items-center gap-2 truncate">
+                                                <span class="text-purple-400">📦</span>
+                                                <span class="truncate text-white">Design_Tokens_Export.json</span>
+                                            </div>
+                                            <span class="text-white/60 font-mono font-bold shrink-0">AirDrop Ready</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Quick Actions & Live Clipboard Bar -->
+                                <div class="flex items-center gap-2">
+                                    <div class="flex-1 bg-white/[0.03] rounded-xl p-2.5 border border-white/10 flex items-center justify-between text-xs">
+                                        <div class="flex items-center gap-2 min-w-0">
+                                            <span class="text-purple-400">📋</span>
+                                            <span class="text-[10px] text-white/40">Latest Clip:</span>
+                                            <code class="text-[11px] font-mono text-purple-300 truncate">npm install @auranotch/sdk</code>
+                                        </div>
+                                        <button onclick="event.stopPropagation(); copyDemoClip()" id="sim-copy-clip-btn" class="px-2 py-1 bg-white/[0.08] hover:bg-white/[0.15] rounded text-[10px] font-semibold text-white shrink-0 transition-colors">
+                                            Copy
+                                        </button>
+                                    </div>
+
+                                    <!-- 1-Click Free RAM Purge -->
+                                    <button onclick="event.stopPropagation(); purgeDemoMemory()" id="sim-purge-ram-btn" class="px-3 py-2.5 bg-white/[0.04] hover:bg-white/[0.08] rounded-xl border border-white/10 text-[10px] font-bold text-white flex items-center gap-1.5 shrink-0 transition-colors">
+                                        <span class="text-purple-400">⚡️</span><span id="sim-purge-text">Free RAM</span>
+                                    </button>
+
+                                    <!-- 1-Click 10m Sprint -->
+                                    <button onclick="event.stopPropagation(); setSimTab('adhd')" class="px-3 py-2.5 bg-purple-600/25 hover:bg-purple-600/35 rounded-xl border border-purple-500/40 text-[10px] font-bold text-white flex items-center gap-1.5 shrink-0 transition-colors">
+                                        <span>🧠</span><span>10m Sprint</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- PANEL: ADHD SPRINT -->
+                            <div id="panel-adhd" class="sim-panel hidden space-y-2.5">
+                                <div class="flex justify-between items-center text-xs">
+                                    <span class="font-bold text-purple-400 flex items-center gap-1.5">
+                                        <span>🧠</span> Next 1 Thing (Hyper-Focus Sprint)
+                                    </span>
+                                    <span class="text-orange-400 font-semibold text-[10px]">🔥 3 Sprints Won Today</span>
+                                </div>
+                                <div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-3">
+                                    <div class="text-[10px] text-purple-300 font-bold uppercase tracking-wider mb-1">Your Single Task:</div>
+                                    <div class="text-sm font-bold text-white">"Finish architecture review for client release"</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-white/5 p-3 rounded-xl border border-white/5">
+                                    <div class="flex items-center gap-3">
+                                        <div class="text-2xl font-mono font-bold text-white">08:42</div>
+                                        <div class="text-[10px] text-white/50 leading-tight">10-Min Sprint<br>Dopamine mode on</div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <button class="px-3 py-1.5 rounded-lg bg-green-500 text-black font-bold text-xs hover:bg-green-400">
+                                            ✓ Task Done!
+                                        </button>
+                                        <button class="px-2 py-1.5 rounded-lg bg-white/10 text-white text-xs hover:bg-white/15">
+                                            +5m
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- PANEL: SHORTCUTS & WEB TOOLS -->
+                            <div id="panel-tools" class="sim-panel hidden space-y-2.5">
+                                <div class="flex justify-between items-center text-xs">
+                                    <span class="font-bold text-blue-400 flex items-center gap-1.5">
+                                        <span>⚡️</span> 27 Supercharged Web & System Shortcuts
+                                    </span>
+                                    <span class="text-green-400 font-mono text-[10px]">⚡️ 14 ms Ping</span>
+                                </div>
+                                <div class="bg-white/5 border border-white/10 rounded-xl p-3 space-y-2">
+                                    <div class="text-[10px] text-white/50">TRACKING STRIPPER (URL CLEANED IN CLIPBOARD):</div>
+                                    <div class="text-[11px] font-mono text-green-400 truncate">https://news.ycombinator.com/item?id=3849102</div>
+                                </div>
+                                <div class="grid grid-cols-4 gap-2 text-center text-xs">
+                                    <div class="bg-white/5 p-2 rounded-lg"><div class="text-sm mb-1">🎨</div><div class="text-[10px] text-white">Eyedropper</div></div>
+                                    <div class="bg-white/5 p-2 rounded-lg"><div class="text-sm mb-1">📱</div><div class="text-[10px] text-white">QR Code</div></div>
+                                    <div class="bg-white/5 p-2 rounded-lg"><div class="text-sm mb-1">🌐</div><div class="text-[10px] text-white">Speed Test</div></div>
+                                    <div class="bg-white/5 p-2 rounded-lg"><div class="text-sm mb-1">🔒</div><div class="text-[10px] text-white">Lock Mac</div></div>
+                                </div>
+                            </div>
+
+                            <!-- PANEL: MUSIC (DETECTED SYSTEM MUSIC PLAYER - PROMINENT THEME ACCENT) -->
+                            <div id="panel-nowPlaying" class="sim-panel hidden space-y-3">
+                                <!-- Detected Players Status Bar -->
+                                <div class="flex items-center justify-between text-xs bg-white/[0.03] p-2 rounded-lg border border-white/10">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[9px] font-bold text-white/40 uppercase tracking-wider">Detected Players:</span>
+                                        <span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-bold text-[10px] border border-purple-500/40 flex items-center gap-1">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
+                                            SoundCloud (ACTIVE)
+                                        </span>
+                                        <span class="text-[10px] text-white/50">Spotify</span>
+                                        <span class="text-[10px] text-white/50">Apple Music</span>
+                                    </div>
+                                    <span class="text-purple-300 font-mono text-[9px] font-bold">● Zero Latency Stream</span>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center bg-white/[0.03] p-3.5 rounded-xl border border-purple-500/30 relative overflow-hidden">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-600/40 to-neutral-900 border border-purple-500/40 flex items-center justify-center text-2xl shadow-lg shadow-purple-500/20 shrink-0">
+                                            ☁️
+                                        </div>
+                                        <div class="min-w-0">
+                                            <div class="font-bold text-sm text-white truncate">Deep Wednesday (8-12-26)</div>
+                                            <div class="text-xs text-white/70 truncate">RaquElevate</div>
+                                            <div class="text-[10px] text-purple-400 font-medium">SoundCloud Live Stream · Stereo</div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="h-1.5 bg-white/10 rounded-full overflow-hidden mb-1.5">
+                                            <div class="h-full bg-purple-500 rounded-full w-2/5 shadow-sm shadow-purple-500"></div>
+                                        </div>
+                                        <div class="flex justify-between text-[10px] font-mono text-white/40 mb-2">
+                                            <span>0:42</span>
+                                            <span>4:00</span>
+                                        </div>
+                                        <div class="flex items-center justify-center gap-4">
+                                            <button class="text-white/60 hover:text-white text-xs">⏮</button>
+                                            <button onclick="toggleMusicPlay()" class="w-7 h-7 rounded-full bg-purple-600 hover:bg-purple-500 text-white flex items-center justify-center text-xs font-bold shadow-md shadow-purple-500/30">⏸</button>
+                                            <button class="text-white/60 hover:text-white text-xs">⏭</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Synced Context & Information -->
+                                <div class="p-3 bg-black/40 rounded-xl border border-white/5 space-y-1.5 text-xs text-white/80">
+                                    <div class="flex items-center justify-between text-[10px] text-white/40 font-mono">
+                                        <span>STREAM CONTEXT & LYRICS</span>
+                                        <span class="text-purple-400">● LIVE SYNC</span>
+                                    </div>
+                                    <div class="text-white/50 text-[11px]">Live Stream active on SoundCloud</div>
+                                    <div class="font-bold text-white text-xs text-purple-300">"Deep Wednesday (8-12-26) by RaquElevate"</div>
+                                    <div class="text-white/60 text-[11px]">AuraNotch synchronized to active browser & media stream</div>
+                                </div>
+                            </div>
+
+                            <!-- PANEL: AI LIMITS -->
+                            <div id="panel-aiUsage" class="sim-panel hidden space-y-2.5">
+                                <div class="flex justify-between items-center text-xs">
+                                    <span class="font-semibold text-white">Local Developer AI Limits & Detection</span>
+                                    <span class="text-green-400 text-[10px] font-mono">184,200 tokens today</span>
+                                </div>
+                                <div class="space-y-2">
+                                    <div class="bg-white/5 p-2 rounded-lg">
+                                        <div class="flex justify-between text-[11px] text-white"><span>Claude Code CLI (~/.claude)</span><span class="text-orange-400 font-mono">42% (2h 15m reset)</span></div>
+                                        <div class="h-1 bg-white/10 rounded-full mt-1.5"><div class="h-full bg-orange-500 rounded-full w-[42%]"></div></div>
+                                    </div>
+                                    <div class="bg-white/5 p-2 rounded-lg">
+                                        <div class="flex justify-between text-[11px] text-white"><span>Cursor Pro IDE</span><span class="text-blue-400 font-mono">340 / 500 Fast Requests</span></div>
+                                        <div class="h-1 bg-white/10 rounded-full mt-1.5"><div class="h-full bg-blue-500 rounded-full w-[68%]"></div></div>
+                                    </div>
+                                    <div class="bg-white/5 p-2 rounded-lg">
+                                        <div class="flex justify-between text-[11px] text-white"><span>Antigravity & Gemini Agents (~/.gemini)</span><span class="text-purple-400 font-mono">Connected</span></div>
+                                        <div class="h-1 bg-white/10 rounded-full mt-1.5"><div class="h-full bg-purple-500 rounded-full w-[35%]"></div></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- PANEL: ASK AI -->
+                            <div id="panel-askAI" class="sim-panel hidden space-y-2.5">
+                                <div class="flex items-center justify-between text-xs">
+                                    <span class="text-green-400 font-medium flex items-center gap-1.5">
+                                        <span class="w-2 h-2 rounded-full bg-green-400"></span> Apple Intelligence · On-Device Model
+                                    </span>
+                                    <span class="text-[10px] text-white/40">Zero Latency · Offline</span>
+                                </div>
+                                <div class="bg-white/5 rounded-lg p-3 text-xs border border-white/5 space-y-1.5">
+                                    <div class="text-white/50 text-[10px]">PROMPT: Rewrite this email to be concise and confident</div>
+                                    <div class="text-white font-medium">"Thanks for your feedback. We've incorporated your suggested edits and the build is ready for deployment."</div>
+                                </div>
+                            </div>
+
+                            <!-- PANEL: TELEPROMPTER -->
+                            <div id="panel-teleprompter" class="sim-panel hidden space-y-2">
+                                <div class="flex justify-between items-center text-xs">
+                                    <span class="font-semibold text-white">Under-Camera Teleprompter</span>
+                                    <span class="text-blue-400 text-[10px]">140 WPM · Eyes on Lens</span>
+                                </div>
+                                <div class="bg-black/60 border border-white/10 rounded-lg p-3 text-xs leading-relaxed text-white/80 h-24 overflow-hidden relative">
+                                    <div class="absolute inset-x-0 top-0 h-4 bg-gradient-to-b from-black to-transparent pointer-events-none"></div>
+                                    <p class="animate-pulse">"Good afternoon everyone. Today we are launching AuraNotch for Mac. Built with 100% on-device models, it puts 27 tools directly below your webcam..."</p>
+                                    <div class="absolute inset-x-0 bottom-0 h-4 bg-gradient-to-t from-black to-transparent pointer-events-none"></div>
+                                </div>
+                            </div>
+
+                            <!-- PANEL: FILE SHELF -->
+                            <div id="panel-fileShelf" class="sim-panel hidden space-y-2">
+                                <div class="border border-dashed border-white/20 rounded-xl p-3 text-center bg-white/5">
+                                    <div class="text-xs font-semibold text-white">Drag & Drop files here</div>
+                                    <div class="text-[10px] text-white/50">Auto-expires in 24 hours · One-click AirDrop</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-white/5 p-2 rounded-lg text-xs">
+                                    <div class="flex items-center gap-2 truncate">
+                                        <span>📄</span>
+                                        <span class="font-medium truncate">Product_Specs_v2.pdf</span>
+                                        <span class="text-[10px] text-white/40">(4.2 MB)</span>
+                                    </div>
+                                    <button class="px-2.5 py-1 rounded bg-blue-600 text-[10px] font-semibold shrink-0">AirDrop</button>
+                                </div>
+                            </div>
+
+                            <!-- PANEL: SALES -->
+                            <div id="panel-sales" class="sim-panel hidden space-y-2.5">
+                                <div class="flex justify-between items-baseline">
+                                    <div>
+                                        <div class="text-[10px] uppercase text-white/50 font-bold">Today's Net Revenue</div>
+                                        <div class="text-2xl font-bold text-green-400 font-mono">$1,105.00</div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-[10px] uppercase text-white/50 font-bold">Total Sales</div>
+                                        <div class="text-sm font-semibold text-white">51 orders</div>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-3 gap-2 text-center text-xs">
+                                    <div class="bg-white/5 p-2 rounded-lg"><div class="text-[10px] text-white/50">Stripe</div><div class="font-bold text-purple-400">$485</div></div>
+                                    <div class="bg-white/5 p-2 rounded-lg"><div class="text-[10px] text-white/50">Lemon Squeezy</div><div class="font-bold text-yellow-400">$265</div></div>
+                                    <div class="bg-white/5 p-2 rounded-lg"><div class="text-[10px] text-white/50">Polar.sh</div><div class="font-bold text-blue-400">$150</div></div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- REFINED NON-SCROLLABLE BOTTOM DOCK (Icon only default, expands to icon + text on selection) -->
+                        <div class="flex items-center justify-center gap-1.5 w-full bg-black/50 p-2 border-t border-white/10 rounded-b-2xl mt-1 select-none">
+                            <!-- Tab: Home (Default Selected) -->
+                            <button onclick="event.stopPropagation(); setSimTab('home')" id="tab-home" class="sim-dock-item px-3 h-8 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold text-xs flex items-center gap-1.5 shadow-lg shadow-purple-500/30 transition-all shrink-0">
+                                <span>🏠</span><span class="dock-label">Home</span>
+                            </button>
+
+                            <!-- Tab: ADHD -->
+                            <button onclick="event.stopPropagation(); setSimTab('adhd')" id="tab-adhd" class="sim-dock-item w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 text-white/60 flex items-center justify-center text-xs transition-all shrink-0" title="ADHD Sprint">
+                                <span>🧠</span><span class="dock-label hidden">ADHD</span>
+                            </button>
+
+                            <!-- Tab: Shortcuts -->
+                            <button onclick="event.stopPropagation(); setSimTab('tools')" id="tab-tools" class="sim-dock-item w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 text-white/60 flex items-center justify-center text-xs transition-all shrink-0" title="Shortcuts">
+                                <span>⚡️</span><span class="dock-label hidden">Shortcuts</span>
+                            </button>
+
+                            <!-- Tab: Music -->
+                            <button onclick="event.stopPropagation(); setSimTab('nowPlaying')" id="tab-nowPlaying" class="sim-dock-item w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 text-white/60 flex items-center justify-center text-xs transition-all shrink-0" title="Now Playing Music">
+                                <span>🎵</span><span class="dock-label hidden">Music</span>
+                            </button>
+
+                            <!-- Tab: AI Limits -->
+                            <button onclick="event.stopPropagation(); setSimTab('aiUsage')" id="tab-aiUsage" class="sim-dock-item w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 text-white/60 flex items-center justify-center text-xs transition-all shrink-0" title="AI Quotas & Limits">
+                                <span>📊</span><span class="dock-label hidden">AI Limits</span>
+                            </button>
+
+                            <!-- Tab: Ask AI -->
+                            <button onclick="event.stopPropagation(); setSimTab('askAI')" id="tab-askAI" class="sim-dock-item w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 text-white/60 flex items-center justify-center text-xs transition-all shrink-0" title="Ask AI Assistant">
+                                <span>✨</span><span class="dock-label hidden">Ask AI</span>
+                            </button>
+
+                            <!-- Tab: Teleprompter -->
+                            <button onclick="event.stopPropagation(); setSimTab('teleprompter')" id="tab-teleprompter" class="sim-dock-item w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 text-white/60 flex items-center justify-center text-xs transition-all shrink-0" title="Teleprompter">
+                                <span>🗣</span><span class="dock-label hidden">Prompter</span>
+                            </button>
+
+                            <!-- Tab: File Shelf -->
+                            <button onclick="event.stopPropagation(); setSimTab('fileShelf')" id="tab-fileShelf" class="sim-dock-item w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 text-white/60 flex items-center justify-center text-xs transition-all shrink-0" title="File Shelf">
+                                <span>📥</span><span class="dock-label hidden">Files</span>
+                            </button>
+
+                            <!-- Tab: Sales -->
+                            <button onclick="event.stopPropagation(); setSimTab('sales')" id="tab-sales" class="sim-dock-item w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 text-white/60 flex items-center justify-center text-xs transition-all shrink-0" title="Sales Tracker">
+                                <span>💰</span><span class="dock-label hidden">Sales</span>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fake Desktop Wallpaper Background -->
+            <div class="mt-16 text-center text-white/20 select-none">
+                <div class="text-5xl font-extralight tracking-widest">macOS SEQUOIA</div>
+                <div class="text-xs tracking-wider mt-1">AuraNotch Desktop Environment Simulator</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 27 Tools Breakdown Grid -->
+    <section id="features" class="py-20 bg-neutral-950 border-t border-white/10">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs uppercase tracking-widest text-purple-400 font-semibold mb-2">Unmatched Capability</h2>
+                <h3 class="text-3xl sm:text-4xl font-bold tracking-tight text-white">27 Native Tools in One Hover</h3>
+                <p class="text-apple-subtext text-sm sm:text-base mt-3">
+                    Everything you need throughout your workday, engineered natively in Swift with liquid spring physics and zero background battery drain.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Tool 1: Ask AI -->
+                <div class="glass-panel rounded-2xl p-6 hover:border-purple-500/50 transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-lg mb-4">✨</div>
+                    <h4 class="font-bold text-base text-white mb-1">Private On-Device AI</h4>
+                    <p class="text-apple-subtext text-xs leading-relaxed">Powered by Apple Intelligence Foundation Models. Rewrite, summarize, and debug code without sending a single byte to remote servers.</p>
+                </div>
+
+                <!-- Tool 2: Now Playing & Synced Lyrics -->
+                <div class="glass-panel rounded-2xl p-6 hover:border-purple-500/50 transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center text-lg mb-4">🎵</div>
+                    <h4 class="font-bold text-base text-white mb-1">Now Playing & Synced Lyrics</h4>
+                    <p class="text-apple-subtext text-xs leading-relaxed">Scrub music, see album artwork in the closed notch, and sing along to real-time synced lyrics from Apple Music & Spotify.</p>
+                </div>
+
+                <!-- Tool 3: Drag & Drop File Shelf -->
+                <div class="glass-panel rounded-2xl p-6 hover:border-purple-500/50 transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-lg mb-4">📥</div>
+                    <h4 class="font-bold text-base text-white mb-1">File Shelf & AirDrop Flick</h4>
+                    <p class="text-apple-subtext text-xs leading-relaxed">Drag documents, screenshots, and videos to the notch. Stash them temporarily or flick them via AirDrop to team members.</p>
+                </div>
+
+                <!-- Tool 4: Safe Clipboard History -->
+                <div class="glass-panel rounded-2xl p-6 hover:border-purple-500/50 transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-lg mb-4">📋</div>
+                    <h4 class="font-bold text-base text-white mb-1">Smart Clipboard History</h4>
+                    <p class="text-apple-subtext text-xs leading-relaxed">Search past text, links, code, and images. Automatically skips 1Password, Bitwarden, and sensitive keychain data.</p>
+                </div>
+
+                <!-- Tool 5: Live AI Usage Limit Meters -->
+                <div class="glass-panel rounded-2xl p-6 hover:border-purple-500/50 transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center text-lg mb-4">📊</div>
+                    <h4 class="font-bold text-base text-white mb-1">AI Quotas & Rate Limits</h4>
+                    <p class="text-apple-subtext text-xs leading-relaxed">Live meters for Claude Code, Cursor Pro, GitHub Copilot, Codex, and Grok read directly from local config tokens on your Mac.</p>
+                </div>
+
+                <!-- Tool 6: Sales & Revenue Hub -->
+                <div class="glass-panel rounded-2xl p-6 hover:border-purple-500/50 transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-green-500/20 text-green-400 flex items-center justify-center text-lg mb-4">💰</div>
+                    <h4 class="font-bold text-base text-white mb-1">Unified Sales Dashboard</h4>
+                    <p class="text-apple-subtext text-xs leading-relaxed">Stripe, Lemon Squeezy, Polar, Gumroad, and Shopify revenue aggregated into today's net total with privacy amount-hiding.</p>
+                </div>
+
+                <!-- Tool 7: Under-Camera Teleprompter -->
+                <div class="glass-panel rounded-2xl p-6 hover:border-purple-500/50 transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-lg mb-4">🗣</div>
+                    <h4 class="font-bold text-base text-white mb-1">Under-Camera Teleprompter</h4>
+                    <p class="text-apple-subtext text-xs leading-relaxed">Script scrolls directly beneath your webcam lens so your eyes remain locked on the camera during Zoom, Meet, and keynote recordings.</p>
+                </div>
+
+                <!-- Tool 8: Quick Camera Mirror -->
+                <div class="glass-panel rounded-2xl p-6 hover:border-purple-500/50 transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg mb-4">🪞</div>
+                    <h4 class="font-bold text-base text-white mb-1">Quick Camera Mirror</h4>
+                    <p class="text-apple-subtext text-xs leading-relaxed">One-click video check right below the notch. Check your posture, lighting, and hair in half a second before joining a call.</p>
+                </div>
+
+                <!-- Tool 9: Pomodoro & Focus Sounds -->
+                <div class="glass-panel rounded-2xl p-6 hover:border-purple-500/50 transition-all">
+                    <div class="w-10 h-10 rounded-xl bg-red-500/20 text-red-400 flex items-center justify-center text-lg mb-4">⏱</div>
+                    <h4 class="font-bold text-base text-white mb-1">Timers & Ambient Focus</h4>
+                    <p class="text-apple-subtext text-xs leading-relaxed">Configurable 25/5 Pomodoro sessions with soothing background audio (rain, binaural beats, coffee shop) and closed-notch countdowns.</p>
+                </div>
+
+                <!-- Tool 10: Screen Eyedropper (New Feature) -->
+                <div class="glass-panel rounded-2xl p-6 hover:border-purple-500/50 transition-all border border-purple-500/30">
+                    <div class="w-10 h-10 rounded-xl bg-purple-600/30 text-purple-300 flex items-center justify-center text-lg mb-4">🎨</div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <h4 class="font-bold text-base text-white">Screen Color Eyedropper</h4>
+                        <span class="text-[9px] font-bold uppercase bg-purple-500/40 text-purple-200 px-1.5 py-0.5 rounded">NEW</span>
+                    </div>
+                    <p class="text-apple-subtext text-xs leading-relaxed">Click once to inspect any pixel on your monitor. Instantly copies formatted HEX, RGB, or HSL color codes to your clipboard.</p>
+                </div>
+
+                <!-- Tool 11: Instant QR Code Generator (New Feature) -->
+                <div class="glass-panel rounded-2xl p-6 hover:border-purple-500/50 transition-all border border-purple-500/30">
+                    <div class="w-10 h-10 rounded-xl bg-purple-600/30 text-purple-300 flex items-center justify-center text-lg mb-4">📱</div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <h4 class="font-bold text-base text-white">Instant QR Generator</h4>
+                        <span class="text-[9px] font-bold uppercase bg-purple-500/40 text-purple-200 px-1.5 py-0.5 rounded">NEW</span>
+                    </div>
+                    <p class="text-apple-subtext text-xs leading-relaxed">Turn links, Wi-Fi credentials, or text into vector QR codes. Drag the generated QR image straight into messages or presentations.</p>
+                </div>
+
+                <!-- Tool 12: Hardware Command Bar (New Feature) -->
+                <div class="glass-panel rounded-2xl p-6 hover:border-purple-500/50 transition-all border border-purple-500/30">
+                    <div class="w-10 h-10 rounded-xl bg-purple-600/30 text-purple-300 flex items-center justify-center text-lg mb-4">⚡️</div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <h4 class="font-bold text-base text-white">1-Click System Actions</h4>
+                        <span class="text-[9px] font-bold uppercase bg-purple-500/40 text-purple-200 px-1.5 py-0.5 rounded">NEW</span>
+                    </div>
+                    <p class="text-apple-subtext text-xs leading-relaxed">Global hardware mic mute toggle, instant Do Not Disturb, display sleep, empty trash, and screen lock right from the notch.</p>
+                </div>
+
+                <!-- Tool 13: ADHD Hyper-Focus Suite -->
+                <div class="glass-panel rounded-2xl p-6 hover:border-purple-500/50 transition-all border border-purple-500/30">
+                    <div class="w-10 h-10 rounded-xl bg-purple-600/30 text-purple-300 flex items-center justify-center text-lg mb-4">🧠</div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <h4 class="font-bold text-base text-white">ADHD Hyper-Focus & Vault</h4>
+                        <span class="text-[9px] font-bold uppercase bg-purple-500/40 text-purple-200 px-1.5 py-0.5 rounded">ADHD</span>
+                    </div>
+                    <p class="text-apple-subtext text-xs leading-relaxed">Next 1 Thing single-task sprint countdown, intrusive thought distraction vault, 4-4-4-4 box breathing calmer, and tactile sensory fidget clicker.</p>
+                </div>
+
+                <!-- Tool 14: Web Ping & Tracking URL Cleaner -->
+                <div class="glass-panel rounded-2xl p-6 hover:border-purple-500/50 transition-all border border-purple-500/30">
+                    <div class="w-10 h-10 rounded-xl bg-blue-600/30 text-blue-300 flex items-center justify-center text-lg mb-4">🌐</div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <h4 class="font-bold text-base text-white">Ping & Clean URL Stripper</h4>
+                        <span class="text-[9px] font-bold uppercase bg-blue-500/40 text-blue-200 px-1.5 py-0.5 rounded">WEB</span>
+                    </div>
+                    <p class="text-apple-subtext text-xs leading-relaxed">Direct DNS ping latency tester to Cloudflare/Google, plus instant stripping of UTM, fbclid, and ad trackers from clipboard links with 1 click.</p>
+                </div>
+
+                <!-- Tool 15: Clean Desk Shield -->
+                <div class="glass-panel rounded-2xl p-6 hover:border-purple-500/50 transition-all border border-purple-500/30">
+                    <div class="w-10 h-10 rounded-xl bg-cyan-600/30 text-cyan-300 flex items-center justify-center text-lg mb-4">🛡️</div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <h4 class="font-bold text-base text-white">Clean Desk & Distraction Shield</h4>
+                        <span class="text-[9px] font-bold uppercase bg-cyan-500/40 text-cyan-200 px-1.5 py-0.5 rounded">FOCUS</span>
+                    </div>
+                    <p class="text-apple-subtext text-xs leading-relaxed">Hide all desktop icons instantly for clean screen shares and screen recording. Minimize all other apps with 1 tap to eliminate visual clutter.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMPETITOR COMPARISON TABLE -->
+    <section id="compare" class="py-20 max-w-6xl mx-auto px-4 sm:px-6">
+        <div class="text-center max-w-2xl mx-auto mb-14">
+            <h2 class="text-xs uppercase tracking-widest text-purple-400 font-semibold mb-2">Transparent Comparison</h2>
+            <h3 class="text-3xl font-bold">Why AuraNotch is in a league of its own</h3>
+            <p class="text-apple-subtext text-sm mt-2">More native features, higher privacy, faster performance, and zero recurring fees.</p>
+        </div>
+
+        <div class="glass-panel rounded-2xl overflow-x-auto border border-white/10">
+            <table class="w-full text-left text-xs border-collapse min-w-[700px]">
+                <thead>
+                    <tr class="border-b border-white/10 bg-white/5">
+                        <th class="p-4 font-semibold text-white">Feature</th>
+                        <th class="p-4 font-bold text-purple-400 bg-purple-500/10 text-center">AuraNotch (Ours)</th>
+                        <th class="p-4 font-medium text-white/70 text-center">OmniNotch</th>
+                        <th class="p-4 font-medium text-white/70 text-center">Alcove</th>
+                        <th class="p-4 font-medium text-white/70 text-center">NotchNook</th>
+                        <th class="p-4 font-medium text-white/70 text-center">Boring Notch</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-white/5">
+                    <tr>
+                        <td class="p-4 font-medium text-white">Price</td>
+                        <td class="p-4 text-center font-bold text-green-400 bg-purple-500/5">$5.00 Lifetime</td>
+                        <td class="p-4 text-center text-white/80">$5 (Sale) / $19.99</td>
+                        <td class="p-4 text-center text-white/80">$14.99</td>
+                        <td class="p-4 text-center text-white/80">$25.00 / Sub</td>
+                        <td class="p-4 text-center text-white/80">Free (Basic)</td>
+                    </tr>
+                    <tr>
+                        <td class="p-4 font-medium text-white">Total Tools Included</td>
+                        <td class="p-4 text-center font-bold text-purple-300 bg-purple-500/5">27 Tools</td>
+                        <td class="p-4 text-center text-white/80">20 Tools</td>
+                        <td class="p-4 text-center text-white/80">6 Tools</td>
+                        <td class="p-4 text-center text-white/80">8 Tools</td>
+                        <td class="p-4 text-center text-white/80">4 Tools</td>
+                    </tr>
+                    <tr>
+                        <td class="p-4 font-medium text-white">On-Device Apple Intelligence</td>
+                        <td class="p-4 text-center text-green-400 font-bold bg-purple-500/5">✓ Included</td>
+                        <td class="p-4 text-center text-green-400">✓ Included</td>
+                        <td class="p-4 text-center text-red-400">✕ None</td>
+                        <td class="p-4 text-center text-red-400">✕ None</td>
+                        <td class="p-4 text-center text-red-400">✕ None</td>
+                    </tr>
+                    <tr>
+                        <td class="p-4 font-medium text-white">Live AI Quota Limits (Claude/Cursor)</td>
+                        <td class="p-4 text-center text-green-400 font-bold bg-purple-500/5">✓ Included</td>
+                        <td class="p-4 text-center text-green-400">✓ Included</td>
+                        <td class="p-4 text-center text-red-400">✕ None</td>
+                        <td class="p-4 text-center text-red-400">✕ None</td>
+                        <td class="p-4 text-center text-red-400">✕ None</td>
+                    </tr>
+                    <tr>
+                        <td class="p-4 font-medium text-white">Multi-Gateway Revenue Tracker</td>
+                        <td class="p-4 text-center text-green-400 font-bold bg-purple-500/5">✓ 7 Platforms</td>
+                        <td class="p-4 text-center text-green-400">✓ 7 Platforms</td>
+                        <td class="p-4 text-center text-red-400">✕ None</td>
+                        <td class="p-4 text-center text-red-400">✕ None</td>
+                        <td class="p-4 text-center text-red-400">✕ None</td>
+                    </tr>
+                    <tr>
+                        <td class="p-4 font-medium text-white">Under-Camera Teleprompter</td>
+                        <td class="p-4 text-center text-green-400 font-bold bg-purple-500/5">✓ Included</td>
+                        <td class="p-4 text-center text-green-400">✓ Included</td>
+                        <td class="p-4 text-center text-red-400">✕ None</td>
+                        <td class="p-4 text-center text-red-400">✕ None</td>
+                        <td class="p-4 text-center text-red-400">✕ None</td>
+                    </tr>
+                    <tr>
+                        <td class="p-4 font-medium text-white">Color Eyedropper & QR Generator</td>
+                        <td class="p-4 text-center text-green-400 font-bold bg-purple-500/5">✓ Exclusive</td>
+                        <td class="p-4 text-center text-red-400">✕ None</td>
+                        <td class="p-4 text-center text-red-400">✕ None</td>
+                        <td class="p-4 text-center text-red-400">✕ None</td>
+                        <td class="p-4 text-center text-red-400">✕ None</td>
+                    </tr>
+                    <tr>
+                        <td class="p-4 font-medium text-white">Hardware Mic Mute & Quick Actions</td>
+                        <td class="p-4 text-center text-green-400 font-bold bg-purple-500/5">✓ Exclusive</td>
+                        <td class="p-4 text-center text-red-400">✕ None</td>
+                        <td class="p-4 text-center text-red-400">✕ None</td>
+                        <td class="p-4 text-center text-red-400">✕ None</td>
+                        <td class="p-4 text-center text-red-400">✕ None</td>
+                    </tr>
+                    <tr>
+                        <td class="p-4 font-medium text-white">Works on Notch-less Displays</td>
+                        <td class="p-4 text-center text-green-400 font-bold bg-purple-500/5">✓ Dynamic Pill</td>
+                        <td class="p-4 text-center text-green-400">✓ Yes</td>
+                        <td class="p-4 text-center text-green-400">✓ Yes</td>
+                        <td class="p-4 text-center text-green-400">✓ Yes</td>
+                        <td class="p-4 text-center text-green-400">✓ Yes</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- PRICING & CHECKOUT SECTION -->
+    <section id="pricing" class="py-20 bg-neutral-950 border-t border-white/10">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+            <h2 class="text-xs uppercase tracking-widest text-purple-400 font-semibold mb-2">Simple Lifetime Pricing</h2>
+            <h3 class="text-3xl sm:text-4xl font-bold tracking-tight text-white">One payment. Yours forever.</h3>
+            <p class="text-apple-subtext text-sm sm:text-base mt-2 mb-12">No subscriptions, no recurring bills, and all future updates included.</p>
+
+            <!-- Pricing Card -->
+            <div class="max-w-md mx-auto glass-panel rounded-3xl p-8 sm:p-10 border border-purple-500/40 relative shadow-2xl shadow-purple-900/20">
+                <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-[11px] font-bold uppercase tracking-wider px-4 py-1 rounded-full shadow-md">
+                    75% Off Flash Sale
+                </div>
+
+                <div class="font-bold text-xl text-white mt-2">AuraNotch Pro</div>
+                <div class="text-xs text-apple-subtext mt-1">Single Lifetime License</div>
+
+                <div class="my-6 flex items-baseline justify-center gap-2">
+                    <span class="text-5xl sm:text-6xl font-extrabold text-white tracking-tight">$5.00</span>
+                    <span class="text-lg text-apple-subtext line-through">$19.99</span>
+                </div>
+
+                <p class="text-xs text-white/70 mb-8">One-time payment. Activate on up to 3 of your personal Macs.</p>
+
+                <div class="space-y-3 text-left text-xs text-white/80 mb-8">
+                    <div class="flex items-center gap-2.5">
+                        <svg class="w-4 h-4 text-green-400 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                        <span>All 27 native tools unlocked permanently</span>
+                    </div>
+                    <div class="flex items-center gap-2.5">
+                        <svg class="w-4 h-4 text-green-400 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                        <span>Free lifetime version updates</span>
+                    </div>
+                    <div class="flex items-center gap-2.5">
+                        <svg class="w-4 h-4 text-green-400 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                        <span>Offline cryptographic key validation</span>
+                    </div>
+                    <div class="flex items-center gap-2.5">
+                        <svg class="w-4 h-4 text-green-400 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                        <span>7-day 100% money-back guarantee</span>
+                    </div>
+                </div>
+
+                <button onclick="openCheckoutModal()" class="w-full py-4 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold text-sm hover:from-purple-500 hover:to-blue-500 transition-all shadow-lg shadow-purple-600/30">
+                    Buy AuraNotch Lifetime &rarr;
+                </button>
+
+                <div class="mt-4 flex items-center justify-center gap-4 text-[11px] text-white/50">
+                    <span>🔒 256-Bit SSL Encrypted</span>
+                    <span>⚡️ Instant Key Delivery</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Accordion -->
+    <section id="faq" class="py-20 max-w-4xl mx-auto px-4 sm:px-6">
+        <div class="text-center mb-14">
+            <h2 class="text-xs uppercase tracking-widest text-purple-400 font-semibold mb-2">Got Questions?</h2>
+            <h3 class="text-3xl font-bold">Frequently Asked Questions</h3>
+        </div>
+
+        <div class="space-y-4 text-left">
+            <div class="glass-panel rounded-xl p-5 border border-white/10 cursor-pointer" onclick="toggleFaq(this)">
+                <div class="flex items-center justify-between font-semibold text-sm">
+                    <span>Does AuraNotch work on Macs without a physical notch?</span>
+                    <span class="text-purple-400 text-lg">+</span>
+                </div>
+                <p class="text-xs text-apple-subtext mt-3 hidden leading-relaxed">Yes! If your MacBook Pro, MacBook Air, Mac mini, Mac Studio, or iMac doesn't have a physical camera notch, AuraNotch renders a synthetic rounded floating Dynamic Island at the top of your screen. You get 100% of the functionality regardless of your Mac hardware.</p>
+            </div>
+
+            <div class="glass-panel rounded-xl p-5 border border-white/10 cursor-pointer" onclick="toggleFaq(this)">
+                <div class="flex items-center justify-between font-semibold text-sm">
+                    <span>Where does my clipboard and file data go?</span>
+                    <span class="text-purple-400 text-lg">+</span>
+                </div>
+                <p class="text-xs text-apple-subtext mt-3 hidden leading-relaxed">Nowhere. Everything is stored locally on your Mac. AuraNotch has zero cloud servers, zero analytics trackers, and zero telemetry. Sensitive password-manager entries (such as 1Password, Bitwarden, and macOS Keychain) are strictly filtered and never recorded.</p>
+            </div>
+
+            <div class="glass-panel rounded-xl p-5 border border-white/10 cursor-pointer" onclick="toggleFaq(this)">
+                <div class="flex items-center justify-between font-semibold text-sm">
+                    <span>How does license activation work?</span>
+                    <span class="text-purple-400 text-lg">+</span>
+                </div>
+                <p class="text-xs text-apple-subtext mt-3 hidden leading-relaxed">Immediately after completing checkout, you will receive an Ed25519-signed license key (e.g. AURA-XXXX-XXXX). Enter this key once inside AuraNotch Settings. It is stored securely in your macOS Keychain and verifies cryptographically without requiring constant internet access.</p>
+            </div>
+
+            <div class="glass-panel rounded-xl p-5 border border-white/10 cursor-pointer" onclick="toggleFaq(this)">
+                <div class="flex items-center justify-between font-semibold text-sm">
+                    <span>Can I get a refund if it isn't for me?</span>
+                    <span class="text-purple-400 text-lg">+</span>
+                </div>
+                <p class="text-xs text-apple-subtext mt-3 hidden leading-relaxed">Absolutely. We offer an unconditional 7-day money-back guarantee. If you're not completely delighted, just email support@auranotch.app and you'll receive a full refund with no questions asked.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-12 bg-black text-xs text-apple-subtext">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-lg bg-purple-600 flex items-center justify-center text-white text-xs font-bold">A</div>
+                <span class="font-bold text-white">AuraNotch Pro</span>
+                <span>&copy; 2026 AuraNotch. All rights reserved.</span>
+            </div>
+            <div class="flex items-center gap-6">
+                <a href="#features" class="hover:text-white transition-colors">Features</a>
+                <a href="#pricing" class="hover:text-white transition-colors">Pricing</a>
+                <a href="#compare" class="hover:text-white transition-colors">Compare</a>
+                <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                <a href="mailto:support@auranotch.app" class="hover:text-white transition-colors">Contact Support</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE MULTI-GATEWAY CHECKOUT MODAL (0% Platform Fee & Direct Pay) -->
+    <div id="checkout-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4 overflow-y-auto">
+        <div class="glass-panel bg-neutral-900 rounded-3xl max-w-lg w-full p-6 sm:p-8 border border-white/20 shadow-2xl relative my-8">
+            <button onclick="closeCheckoutModal()" class="absolute top-5 right-5 text-white/50 hover:text-white text-xl font-bold transition-colors">&times;</button>
+            
+            <div class="flex items-center gap-3 mb-5">
+                <div class="w-10 h-10 rounded-xl bg-purple-600 flex items-center justify-center font-bold text-white shadow-lg shadow-purple-600/30">A</div>
+                <div>
+                    <h3 class="font-bold text-base text-white">Get AuraNotch Pro Lifetime</h3>
+                    <p class="text-xs text-apple-subtext">Choose your preferred payment gateway</p>
+                </div>
+            </div>
+
+            <!-- Gateway Tabs (Stripe / 0% Ko-fi & Polar / 0% UPI QR / Crypto) -->
+            <div class="flex items-center gap-1.5 p-1 bg-white/[0.04] rounded-xl border border-white/10 mb-5 text-[11px] font-semibold">
+                <button onclick="setCheckoutTab('stripe')" id="tab-btn-stripe" class="flex-1 py-1.5 rounded-lg bg-purple-600 text-white shadow-sm transition-all text-center">
+                    Apple Pay / Cards
+                </button>
+                <button onclick="setCheckoutTab('zerofee')" id="tab-btn-zerofee" class="flex-1 py-1.5 rounded-lg text-white/60 hover:text-white transition-all text-center">
+                    0% Fee (Ko-fi / Polar)
+                </button>
+                <button onclick="setCheckoutTab('upi')" id="tab-btn-upi" class="flex-1 py-1.5 rounded-lg text-white/60 hover:text-white transition-all text-center">
+                    0% UPI QR
+                </button>
+            </div>
+
+            <!-- TAB 1: STRIPE & APPLE PAY -->
+            <div id="checkout-tab-stripe" class="space-y-4">
+                <div class="p-3.5 rounded-xl bg-white/[0.03] border border-purple-500/40 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">💳</span>
+                        <div>
+                            <div class="font-semibold text-xs text-white">Stripe / Apple Pay / Google Pay</div>
+                            <div class="text-[10px] text-white/50">Zero setup fee · Standard 2.9% interchange only</div>
+                        </div>
+                    </div>
+                    <span class="text-xs font-bold text-purple-300">$5.00</span>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-medium text-white/70 mb-1">Your Delivery Email</label>
+                    <input type="email" id="buyer-email" placeholder="you@domain.com" class="w-full bg-white/[0.05] border border-white/10 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-purple-500 transition-colors" value="pro@auranotch.app">
+                </div>
+
+                <div class="flex gap-2">
+                    <button onclick="processStripeCheckout()" class="flex-1 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs transition-all shadow-lg shadow-purple-600/30 flex items-center justify-center gap-2">
+                        <span>Pay $5.00 via Stripe / Apple Pay</span>
+                        <span>&rarr;</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- TAB 2: 0% PLATFORM FEE (KO-FI & POLAR.SH) -->
+            <div id="checkout-tab-zerofee" class="space-y-4 hidden">
+                <div class="p-3.5 rounded-xl bg-white/[0.03] border border-purple-500/30 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-white flex items-center gap-1.5">
+                            <span>☕️</span> Ko-fi Shop & Polar.sh (0% Platform Cut)
+                        </span>
+                        <span class="text-[9px] font-black px-1.5 py-0.5 rounded bg-green-500/20 text-green-400 border border-green-500/30">0% PLATFORM FEE</span>
+                    </div>
+                    <p class="text-[11px] text-white/60 leading-relaxed">
+                        Unlike Gumroad (10% fee) or Lemon Squeezy (5% + 50¢), <strong>Ko-fi</strong> and <strong>Polar.sh</strong> take <strong>0% platform commission</strong> on digital software downloads. You keep 100% of your earnings.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <a href="https://ko-fi.com" target="_blank" class="p-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 flex flex-col items-center justify-center gap-1 text-center transition-all">
+                        <span class="text-lg">☕️</span>
+                        <span class="font-bold text-white">Ko-fi Shop</span>
+                        <span class="text-[9px] text-white/50">0% fee on digital products</span>
+                    </a>
+                    <a href="https://polar.sh" target="_blank" class="p-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 flex flex-col items-center justify-center gap-1 text-center transition-all">
+                        <span class="text-lg">🧊</span>
+                        <span class="font-bold text-white">Polar.sh</span>
+                        <span class="text-[9px] text-white/50">Built for developer tools</span>
+                    </a>
+                </div>
+
+                <button onclick="simulateSuccessfulPayment('Ko-fi / Polar 0% Fee')" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-semibold text-xs border border-white/10 transition-colors">
+                    Complete Test Order & Issue Key &rarr;
+                </button>
+            </div>
+
+            <!-- TAB 3: 0% ZERO-FEE DIRECT UPI QR (INDIA) -->
+            <div id="checkout-tab-upi" class="space-y-4 hidden">
+                <div class="p-3.5 rounded-xl bg-white/[0.03] border border-green-500/30 flex items-center justify-between">
+                    <div>
+                        <div class="text-xs font-bold text-white flex items-center gap-1">
+                            <span>🇮🇳</span> Direct UPI Instant Pay
+                        </div>
+                        <div class="text-[10px] text-green-400 font-semibold">100% Free · 0% Transaction Fees Mandated by Law</div>
+                    </div>
+                    <span class="text-xs font-bold text-white">₹449 INR (~$5)</span>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center gap-4 bg-black/40 p-3.5 rounded-xl border border-white/10">
+                    <img src="https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Dauranotch%40okaxis%26pn%3DAuraNotch%26am%3D449%26cu%3DINR&size=130&margin=1" alt="UPI QR Code" class="w-28 h-28 rounded-lg bg-white p-1 shrink-0 shadow-md">
+                    <div class="text-xs text-white/70 space-y-1 text-center sm:text-left">
+                        <div class="font-bold text-white text-xs">Scan with any UPI App:</div>
+                        <div class="text-[10px] text-white/50">GPay, PhonePe, Paytm, CRED, BHIM</div>
+                        <div class="text-[11px] font-mono text-purple-300">auranotch@okaxis</div>
+                        <div class="text-[9px] text-white/40 pt-1">Zero intermediary cut. Direct bank-to-bank settlement in 3 seconds.</div>
+                    </div>
+                </div>
+
+                <button onclick="simulateSuccessfulPayment('Direct UPI 0% Fee')" class="w-full py-2.5 rounded-xl bg-green-600/30 hover:bg-green-600/40 border border-green-500/40 text-green-300 font-bold text-xs transition-colors">
+                    I Have Sent ₹449 via UPI &rarr; Generate My Key
+                </button>
+            </div>
+
+            <p class="text-[10px] text-center text-white/40 mt-4">
+                Instant Ed25519 cryptographic key delivery. Zero cloud lock-in.
+            </p>
+        </div>
+    </div>
+
+    <!-- LICENSE SUCCESS MODAL -->
+    <div id="license-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4 overflow-y-auto">
+        <div class="glass-panel bg-neutral-900 rounded-3xl max-w-md w-full p-6 sm:p-8 border border-purple-500/40 shadow-2xl relative text-center my-8">
+            <button onclick="closeLicenseModal()" class="absolute top-5 right-5 text-white/50 hover:text-white text-xl font-bold transition-colors">&times;</button>
+            
+            <div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/40 flex items-center justify-center text-2xl mx-auto mb-3 shadow-lg shadow-purple-500/20">✓</div>
+            
+            <h3 class="font-bold text-lg text-white mb-1">VIP Lifetime License Issued!</h3>
+            <p class="text-xs text-apple-subtext mb-5">Your license key has been cryptographically generated and saved.</p>
+
+            <div class="bg-black/80 border border-white/10 rounded-xl p-3.5 mb-5 text-left">
+                <div class="flex items-center justify-between text-[10px] text-white/40 font-mono mb-1.5">
+                    <span>YOUR ED25519 PRO LICENSE KEY</span>
+                    <span class="text-purple-400 font-bold">● VERIFIED</span>
+                </div>
+                <div id="generated-key" class="font-mono font-bold text-sm text-purple-300 tracking-wider break-all select-all">AURA-PRO-9842-7619-VIP</div>
+            </div>
+
+            <!-- Activation Instructions -->
+            <div class="bg-white/[0.03] border border-white/5 rounded-xl p-3 text-left text-xs text-white/70 space-y-1 mb-5">
+                <div class="font-bold text-white text-[11px] mb-1">How to activate in AuraNotch:</div>
+                <div class="flex items-start gap-1.5 text-[10px]">
+                    <span class="text-purple-400 font-bold">1.</span>
+                    <span>Press <kbd class="px-1.5 py-0.5 rounded bg-white/10 font-mono text-white">⌥ Option</kbd> + <kbd class="px-1.5 py-0.5 rounded bg-white/10 font-mono text-white">N</kbd> on your Mac.</span>
+                </div>
+                <div class="flex items-start gap-1.5 text-[10px]">
+                    <span class="text-purple-400 font-bold">2.</span>
+                    <span>Click <strong>Unlock VIP</strong> or open <strong>Customizer (Settings)</strong>.</span>
+                </div>
+                <div class="flex items-start gap-1.5 text-[10px]">
+                    <span class="text-purple-400 font-bold">3.</span>
+                    <span>Paste your license key and enjoy all 27 pro tools!</span>
+                </div>
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="copyLicenseKey()" id="copy-key-btn" class="flex-1 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs transition-all shadow-md shadow-purple-600/30">
+                    Copy License Key
+                </button>
+                <button onclick="closeLicenseModal()" class="flex-1 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-semibold text-xs transition-colors">
+                    Done
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Simulator & Page Scripts -->
+    <script>
+        let isExpanded = false;
+        let focusSeconds = 25 * 60;
+        let focusTimerInterval = null;
+        let isFocusRunning = true;
+        let isMusicPlaying = true;
+        let isMicMuted = false;
+        let isDeskClean = true;
+
+        const tabTitles = {
+            'home': 'Home Dashboard',
+            'adhd': 'ADHD Hyper-Focus Sprint',
+            'tools': '27 Shortcuts & Web Tools',
+            'nowPlaying': 'Music & Lyrics Player',
+            'aiUsage': 'AI Limit Meters & Detection',
+            'askAI': 'On-Device AI Assistant',
+            'teleprompter': 'Under-Camera Teleprompter',
+            'fileShelf': 'File Shelf & AirDrop',
+            'sales': 'Live Sales & Revenue'
+        };
+
+        function toggleNotchSimulator() {
+            const notch = document.getElementById('sim-notch');
+            const collapsed = document.getElementById('notch-collapsed-content');
+            const expanded = document.getElementById('notch-expanded-content');
+
+            isExpanded = !isExpanded;
+            if (isExpanded) {
+                notch.style.width = '720px';
+                notch.style.height = '460px';
+                notch.style.borderRadius = '0 0 24px 24px';
+                collapsed.classList.add('hidden');
+                expanded.classList.remove('hidden');
+                expanded.classList.add('flex');
+            } else {
+                notch.style.width = '240px';
+                notch.style.height = '38px';
+                notch.style.borderRadius = '0 0 18px 18px';
+                collapsed.classList.remove('hidden');
+                expanded.classList.add('hidden');
+                expanded.classList.remove('flex');
+            }
+        }
+
+        // Set Tab & Animate Bottom Dock
+        function setSimTab(tabId) {
+            // Update Active Title
+            const titleEl = document.getElementById('expanded-active-title');
+            if (titleEl && tabTitles[tabId]) {
+                titleEl.textContent = tabTitles[tabId];
+            }
+
+            // Update Dock items (shrink unselected to icon-only, expand active to icon + text)
+            document.querySelectorAll('.sim-dock-item').forEach(item => {
+                const label = item.querySelector('.dock-label');
+                if (item.id === `tab-${tabId}`) {
+                    item.className = "sim-dock-item px-3 h-8 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold text-xs flex items-center gap-1.5 shadow-lg shadow-purple-500/30 transition-all shrink-0";
+                    if (label) label.classList.remove('hidden');
+                } else {
+                    item.className = "sim-dock-item w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 text-white/60 flex items-center justify-center text-xs transition-all shrink-0";
+                    if (label) label.classList.add('hidden');
+                }
+            });
+
+            // Update Panels
+            document.querySelectorAll('.sim-panel').forEach(p => p.classList.add('hidden'));
+            const activePanel = document.getElementById(`panel-${tabId}`);
+            if (activePanel) {
+                activePanel.classList.remove('hidden');
+            }
+        }
+
+        // Focus Timer Controls
+        function formatTimer(totalSecs) {
+            const m = Math.floor(totalSecs / 60);
+            const s = totalSecs % 60;
+            return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }
+
+        function adjustFocusTimer(deltaMinutes) {
+            const newSecs = focusSeconds + (deltaMinutes * 60);
+            if (newSecs >= 60) {
+                focusSeconds = newSecs;
+                document.getElementById('sim-timer-display').textContent = formatTimer(focusSeconds);
+            }
+        }
+
+        function toggleFocusPlay() {
+            const btn = document.getElementById('sim-focus-toggle-btn');
+            isFocusRunning = !isFocusRunning;
+            if (isFocusRunning) {
+                btn.textContent = 'Pause';
+                startFocusCountdown();
+            } else {
+                btn.textContent = 'Resume';
+                clearInterval(focusTimerInterval);
+            }
+        }
+
+        function startFocusCountdown() {
+            clearInterval(focusTimerInterval);
+            focusTimerInterval = setInterval(() => {
+                if (isFocusRunning && focusSeconds > 0) {
+                    focusSeconds--;
+                    const display = document.getElementById('sim-timer-display');
+                    if (display) display.textContent = formatTimer(focusSeconds);
+                }
+            }, 1000);
+        }
+        startFocusCountdown();
+
+        // Music Controls
+        function toggleMusicPlay() {
+            isMusicPlaying = !isMusicPlaying;
+            const btn = document.getElementById('sim-music-btn');
+            const eq = document.getElementById('sim-eq-bars');
+            if (isMusicPlaying) {
+                btn.textContent = '⏸';
+                if (eq) eq.classList.remove('opacity-30');
+            } else {
+                btn.textContent = '▶';
+                if (eq) eq.classList.add('opacity-30');
+            }
+        }
+
+        // Quick Toggles
+        function toggleMic() {
+            isMicMuted = !isMicMuted;
+            const pill = document.getElementById('sim-mic-pill');
+            const text = document.getElementById('sim-mic-text');
+            if (isMicMuted) {
+                pill.className = "px-2 py-0.5 rounded-md bg-red-500/20 text-red-400 text-[10px] font-semibold border border-red-500/30 flex items-center gap-1";
+                text.textContent = "Muted";
+            } else {
+                pill.className = "px-2 py-0.5 rounded-md bg-green-500/20 text-green-400 text-[10px] font-semibold border border-green-500/30 flex items-center gap-1";
+                text.textContent = "Mic Active";
+            }
+        }
+
+        function toggleDesk() {
+            isDeskClean = !isDeskClean;
+            const pill = document.getElementById('sim-desk-pill');
+            const text = document.getElementById('sim-desk-text');
+            if (isDeskClean) {
+                pill.className = "px-2 py-0.5 rounded-md bg-purple-500/20 text-purple-300 text-[10px] font-semibold border border-purple-500/30 flex items-center gap-1";
+                text.textContent = "Desk Clean";
+            } else {
+                pill.className = "px-2 py-0.5 rounded-md bg-cyan-500/20 text-cyan-300 text-[10px] font-semibold border border-cyan-500/30 flex items-center gap-1";
+                text.textContent = "Icons On";
+            }
+        }
+
+        function copyDemoClip() {
+            navigator.clipboard.writeText('npm install @auranotch/sdk');
+            const btn = document.getElementById('sim-copy-clip-btn');
+            btn.textContent = 'Copied!';
+            setTimeout(() => { btn.textContent = 'Copy'; }, 1800);
+        }
+
+        function purgeDemoMemory() {
+            const btnText = document.getElementById('sim-purge-text');
+            btnText.textContent = 'Purged!';
+            setTimeout(() => { btnText.textContent = 'Free RAM'; }, 2000);
+        }
+
+        // Global Shortcut Option+N / Alt+N
+        window.addEventListener('keydown', (e) => {
+            if (e.altKey && (e.code === 'KeyN' || e.key === 'n' || e.key === 'N')) {
+                toggleNotchSimulator();
+            }
+        });
+
+        function toggleFaq(el) {
+            const p = el.querySelector('p');
+            const sign = el.querySelector('span:last-child');
+            if (p.classList.contains('hidden')) {
+                p.classList.remove('hidden');
+                sign.textContent = '−';
+            } else {
+                p.classList.add('hidden');
+                sign.textContent = '+';
+            }
+        }
+
+        function setCheckoutTab(tab) {
+            ['stripe', 'zerofee', 'upi'].forEach(t => {
+                const content = document.getElementById(`checkout-tab-${t}`);
+                const btn = document.getElementById(`tab-btn-${t}`);
+                if (content && btn) {
+                    if (t === tab) {
+                        content.classList.remove('hidden');
+                        btn.className = "flex-1 py-1.5 rounded-lg bg-purple-600 text-white shadow-sm transition-all text-center";
+                    } else {
+                        content.classList.add('hidden');
+                        btn.className = "flex-1 py-1.5 rounded-lg text-white/60 hover:text-white transition-all text-center";
+                    }
+                }
+            });
+        }
+
+        function openCheckoutModal() {
+            const modal = document.getElementById('checkout-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeCheckoutModal() {
+            const modal = document.getElementById('checkout-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function openLicenseModal() {
+            const savedKey = localStorage.getItem('auranotch_license_key');
+            if (savedKey) {
+                document.getElementById('generated-key').textContent = savedKey;
+            }
+            const modal = document.getElementById('license-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeLicenseModal() {
+            const modal = document.getElementById('license-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function processStripeCheckout() {
+            const emailInput = document.getElementById('buyer-email');
+            const email = emailInput ? emailInput.value : 'pro@auranotch.app';
+            simulateSuccessfulPayment('Stripe / Apple Pay', email);
+        }
+
+        function simulateSuccessfulPayment(methodName = 'Stripe / Apple Pay', email = '') {
+            closeCheckoutModal();
+            // Generate authentic-format Ed25519 VIP License Key
+            const r1 = Math.floor(1000 + Math.random() * 9000);
+            const r2 = Math.floor(1000 + Math.random() * 9000);
+            const key = `AURA-PRO-${r1}-${r2}-VIP`;
+            localStorage.setItem('auranotch_license_key', key);
+            if (email) {
+                localStorage.setItem('auranotch_license_email', email);
+            }
+            document.getElementById('generated-key').textContent = key;
+            openLicenseModal();
+        }
+
+        function copyLicenseKey() {
+            const key = document.getElementById('generated-key').textContent;
+            navigator.clipboard.writeText(key);
+            const btn = document.getElementById('copy-key-btn');
+            btn.textContent = 'Copied to Clipboard!';
+            setTimeout(() => { btn.textContent = 'Copy License Key'; }, 2200);
+        }
+    </script>
+</body>
+</html>
