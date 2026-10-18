@@ -216,8 +216,6 @@ public struct NotchRootView: View {
                         NowPlayingView()
                     case .adhd:
                         ADHDToolsView()
-                    case .timers:
-                        TimersPomodoroView()
                     case .tools:
                         SuperchargedToolsView()
                     case .aiUsage:

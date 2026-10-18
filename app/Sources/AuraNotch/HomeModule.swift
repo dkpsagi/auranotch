@@ -443,7 +443,7 @@ public struct HomeDashboardView: View {
                 Spacer()
 
                 Button(action: {
-                    appState.activeTab = .timers
+                    appState.activeTab = .adhd
                 }) {
                     Image(systemName: "chevron.right")
                         .font(.system(size: 11))
