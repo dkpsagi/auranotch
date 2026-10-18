@@ -4,6 +4,8 @@
   "cleanUrls": true,
   "outputDirectory": "web",
   "routes": [
+    { "src": "/success", "dest": "/success/index.html" },
+    { "src": "/AuraNotch.dmg", "dest": "/AuraNotch.dmg" },
     { "src": "/admin-keygen", "dest": "/admin-keygen.html" },
     { "src": "/api/(.*)", "dest": "/api/$1" },
     { "src": "/(.*)", "dest": "/$1" }

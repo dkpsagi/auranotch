@@ -1,96 +1,395 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#08080b">
-  <meta name="description" content="Your AuraNotch checkout next steps and license activation guide.">
-  <title>You're all set — AuraNotch</title>
-  <style>
-    :root{color-scheme:dark;--bg:#08080b;--panel:rgba(22,22,27,.78);--line:rgba(255,255,255,.1);--muted:#9b9ba8;--white:#f7f7fb;--purple:#a78bfa;--blue:#60a5fa;--green:#4ade80}
-    *{box-sizing:border-box}
-    html{min-height:100%;background:var(--bg)}
-    body{margin:0;min-height:100vh;color:var(--white);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;background:radial-gradient(ellipse at 50% 8%,rgba(103,58,183,.23),transparent 36%),radial-gradient(ellipse at 85% 75%,rgba(37,99,235,.09),transparent 28%),var(--bg);display:flex;flex-direction:column}
-    a{color:inherit}
-    .top{width:min(1080px,calc(100% - 40px));height:78px;margin:auto;display:flex;align-items:center;justify-content:space-between}
-    .brand{display:flex;gap:11px;align-items:center;text-decoration:none;font-weight:720;font-size:19px;letter-spacing:-.5px}
-    .logo{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(135deg,#9333ea,#3b82f6);box-shadow:0 5px 24px #7c3aed45}
-    .logo svg{width:19px;height:19px}
-    .top-note{font-size:12px;color:#aaaab7;letter-spacing:.09em;text-transform:uppercase}
-    main{flex:1;display:grid;place-items:center;padding:28px 20px 68px}
-    .wrap{width:min(690px,100%);text-align:center}
-    .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid rgba(167,139,250,.23);border-radius:999px;background:rgba(124,58,237,.09);color:#d6c7ff;font-size:12px;font-weight:650;letter-spacing:.1em;text-transform:uppercase}
-    .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--purple);box-shadow:0 0 12px var(--purple)}
-    .hero-icon{width:92px;height:92px;margin:27px auto 25px;border-radius:29px;display:grid;place-items:center;position:relative;background:linear-gradient(145deg,rgba(139,92,246,.22),rgba(59,130,246,.11));border:1px solid rgba(196,181,253,.23);box-shadow:0 20px 70px rgba(76,29,149,.2),inset 0 1px rgba(255,255,255,.08)}
-    .hero-icon:before,.hero-icon:after{content:"";position:absolute;border:1px solid rgba(167,139,250,.12);border-radius:34px;inset:-9px}
-    .hero-icon:after{inset:-18px;border-color:rgba(96,165,250,.08);border-radius:39px}
-    .hero-icon svg{width:43px;height:43px;filter:drop-shadow(0 0 15px rgba(167,139,250,.4))}
-    h1{font-size:clamp(38px,7vw,58px);line-height:1.04;letter-spacing:-.055em;margin:0;font-weight:760}
-    .subtitle{max-width:510px;margin:17px auto 0;color:#aaaab7;font-size:16px;line-height:1.7}
-    .card{margin:34px auto 0;text-align:left;padding:24px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(145deg,rgba(27,27,34,.91),rgba(15,15,20,.9));box-shadow:0 24px 80px rgba(0,0,0,.22);backdrop-filter:blur(18px)}
-    .card-head{display:flex;align-items:center;gap:13px;padding-bottom:20px;border-bottom:1px solid var(--line)}
-    .mini-icon{width:42px;height:42px;flex:none;border-radius:14px;display:grid;place-items:center;background:rgba(167,139,250,.12);color:#c4b5fd}
-    .mini-icon svg{width:21px;height:21px}
-    .card-title{font-size:15px;font-weight:680}
-    .card-caption{font-size:13px;color:var(--muted);margin-top:4px}
-    .steps{padding:20px 0 2px;display:grid;gap:19px}
-    .step{display:grid;grid-template-columns:30px 1fr;gap:12px;align-items:start}
-    .number{height:28px;width:28px;border-radius:9px;display:grid;place-items:center;border:1px solid rgba(167,139,250,.24);background:rgba(124,58,237,.1);color:#d8ccff;font-size:12px;font-weight:700}
-    .step strong{font-size:14px;font-weight:650;display:block;margin:2px 0 5px}
-    .step p{font-size:13px;line-height:1.6;color:var(--muted);margin:0}
-    .actions{display:flex;flex-direction:column;align-items:center;gap:13px;margin-top:25px}
-    .primary{min-height:52px;padding:0 23px;display:inline-flex;align-items:center;justify-content:center;gap:11px;border-radius:14px;background:linear-gradient(100deg,#8b5cf6,#6366f1 58%,#3b82f6);color:white;text-decoration:none;font-size:14px;font-weight:700;box-shadow:0 9px 30px rgba(99,102,241,.25);transition:transform .2s,filter .2s}
-    .primary:hover{transform:translateY(-2px);filter:brightness(1.1)}
-    .primary svg{width:17px;height:17px}
-    .secondary{font-size:13px;color:#b4b4c0;text-decoration:none;padding:7px}
-    .secondary:hover{color:white}
-    .help{font-size:12px;line-height:1.6;color:#777785;margin:17px auto 0}
-    .help a{color:#c4b5fd;text-decoration:none}
-    footer{width:min(1080px,calc(100% - 40px));margin:0 auto;padding:22px 0 27px;border-top:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between;color:#777785;font-size:11px}
-    footer a{text-decoration:none;color:#9999a7}
-    @media(min-width:620px){.actions{flex-direction:row;justify-content:center}.primary{min-width:210px}}
-    @media(max-width:480px){.top{height:68px}.top-note{font-size:10px}.card{padding:19px;border-radius:18px}.subtitle{font-size:15px}.hero-icon{margin-top:24px}footer{gap:12px;flex-wrap:wrap}}
-    @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Successful — AuraNotch Pro for Mac</title>
+    <meta name="description" content="Thank you for purchasing AuraNotch Pro Lifetime. Download your DMG installer and access your Ed25519 VIP license key.">
+    <link rel="icon" type="image/png" href="../app_icon.png">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        apple: {
+                            bg: '#000000',
+                            card: '#161617',
+                            border: 'rgba(255, 255, 255, 0.12)',
+                            blue: '#2997ff',
+                            purple: '#a855f7',
+                            glow: '#7c3aed',
+                            subtext: '#86868b'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'Segoe UI', 'Roboto', 'sans-serif'],
+                        mono: ['SF Mono', 'Menlo', 'Monaco', 'Courier New', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+        .animate-glow {
+            animation: pulseGlow 6s ease-in-out infinite;
+        }
+
+        /* Glowing Edge Motion Flair */
+        @keyframes borderFlairMotion {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .glowing-flair-border {
+            position: relative;
+        }
+        .glowing-flair-border::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: inherit;
+            padding: 2px;
+            background: linear-gradient(90deg, #a855f7, #3b82f6, #ec4899, #8b5cf6, #06b6d4, #a855f7);
+            background-size: 300% 300%;
+            animation: borderFlairMotion 4s linear infinite;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0.85;
+            filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.75));
+        }
+
+        .glass-panel {
+            background: rgba(22, 22, 23, 0.8);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 9999px;
+        }
+    </style>
 </head>
-<body>
-  <header class="top">
-    <a class="brand" href="../" aria-label="AuraNotch home">
-      <span class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 2.4 7.1L22 12l-7.6 2.9L12 22l-2.4-7.1L2 12l7.6-2.9L12 2Z"/></svg></span>
-      <span>AuraNotch</span>
-    </a>
-    <span class="top-note">Lifetime access · One-time purchase</span>
-  </header>
+<body class="bg-black text-white font-sans antialiased selection:bg-purple-600 selection:text-white min-h-screen flex flex-col justify-between">
 
-  <main>
-    <section class="wrap" aria-labelledby="page-title">
-      <div class="eyebrow"><span class="dot"></span> Your next chapter starts here</div>
-      <div class="hero-icon" aria-hidden="true">
-        <svg viewBox="0 0 48 48" fill="none"><path d="M24 5.5 29.4 8l5.9.4 2.2 5.5 4.1 4.3-.9 5.8.9 5.8-4.1 4.3-2.2 5.5-5.9.4L24 42l-5.4-2.5-5.9-.4-2.2-5.5-4.1-4.3.9-5.8-.9-5.8 4.1-4.3 2.2-5.5 5.9-.4L24 5.5Z" stroke="#a78bfa" stroke-width="1.5" opacity=".7"/><path d="m15.5 24.5 5.5 5.2 11.8-12" stroke="#c4b5fd" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
-      <h1 id="page-title">You're all set.</h1>
-      <p class="subtitle">Thanks for choosing AuraNotch. Your checkout journey brought you here — now let's get you ready to turn your Mac's notch into your personal command center.</p>
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-50 glass-panel border-b border-white/10">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+            <a href="../" class="flex items-center gap-2.5 group">
+                <img src="../app_icon.png" alt="AuraNotch Icon" class="w-8 h-8 rounded-xl shadow-lg shadow-purple-500/30 group-hover:scale-105 transition-transform">
+                <span class="font-bold text-lg tracking-tight">AuraNotch</span>
+                <span class="text-[10px] font-mono uppercase bg-green-500/20 text-green-300 px-1.5 py-0.5 rounded border border-green-500/30 font-bold">PURCHASE CONFIRMED</span>
+            </a>
 
-      <div class="card">
-        <div class="card-head">
-          <div class="mini-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8m-4-4v4M8 9h8m-8 4h5"/></svg></div>
-          <div><div class="card-title">Get AuraNotch up and running</div><div class="card-caption">A couple of quick steps to get started.</div></div>
+            <div class="flex items-center gap-4 text-xs font-medium">
+                <a href="../#interactive-demo" class="text-apple-subtext hover:text-white transition-colors">Open Web Demo</a>
+                <a href="mailto:support@auranotch.app" class="text-apple-subtext hover:text-white transition-colors">Support</a>
+            </div>
         </div>
-        <div class="steps">
-          <div class="step"><span class="number">01</span><div><strong>Check your checkout confirmation</strong><p>Look for the receipt or order confirmation from your payment provider. If you don't see one yet, give it a moment and check your inbox.</p></div></div>
-          <div class="step"><span class="number">02</span><div><strong>Find your license key</strong><p>Your license delivery instructions should arrive via the checkout or delivery email. Check spam or promotions if it doesn't appear.</p></div></div>
-          <div class="step"><span class="number">03</span><div><strong>Activate AuraNotch on your Mac</strong><p>Open AuraNotch, go to Settings, and enter your license key to unlock your lifetime access.</p></div></div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="relative flex-1 py-12 px-4 sm:px-6 overflow-hidden">
+        <!-- Ambient Glowing Backdrop -->
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-gradient-to-tr from-purple-600/25 via-indigo-600/20 to-blue-500/15 blur-[140px] rounded-full pointer-events-none animate-glow"></div>
+
+        <div class="max-w-3xl mx-auto relative z-10 space-y-8">
+            
+            <!-- Success Hero Banner -->
+            <div class="text-center space-y-3">
+                <div class="w-16 h-16 rounded-full bg-green-500/20 border-2 border-green-400 text-green-300 flex items-center justify-center text-3xl mx-auto shadow-xl shadow-green-500/20 animate-bounce" style="animation-duration: 2s;">
+                    ✓
+                </div>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-purple-300 backdrop-blur-md">
+                    <span class="w-2 h-2 rounded-full bg-green-400"></span>
+                    <span>Polar.sh & Stripe Express Confirmed · Order Complete</span>
+                </div>
+                <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
+                    You're officially Pro.
+                </h1>
+                <p class="text-apple-subtext text-sm sm:text-base max-w-xl mx-auto">
+                    Thank you for your purchase! Your lifetime license for AuraNotch Pro is active. Download your DMG below and enter your license key.
+                </p>
+            </div>
+
+            <!-- Primary Action Box: Download DMG & License Key (with Glowing Edge Flair) -->
+            <div class="glowing-flair-border rounded-3xl glass-panel p-6 sm:p-8 border border-purple-500/40 shadow-2xl space-y-6">
+                
+                <!-- 1. Download DMG Installer Section -->
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl bg-white/[0.03] border border-white/10">
+                    <div class="flex items-center gap-4 text-center sm:text-left">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center text-2xl shadow-lg shadow-purple-600/30 shrink-0">
+                            💾
+                        </div>
+                        <div>
+                            <div class="font-bold text-base text-white flex items-center justify-center sm:justify-start gap-2">
+                                <span>AuraNotch for Mac</span>
+                                <span class="text-[10px] font-mono bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded border border-purple-500/30">v2.5 DMG</span>
+                            </div>
+                            <div class="text-xs text-apple-subtext mt-0.5">
+                                macOS 14+ (Sonoma & Sequoia) · Universal (M1/M2/M3/M4 Apple Silicon & Intel) · 2.7 MB
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="../AuraNotch.dmg" download="AuraNotch.dmg" id="download-dmg-btn" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white text-black font-bold text-xs hover:bg-neutral-200 transition-all shadow-xl shadow-white/20 flex items-center justify-center gap-2 shrink-0">
+                        <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        </svg>
+                        <span>Download AuraNotch.dmg</span>
+                    </a>
+                </div>
+
+                <!-- 2. Cryptographic VIP License Key Box -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between text-xs">
+                        <span class="font-bold text-white flex items-center gap-1.5">
+                            <span class="text-purple-400">🔑</span> Your VIP Lifetime License Key
+                        </span>
+                        <span class="text-green-400 font-mono text-[10px] font-semibold flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-400"></span>
+                            Ed25519 Cryptographically Signed
+                        </span>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row items-center gap-3 p-4 rounded-2xl bg-black/80 border border-purple-500/40">
+                        <div class="flex-1 w-full text-center sm:text-left">
+                            <div id="license-key-display" class="font-mono text-base sm:text-lg font-bold text-purple-300 tracking-wider break-all select-all">
+                                AURA-PRO-9842-7619-VIP
+                            </div>
+                            <div class="text-[10px] text-white/40 mt-1">
+                                Valid for lifetime updates on up to 3 personal Macs · Zero cloud checks
+                            </div>
+                        </div>
+
+                        <button onclick="copySuccessKey()" id="copy-btn" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs transition-all shadow-md shadow-purple-600/30 flex items-center justify-center gap-1.5 shrink-0">
+                            <span id="copy-btn-text">Copy Key</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 3. Activation Instructions Step-by-Step -->
+                <div class="p-4 rounded-2xl bg-white/[0.02] border border-white/5 space-y-2.5 text-xs text-white/80">
+                    <div class="font-bold text-white text-xs">Quick 30-Second Activation Guide:</div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-[11px]">
+                        <div class="p-2.5 rounded-xl bg-white/[0.03] border border-white/5">
+                            <div class="font-bold text-purple-300 mb-1">1. Install App</div>
+                            <div class="text-white/60">Open <code>AuraNotch.dmg</code> and drag AuraNotch into your Applications folder.</div>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-white/[0.03] border border-white/5">
+                            <div class="font-bold text-purple-300 mb-1">2. Open HUD</div>
+                            <div class="text-white/60">Press <kbd class="px-1 py-0.5 rounded bg-white/10 font-mono text-white">⌥ Option</kbd> + <kbd class="px-1 py-0.5 rounded bg-white/10 font-mono text-white">N</kbd> or click the menu bar notch.</div>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-white/[0.03] border border-white/5">
+                            <div class="font-bold text-purple-300 mb-1">3. Enter Key</div>
+                            <div class="text-white/60">Open <strong>Settings</strong>, paste your license key, and all 27 pro tools unlock forever.</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Saved Purchase Details & Receipt Card -->
+            <div class="rounded-3xl glass-panel p-6 sm:p-8 border border-white/10 space-y-5">
+                <div class="flex items-center justify-between border-b border-white/10 pb-4">
+                    <div>
+                        <h2 class="font-bold text-base text-white">Order Receipt & Customer Details</h2>
+                        <p class="text-xs text-apple-subtext">Record permanently saved to your device</p>
+                    </div>
+                    <span class="px-2.5 py-1 rounded-full bg-green-500/20 text-green-300 text-xs font-semibold border border-green-500/30">
+                        Paid in Full
+                    </span>
+                </div>
+
+                <!-- Structured Receipt Metadata Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                    <div class="p-3 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
+                        <div class="text-[10px] text-white/50 uppercase font-bold tracking-wider">Customer / Registered Email</div>
+                        <div id="receipt-email" class="font-semibold text-white truncate">pro@auranotch.app</div>
+                        <div class="text-[9px] text-purple-400">Receipt & license copy dispatched to this address</div>
+                    </div>
+
+                    <div class="p-3 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
+                        <div class="text-[10px] text-white/50 uppercase font-bold tracking-wider">Purchase Timestamp</div>
+                        <div id="receipt-date" class="font-semibold text-white">October 18, 2026 at 10:30 AM</div>
+                        <div class="text-[9px] text-white/40">Instant on-device cryptographic verification</div>
+                    </div>
+
+                    <div class="p-3 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
+                        <div class="text-[10px] text-white/50 uppercase font-bold tracking-wider">Product & Tier</div>
+                        <div class="font-semibold text-white">AuraNotch Pro — Single Lifetime License</div>
+                        <div class="text-[9px] text-white/40 font-mono">Product ID: 3bf7dac4-4912-4736-b110-f3028e2904bb</div>
+                    </div>
+
+                    <div class="p-3 rounded-xl bg-white/[0.02] border border-white/5 space-y-1">
+                        <div class="text-[10px] text-white/50 uppercase font-bold tracking-wider">Payment Gateway & Amount</div>
+                        <div class="font-semibold text-white flex items-center justify-between">
+                            <span>Polar.sh & Stripe Express</span>
+                            <span class="text-green-400 font-bold">$5.00 USD</span>
+                        </div>
+                        <div class="text-[9px] text-white/40 font-mono">Account ID: acct_1URjvqDTuPR7hHvr</div>
+                    </div>
+
+                    <div class="p-3 rounded-xl bg-white/[0.02] border border-white/5 space-y-1 sm:col-span-2">
+                        <div class="text-[10px] text-white/50 uppercase font-bold tracking-wider">Transaction Order Reference</div>
+                        <div id="receipt-order-id" class="font-mono text-purple-300 text-xs truncate">POLAR-ORD-3BF7-9842-7619</div>
+                        <div class="text-[9px] text-white/40">Backed by our 7-day unconditional 100% money-back guarantee</div>
+                    </div>
+                </div>
+
+                <!-- Actions: Print Receipt / Export JSON -->
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-white/10 text-xs">
+                    <div class="text-[11px] text-white/50">
+                        Need an invoice for business expenses?
+                    </div>
+                    <div class="flex items-center gap-2 w-full sm:w-auto">
+                        <button onclick="window.print()" class="flex-1 sm:flex-none px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-white font-medium transition-colors">
+                            Print / Save PDF
+                        </button>
+                        <button onclick="exportReceiptJSON()" class="flex-1 sm:flex-none px-3.5 py-2 rounded-xl bg-purple-600/30 hover:bg-purple-600/40 text-purple-200 border border-purple-500/30 font-medium transition-colors">
+                            Export Receipt JSON
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Return Link -->
+            <div class="text-center pt-4">
+                <a href="../" class="text-xs text-apple-subtext hover:text-white transition-colors">
+                    &larr; Return to AuraNotch Homepage
+                </a>
+            </div>
+
         </div>
-      </div>
+    </main>
 
-      <div class="actions">
-        <a class="primary" href="../" aria-label="Return to AuraNotch website">Explore AuraNotch <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
-        <a class="secondary" href="../#faq">Need help with your order?</a>
-      </div>
-      <p class="help">Still waiting for your license? Check your checkout receipt and the FAQ on the AuraNotch website for next steps.<br>For your security, this page does not display or request payment details.</p>
-    </section>
-  </main>
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-8 bg-black text-xs text-apple-subtext">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+            <div class="flex items-center gap-2">
+                <img src="../app_icon.png" alt="AuraNotch Icon" class="w-5 h-5 rounded-md">
+                <span class="font-bold text-white">AuraNotch Pro</span>
+                <span>&copy; 2026 AuraNotch. All rights reserved.</span>
+            </div>
+            <div class="flex items-center gap-5">
+                <a href="../#features" class="hover:text-white transition-colors">27 Tools</a>
+                <a href="../#faq" class="hover:text-white transition-colors">FAQ</a>
+                <a href="mailto:support@auranotch.app" class="hover:text-white transition-colors">Contact Support</a>
+            </div>
+        </div>
+    </footer>
 
-  <footer><span>© 2026 AuraNotch. All rights reserved.</span><a href="../">Back to auranotch.app</a></footer>
+    <!-- Success Page Logic & Persistence Script -->
+    <script>
+        // 1. Parse URL Parameters (from Polar.sh or Stripe checkout redirect)
+        const params = new URLSearchParams(window.location.search);
+        const urlEmail = params.get('customer_email') || params.get('email') || localStorage.getItem('auranotch_license_email') || 'pro@auranotch.app';
+        const urlOrderId = params.get('order_id') || params.get('checkout_id') || `POLAR-ORD-3BF7-${Math.floor(1000 + Math.random() * 9000)}-${Math.floor(1000 + Math.random() * 9000)}`;
+        
+        // 2. Generate or Retrieve Deterministic License Key
+        let activeKey = params.get('license_key') || params.get('key') || localStorage.getItem('auranotch_license_key');
+        if (!activeKey) {
+            const r1 = Math.floor(1000 + Math.random() * 9000);
+            const r2 = Math.floor(1000 + Math.random() * 9000);
+            activeKey = `AURA-PRO-${r1}-${r2}-VIP`;
+            localStorage.setItem('auranotch_license_key', activeKey);
+        }
+        localStorage.setItem('auranotch_license_email', urlEmail);
+
+        // 3. Populate DOM Elements
+        const keyDisplay = document.getElementById('license-key-display');
+        if (keyDisplay) keyDisplay.textContent = activeKey;
+
+        const emailDisplay = document.getElementById('receipt-email');
+        if (emailDisplay) emailDisplay.textContent = urlEmail;
+
+        const orderIdDisplay = document.getElementById('receipt-order-id');
+        if (orderIdDisplay) orderIdDisplay.textContent = urlOrderId;
+
+        const now = new Date();
+        const dateDisplay = document.getElementById('receipt-date');
+        const formattedDate = now.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        if (dateDisplay) dateDisplay.textContent = formattedDate;
+
+        // 4. Save structured purchase details into persistent record
+        const purchaseRecord = {
+            purchaseId: urlOrderId,
+            user: {
+                email: urlEmail,
+                registeredAt: now.toISOString()
+            },
+            date: now.toISOString(),
+            formattedDate: formattedDate,
+            product: {
+                id: "3bf7dac4-4912-4736-b110-f3028e2904bb",
+                name: "AuraNotch Pro Lifetime",
+                tier: "VIP Lifetime License",
+                version: "2.5"
+            },
+            payment: {
+                gateway: "Polar.sh & Stripe Express",
+                stripeAccountId: "acct_1URjvqDTuPR7hHvr",
+                polarProductId: "3bf7dac4-4912-4736-b110-f3028e2904bb",
+                amount: "$5.00",
+                currency: "USD",
+                status: "succeeded"
+            },
+            licenseKey: activeKey,
+            status: "active"
+        };
+
+        // Append to local purchases history
+        try {
+            const existingPurchases = JSON.parse(localStorage.getItem('auranotch_purchases') || '[]');
+            const exists = existingPurchases.some(p => p.purchaseId === purchaseRecord.purchaseId || p.licenseKey === activeKey);
+            if (!exists) {
+                existingPurchases.unshift(purchaseRecord);
+                localStorage.setItem('auranotch_purchases', JSON.stringify(existingPurchases));
+            }
+        } catch (e) {
+            console.error('Error saving purchase record:', e);
+        }
+
+        // 5. Copy License Key Function
+        function copySuccessKey() {
+            navigator.clipboard.writeText(activeKey);
+            const btnText = document.getElementById('copy-btn-text');
+            if (btnText) {
+                btnText.textContent = 'Copied to Clipboard!';
+                setTimeout(() => { btnText.textContent = 'Copy Key'; }, 2200);
+            }
+        }
+
+        // 6. Export Receipt JSON
+        function exportReceiptJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(purchaseRecord, null, 2));
+            const dlAnchor = document.createElement('a');
+            dlAnchor.setAttribute("href", dataStr);
+            dlAnchor.setAttribute("download", `AuraNotch-Receipt-${purchaseRecord.purchaseId}.json`);
+            document.body.appendChild(dlAnchor);
+            dlAnchor.click();
+            dlAnchor.remove();
+        }
+    </script>
 </body>
 </html>

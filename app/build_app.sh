@@ -74,4 +74,25 @@ EOF
 codesign --force --deep --sign - "$APP_BUNDLE"
 
 echo "✅ Successfully built and signed $APP_BUNDLE"
+
+# Build mountable UDZO compressed DMG installer
+echo "💿 Packaging $APP_NAME.dmg..."
+DMG_PATH="build/$APP_NAME.dmg"
+DIST_TMP="build/dist_tmp"
+
+rm -rf "$DMG_PATH" "$DIST_TMP"
+mkdir -p "$DIST_TMP"
+cp -R "$APP_BUNDLE" "$DIST_TMP/"
+ln -s /Applications "$DIST_TMP/Applications"
+
+hdiutil create -volname "$APP_NAME" -srcfolder "$DIST_TMP" -ov -format UDZO "$DMG_PATH"
+rm -rf "$DIST_TMP"
+
+# Copy DMG to web directory for instant website downloads
+if [ -d "../web" ]; then
+    cp "$DMG_PATH" "../web/$APP_NAME.dmg"
+    echo "🌐 Copied $APP_NAME.dmg to web/ for direct web downloads"
+fi
+
+echo "🎉 Build Complete: $APP_BUNDLE and $DMG_PATH"
 echo "To run: open $APP_BUNDLE"
