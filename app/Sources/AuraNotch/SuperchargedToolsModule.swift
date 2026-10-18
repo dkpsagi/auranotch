@@ -99,11 +99,8 @@ public struct SuperchargedToolsView: View {
                         label: appState.isMicMuted ? "Mic Muted (0%)" : "Mute Mic",
                         color: appState.isMicMuted ? .red : .green
                     ) {
-                        appState.isMicMuted.toggle()
-                        let vol = appState.isMicMuted ? 0 : 100
-                        let script = "tell application \"System Events\" to set volume input volume \(vol)"
-                        NSAppleScript(source: script)?.executeAndReturnError(nil)
-                        showNotice(appState.isMicMuted ? "Microphone Muted (0%)" : "Microphone Active (100%)")
+                        appState.toggleMicMute()
+                        showNotice(appState.isMicMuted ? "Microphone Hardware Muted (0%)" : "Microphone Active (75%)")
                     }
 
                     // 2. Hide / Show Desktop Icons (Clean Screen)

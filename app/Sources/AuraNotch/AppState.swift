@@ -1,65 +1,38 @@
 import SwiftUI
 import Combine
 
-public enum NotchTabCategory: String, CaseIterable, Identifiable {
-    case all = "All"
-    case adhd = "🧠 ADHD & Focus"
-    case shortcuts = "⚡️ Shortcuts & Web"
-    case aiSystem = "🤖 AI & System"
-    case settings = "⚙️ Customizer"
-
-    public var id: String { rawValue }
-}
-
 public enum NotchTab: String, CaseIterable, Identifiable {
     case home = "Home"
-    case adhd = "ADHD"
-    case tools = "Shortcuts"
-    case timers = "Focus"
     case nowPlaying = "Music"
-    case clipboard = "Clipboard"
+    case adhd = "ADHD"
+    case timers = "Focus"
+    case tools = "Shortcuts"
     case aiUsage = "AI Limits"
     case askAI = "Ask AI"
-    case teleprompter = "Prompter"
-    case fileShelf = "Files"
-    case sales = "Sales"
-    case cameraMirror = "Mirror"
     case quickNotes = "Notes"
-    case settings = "Customizer"
+    case clipboard = "Clipboard"
+    case fileShelf = "Files"
+    case cameraMirror = "Mirror"
+    case teleprompter = "Prompter"
+    case settings = "Settings"
 
     public var id: String { rawValue }
-
-    public var category: NotchTabCategory {
-        switch self {
-        case .home:
-            return .all
-        case .adhd, .timers, .teleprompter, .quickNotes:
-            return .adhd
-        case .tools, .clipboard, .fileShelf, .cameraMirror:
-            return .shortcuts
-        case .askAI, .aiUsage, .sales, .nowPlaying:
-            return .aiSystem
-        case .settings:
-            return .settings
-        }
-    }
 
     public var iconName: String {
         switch self {
         case .home: return "house.fill"
-        case .adhd: return "brain.head.profile"
-        case .tools: return "bolt.fill"
-        case .clipboard: return "doc.on.clipboard"
         case .nowPlaying: return "music.note"
+        case .adhd: return "brain.head.profile"
+        case .timers: return "timer"
+        case .tools: return "bolt.fill"
         case .aiUsage: return "gauge.with.needle"
         case .askAI: return "sparkles"
-        case .teleprompter: return "text.alignleft"
-        case .timers: return "timer"
-        case .fileShelf: return "tray.and.arrow.down"
-        case .sales: return "chart.line.uptrend.xyaxis"
-        case .cameraMirror: return "camera"
         case .quickNotes: return "note.text"
-        case .settings: return "slider.horizontal.3"
+        case .clipboard: return "doc.on.clipboard"
+        case .fileShelf: return "folder.fill"
+        case .cameraMirror: return "camera.fill"
+        case .teleprompter: return "text.alignleft"
+        case .settings: return "gearshape.fill"
         }
     }
 }
@@ -125,8 +98,8 @@ public class AppState: ObservableObject {
     @Published public var triggerMode: NotchTriggerMode = .hover
     @Published public var hoverDelayMs: Double = 160.0
     @Published public var notchWidth: CGFloat = 220.0
-    @Published public var expandedWidth: CGFloat = 750.0
-    @Published public var expandedHeight: CGFloat = 540.0
+    @Published public var expandedWidth: CGFloat = 780.0
+    @Published public var expandedHeight: CGFloat = 550.0
     @Published public var topNotchClearance: CGFloat = 44.0
     @Published public var showOnAllScreens: Bool = true
     @Published public var playHapticFeedback: Bool = true
@@ -135,6 +108,7 @@ public class AppState: ObservableObject {
     @Published public var currentTheme: GlassTheme = .liquidObsidian
     @Published public var glassOpacity: Double = 0.94
     @Published public var showGlowEffects: Bool = true
+    @Published public var showEdgeMotionFlair: Bool = true
     @Published public var customAccentColor: Color = Color.purple
 
     // License State
@@ -150,8 +124,29 @@ public class AppState: ObservableObject {
     @Published public var isMicMuted: Bool = false
     @Published public var areDesktopIconsHidden: Bool = false
 
-    // Navigation Category Filter
-    @Published public var selectedTabCategory: NotchTabCategory = .all
+    private init() {
+        syncMicMuteState()
+    }
 
-    private init() {}
+    // Physical Hardware Microphone Mute / Unmute
+    public func toggleMicMute() {
+        isMicMuted.toggle()
+        let vol = isMicMuted ? 0 : 75
+        let script = "set volume input volume \(vol)"
+        var error: NSDictionary?
+        _ = NSAppleScript(source: script)?.executeAndReturnError(&error)
+    }
+
+    public func syncMicMuteState() {
+        DispatchQueue.global(qos: .utility).async {
+            let script = "input volume of (get volume settings)"
+            var error: NSDictionary?
+            if let res = NSAppleScript(source: script)?.executeAndReturnError(&error) {
+                let vol = res.int32Value
+                DispatchQueue.main.async {
+                    self.isMicMuted = (vol == 0)
+                }
+            }
+        }
+    }
 }

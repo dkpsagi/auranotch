@@ -29,6 +29,10 @@ mkdir -p "$RESOURCES"
 cp "$BUILD_BIN" "$MACOS/$APP_NAME"
 chmod +x "$MACOS/$APP_NAME"
 
+if [ -f "AppIcon.icns" ]; then
+    cp "AppIcon.icns" "$RESOURCES/AppIcon.icns"
+fi
+
 cat <<EOF > "$CONTENTS/Info.plist"
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -36,6 +40,10 @@ cat <<EOF > "$CONTENTS/Info.plist"
 <dict>
     <key>CFBundleExecutable</key>
     <string>$APP_NAME</string>
+    <key>CFBundleIconFile</key>
+    <string>AppIcon</string>
+    <key>CFBundleIconName</key>
+    <string>AppIcon</string>
     <key>CFBundleIdentifier</key>
     <string>app.auranotch.AuraNotch</string>
     <key>CFBundleName</key>

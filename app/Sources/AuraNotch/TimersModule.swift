@@ -214,6 +214,22 @@ public struct TimersPomodoroView: View {
                     }
                 }
 
+                // Quick Preset Pills
+                HStack(spacing: 5) {
+                    ForEach([15, 25, 45, 60], id: \.self) { mins in
+                        Button(action: { timerMgr.setPreset(minutes: mins) }) {
+                            Text("\(mins)m")
+                                .font(.system(size: 10, weight: timerMgr.focusMinutes == mins ? .bold : .medium))
+                                .padding(.horizontal, 7)
+                                .padding(.vertical, 4)
+                                .background(timerMgr.focusMinutes == mins ? Color.orange : Color.white.opacity(0.06))
+                                .cornerRadius(5)
+                                .foregroundColor(.white)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+
                 // Time Adjuster (+/- Buttons)
                 HStack(spacing: 4) {
                     Button(action: { timerMgr.adjustTime(byMinutes: -5) }) {
@@ -322,6 +338,13 @@ public struct TimersPomodoroView: View {
                         let isSelected = soundEngine.currentSound == sound.name
                         Button(action: {
                             soundEngine.togglePlay(sound: sound.name)
+                            if sound.name != "None" {
+                                if soundEngine.isPlaying && !timerMgr.isRunning {
+                                    timerMgr.toggleTimer()
+                                } else if !soundEngine.isPlaying && timerMgr.isRunning {
+                                    timerMgr.toggleTimer()
+                                }
+                            }
                         }) {
                             HStack(spacing: 8) {
                                 Image(systemName: sound.icon)

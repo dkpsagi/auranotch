@@ -20,7 +20,7 @@ public struct NotchRootView: View {
                     .transition(.opacity)
             }
 
-            // Onboarding & License Key Activation Modal (Screenshots 1 & 2)
+            // Onboarding & License Key Activation Modal
             if licenseMgr.showActivationModal {
                 OnboardingLicenseView()
                     .transition(.opacity)
@@ -75,9 +75,10 @@ public struct NotchRootView: View {
                         .foregroundColor(.red)
                 }
             } else {
-                Text("AuraNotch")
+                Text(appState.miniStatusText)
                     .font(.system(size: 11, weight: .semibold, design: .rounded))
                     .foregroundColor(.white.opacity(0.85))
+                    .lineLimit(1)
             }
 
             Spacer()
@@ -111,7 +112,7 @@ public struct NotchRootView: View {
         }
     }
 
-    // EXPANDED MODERN GLOSSY LIQUID GLASS HUD VIEW
+    // EXPANDED MODERN GLOSSY LIQUID GLASS HUD VIEW (WITH VERTICAL MENUBAR & MOTION FLAIR)
     private var expandedGlassNotchView: some View {
         VStack(spacing: 0) {
             // TOP NOTCH SAFE CLEARANCE (Physical camera notch sits safely in the empty middle!)
@@ -128,7 +129,29 @@ public struct NotchRootView: View {
                 // Middle area intentionally kept clear for the MacBook camera notch!
                 Spacer()
 
-                HStack(spacing: 10) {
+                HStack(spacing: 8) {
+                    // Hardware Mic Status Pill
+                    Button(action: {
+                        appState.toggleMicMute()
+                    }) {
+                        HStack(spacing: 4) {
+                            Image(systemName: appState.isMicMuted ? "mic.slash.fill" : "mic.fill")
+                                .font(.system(size: 9))
+                            Text(appState.isMicMuted ? "Muted" : "Mic Live")
+                                .font(.system(size: 9, weight: .bold))
+                        }
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 3)
+                        .background(appState.isMicMuted ? Color.red.opacity(0.25) : Color.white.opacity(0.08))
+                        .foregroundColor(appState.isMicMuted ? .red : .white.opacity(0.8))
+                        .cornerRadius(5)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 5)
+                                .stroke(appState.isMicMuted ? Color.red.opacity(0.5) : Color.white.opacity(0.12), lineWidth: 0.8)
+                        )
+                    }
+                    .buttonStyle(.plain)
+
                     // License Status Pill / Unlock Button
                     Button(action: {
                         withAnimation {
@@ -153,8 +176,8 @@ public struct NotchRootView: View {
                     }
                     .buttonStyle(.plain)
 
-                    Text("⌥+N to toggle")
-                        .font(.system(size: 10))
+                    Text("⌥+N")
+                        .font(.system(size: 10, design: .monospaced))
                         .foregroundColor(.white.opacity(0.4))
 
                     Button(action: {
@@ -167,138 +190,56 @@ public struct NotchRootView: View {
                     .buttonStyle(.plain)
                 }
             }
-            .padding(.horizontal, 18)
-            .padding(.top, appState.topNotchClearance) // User-customizable notch height clearance
+            .padding(.horizontal, 16)
+            .padding(.top, appState.topNotchClearance)
             .padding(.bottom, 6)
 
             Divider()
                 .background(Color.white.opacity(0.08))
 
-            // MAIN ACTIVE TOOL CONTENT AREA
-            ZStack {
-                switch appState.activeTab {
-                case .home:
-                    HomeDashboardView()
-                case .adhd:
-                    ADHDToolsView()
-                case .tools:
-                    SuperchargedToolsView()
-                case .clipboard:
-                    ClipboardHistoryView()
-                case .nowPlaying:
-                    NowPlayingView()
-                case .aiUsage:
-                    AIUsageTrackerView()
-                case .askAI:
-                    AskAIAssistantView()
-                case .teleprompter:
-                    TeleprompterView()
-                case .timers:
-                    TimersPomodoroView()
-                case .fileShelf:
-                    FileShelfView()
-                case .sales:
-                    SalesTrackerView()
-                case .cameraMirror:
-                    CameraMirrorView()
-                case .quickNotes:
-                    QuickNotesView()
-                case .settings:
-                    SettingsView()
-                }
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            // MAIN TWO-COLUMN BODY: LEFT VERTICAL MENUBAR + RIGHT ACTIVE TOOL CONTENT
+            HStack(spacing: 0) {
+                // LEFT VERTICAL MENUBAR (Replaces horizontal bottom dock)
+                verticalMenuBar
+                    .frame(width: 68)
+                    .background(Color.black.opacity(0.35))
 
-            Divider()
-                .background(Color.white.opacity(0.08))
+                Divider()
+                    .background(Color.white.opacity(0.08))
 
-            // CATEGORY FILTER PILLS (Instant Fast Navigation)
-            HStack(spacing: 6) {
-                ForEach(NotchTabCategory.allCases) { cat in
-                    let isCatSelected = appState.selectedTabCategory == cat
-                    Button(action: {
-                        withAnimation(.easeInOut(duration: 0.15)) {
-                            appState.selectedTabCategory = cat
-                            if cat != .all && appState.activeTab.category != cat {
-                                if let firstTab = NotchTab.allCases.first(where: { $0.category == cat }) {
-                                    appState.activeTab = firstTab
-                                }
-                            }
-                        }
-                    }) {
-                        Text(cat.rawValue)
-                            .font(.system(size: 10, weight: isCatSelected ? .bold : .medium))
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 4)
-                            .background(isCatSelected ? appState.currentTheme.primaryAccent.opacity(0.25) : Color.white.opacity(0.04))
-                            .cornerRadius(6)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 6)
-                                    .stroke(isCatSelected ? appState.currentTheme.primaryAccent.opacity(0.5) : Color.clear, lineWidth: 1)
-                            )
-                            .foregroundColor(isCatSelected ? .white : .white.opacity(0.55))
+                // RIGHT MAIN ACTIVE TOOL CONTENT AREA
+                ZStack {
+                    switch appState.activeTab {
+                    case .home:
+                        HomeDashboardView()
+                    case .nowPlaying:
+                        NowPlayingView()
+                    case .adhd:
+                        ADHDToolsView()
+                    case .timers:
+                        TimersPomodoroView()
+                    case .tools:
+                        SuperchargedToolsView()
+                    case .aiUsage:
+                        AIUsageTrackerView()
+                    case .askAI:
+                        AskAIAssistantView()
+                    case .quickNotes:
+                        QuickNotesView()
+                    case .clipboard:
+                        ClipboardHistoryView()
+                    case .fileShelf:
+                        FileShelfView()
+                    case .cameraMirror:
+                        CameraMirrorView()
+                    case .teleprompter:
+                        TeleprompterView()
+                    case .settings:
+                        SettingsView()
                     }
-                    .buttonStyle(.plain)
                 }
-                Spacer()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            .padding(.horizontal, 14)
-            .padding(.top, 6)
-            .padding(.bottom, 2)
-            .background(Color.black.opacity(0.2))
-
-            // BOTTOM TOOL NAVIGATION DOCK (NON-SCROLLABLE: Icon only by default, expands to icon + text when selected)
-            let visibleTabs = appState.selectedTabCategory == .all ?
-                NotchTab.allCases :
-                NotchTab.allCases.filter { $0.category == appState.selectedTabCategory }
-
-            HStack(spacing: 5) {
-                Spacer()
-                ForEach(visibleTabs) { tab in
-                    let isSelected = appState.activeTab == tab
-                    Button(action: {
-                        withAnimation(.spring(response: 0.28, dampingFraction: 0.8)) {
-                            appState.activeTab = tab
-                        }
-                    }) {
-                        HStack(spacing: 5) {
-                            Image(systemName: tab.iconName)
-                                .font(.system(size: 12, weight: isSelected ? .bold : .medium))
-                            if isSelected {
-                                Text(tab.rawValue)
-                                    .font(.system(size: 11, weight: .bold, design: .rounded))
-                                    .lineLimit(1)
-                                    .transition(.opacity.combined(with: .scale(scale: 0.9)))
-                            }
-                        }
-                        .padding(.horizontal, isSelected ? 12 : 8)
-                        .padding(.vertical, 7)
-                        .frame(height: 32)
-                        .background(
-                            isSelected ?
-                            LinearGradient(
-                                colors: [appState.currentTheme.primaryAccent, appState.currentTheme.secondaryAccent],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            ) :
-                            LinearGradient(
-                                colors: [Color.white.opacity(0.06)],
-                                startPoint: .top,
-                                endPoint: .bottom
-                            )
-                        )
-                        .cornerRadius(9)
-                        .foregroundColor(isSelected ? .white : .white.opacity(0.65))
-                        .shadow(color: isSelected ? appState.currentTheme.primaryAccent.opacity(0.45) : Color.clear, radius: 6, x: 0, y: 2)
-                    }
-                    .buttonStyle(.plain)
-                    .help(tab.rawValue)
-                }
-                Spacer()
-            }
-            .padding(.horizontal, 10)
-            .padding(.vertical, 8)
-            .background(Color.black.opacity(0.35))
         }
         .frame(width: appState.expandedWidth, height: appState.expandedHeight)
         .background(
@@ -318,28 +259,148 @@ public struct NotchRootView: View {
         )
         .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
         .overlay(
-            // Specular Liquid Glass Edge Highlight
-            RoundedRectangle(cornerRadius: 24, style: .continuous)
-                .stroke(
-                    LinearGradient(
-                        colors: [
-                            Color.white.opacity(0.38),
-                            Color.white.opacity(0.12),
-                            Color.white.opacity(0.04)
-                        ],
-                        startPoint: .top,
-                        endPoint: .bottom
-                    ),
-                    lineWidth: 1.2
-                )
+            // GLOWING EDGE FLAIR IN MOTION (Traveling glowing light stroke on hover/expansion)
+            ZStack {
+                if appState.showEdgeMotionFlair {
+                    GlowingEdgeMotionFlair(
+                        primaryColor: appState.currentTheme.primaryAccent,
+                        secondaryColor: appState.currentTheme.secondaryAccent
+                    )
+                } else {
+                    // Specular Liquid Glass Edge Highlight
+                    RoundedRectangle(cornerRadius: 24, style: .continuous)
+                        .stroke(
+                            LinearGradient(
+                                colors: [
+                                    Color.white.opacity(0.38),
+                                    Color.white.opacity(0.12),
+                                    Color.white.opacity(0.04)
+                                ],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            ),
+                            lineWidth: 1.2
+                        )
+                }
+            }
         )
         .shadow(color: Color.black.opacity(0.7), radius: 36, x: 0, y: 18)
-        .shadow(color: appState.currentTheme.primaryAccent.opacity(0.12), radius: 24, x: 0, y: 6)
+        .shadow(color: appState.currentTheme.primaryAccent.opacity(0.2), radius: 24, x: 0, y: 6)
+    }
+
+    // LEFT VERTICAL MENUBAR (Compact, native, icon + text tooltip)
+    private var verticalMenuBar: some View {
+        ScrollView(showsIndicators: false) {
+            VStack(spacing: 4) {
+                ForEach(NotchTab.allCases) { tab in
+                    let isSelected = appState.activeTab == tab
+                    Button(action: {
+                        withAnimation(.spring(response: 0.25, dampingFraction: 0.8)) {
+                            appState.activeTab = tab
+                        }
+                    }) {
+                        VStack(spacing: 3) {
+                            Image(systemName: tab.iconName)
+                                .font(.system(size: 15, weight: isSelected ? .bold : .medium))
+                                .foregroundColor(isSelected ? .white : .white.opacity(0.65))
+
+                            Text(tab.rawValue)
+                                .font(.system(size: 8.5, weight: isSelected ? .bold : .medium))
+                                .foregroundColor(isSelected ? .white : .white.opacity(0.55))
+                                .lineLimit(1)
+                        }
+                        .frame(width: 56, height: 44)
+                        .background(
+                            isSelected ?
+                            LinearGradient(
+                                colors: [
+                                    appState.currentTheme.primaryAccent.opacity(0.85),
+                                    appState.currentTheme.secondaryAccent.opacity(0.75)
+                                ],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            ) :
+                            LinearGradient(
+                                colors: [Color.white.opacity(0.03)],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
+                        )
+                        .cornerRadius(10)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(isSelected ? appState.currentTheme.primaryAccent.opacity(0.6) : Color.clear, lineWidth: 1)
+                        )
+                        .shadow(color: isSelected ? appState.currentTheme.primaryAccent.opacity(0.4) : Color.clear, radius: 5, x: 0, y: 2)
+                    }
+                    .buttonStyle(.plain)
+                    .help(tab.rawValue)
+                }
+            }
+            .padding(.vertical, 8)
+            .padding(.horizontal, 6)
+        }
     }
 
     private func timeString(from totalSeconds: Int) -> String {
         let mins = totalSeconds / 60
         let secs = totalSeconds % 60
         return String(format: "%02d:%02d", mins, secs)
+    }
+}
+
+// MARK: - GLOWING EDGE FLAIR IN MOTION (Animated Sweeping Border Light)
+public struct GlowingEdgeMotionFlair: View {
+    public let primaryColor: Color
+    public let secondaryColor: Color
+
+    @State private var phase: Double = 0.0
+
+    public var body: some View {
+        TimelineView(.animation) { timeline in
+            let time = timeline.date.timeIntervalSinceReferenceDate
+            let angle = (time.truncatingRemainder(dividingBy: 4.0)) / 4.0 * 360.0
+
+            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                .stroke(
+                    AngularGradient(
+                        gradient: Gradient(colors: [
+                            primaryColor.opacity(0.9),
+                            secondaryColor.opacity(0.7),
+                            Color.white.opacity(0.4),
+                            Color.clear,
+                            Color.clear,
+                            Color.clear,
+                            secondaryColor.opacity(0.3),
+                            primaryColor.opacity(0.9)
+                        ]),
+                        center: .center,
+                        startAngle: .degrees(angle),
+                        endAngle: .degrees(angle + 360)
+                    ),
+                    lineWidth: 1.8
+                )
+                .overlay(
+                    // Ambient diffuse outer glow beacon
+                    RoundedRectangle(cornerRadius: 24, style: .continuous)
+                        .stroke(
+                            AngularGradient(
+                                gradient: Gradient(colors: [
+                                    primaryColor.opacity(0.5),
+                                    secondaryColor.opacity(0.35),
+                                    Color.clear,
+                                    Color.clear,
+                                    Color.clear,
+                                    primaryColor.opacity(0.5)
+                                ]),
+                                center: .center,
+                                startAngle: .degrees(angle),
+                                endAngle: .degrees(angle + 360)
+                            ),
+                            lineWidth: 3.5
+                        )
+                        .blur(radius: 3.5)
+                )
+        }
     }
 }

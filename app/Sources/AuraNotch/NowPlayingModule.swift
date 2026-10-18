@@ -32,17 +32,17 @@ public class MediaManager: ObservableObject {
     @Published public var currentSong: SongInfo = SongInfo(
         title: "Deep Wednesday (8-12-26)",
         artist: "RaquElevate",
-        album: "SoundCloud Live Stream",
+        album: "SoundCloud Stream",
         source: "SoundCloud",
         duration: 240.0,
         currentTime: 42.0,
         isPlaying: true,
         lyrics: [
-            LyricLine(time: 0.0, text: "Live Stream active on SoundCloud"),
-            LyricLine(time: 5.0, text: "Deep Wednesday (8-12-26) by RaquElevate"),
-            LyricLine(time: 15.0, text: "AuraNotch synchronized to active browser & media stream"),
-            LyricLine(time: 30.0, text: "High-fidelity audio playback via system output"),
-            LyricLine(time: 60.0, text: "Use transport controls or Mac keyboard media keys to control")
+            LyricLine(time: 0.0, text: "Live Audio synchronized via SoundCloud"),
+            LyricLine(time: 5.0, text: "Deep Wednesday (8-12-26) · RaquElevate"),
+            LyricLine(time: 15.0, text: "Direct hardware and browser media synchronization"),
+            LyricLine(time: 30.0, text: "Zero latency on-device playback bridge"),
+            LyricLine(time: 60.0, text: "Full transport controls: play, pause, next, previous")
         ]
     )
 
@@ -56,15 +56,15 @@ public class MediaManager: ObservableObject {
         setupDistributedNotifications()
         refreshDetectedPlayers()
         pollCurrentMedia()
-        // Fast periodic poll (1.5 seconds) for real-time responsiveness
-        timer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: true) { [weak self] _ in
+        // Fast periodic poll (1.2 seconds) for real-time responsiveness
+        timer = Timer.scheduledTimer(withTimeInterval: 1.2, repeats: true) { [weak self] _ in
             self?.refreshDetectedPlayers()
             self?.pollCurrentMedia()
         }
     }
 
     private func setupDistributedNotifications() {
-        // Spotify System Notification (Zero-latency, native macOS distributed notification)
+        // Spotify Distributed Notification
         DistributedNotificationCenter.default().addObserver(
             forName: NSNotification.Name("com.spotify.client.PlaybackStateChanged"),
             object: nil,
@@ -95,7 +95,7 @@ public class MediaManager: ObservableObject {
             AppState.shared.miniStatusText = "\(trackName) · \(artist)"
         }
 
-        // Apple Music System Notification
+        // Apple Music Distributed Notification
         DistributedNotificationCenter.default().addObserver(
             forName: NSNotification.Name("com.apple.Music.playerInfo"),
             object: nil,
@@ -182,11 +182,10 @@ public class MediaManager: ObservableObject {
     public func pollCurrentMedia() {
         let runningApps = NSWorkspace.shared.runningApplications
 
-        // TIER 1: GOOGLE CHROME & CHROME PWA DETECTION (SoundCloud, YouTube, Spotify Web)
+        // TIER 1: GOOGLE CHROME DETECTION (SoundCloud, YouTube, Spotify Web)
         let isChromeRunning = runningApps.contains {
             $0.bundleIdentifier == "com.google.Chrome" ||
-            $0.localizedName?.lowercased().contains("chrome") == true ||
-            $0.localizedName?.lowercased().contains("soundcloud") == true
+            $0.localizedName?.lowercased().contains("chrome") == true
         }
 
         if isChromeRunning {
@@ -331,7 +330,7 @@ public class MediaManager: ObservableObject {
             }
         }
 
-        // TIER 6: COREGRAPHICS SYSTEM WINDOW INSPECTION
+        // TIER 6: SYSTEM WINDOW INSPECTION
         if let windowList = CGWindowListCopyWindowInfo([.optionAll], kCGNullWindowID) as? [[String: Any]] {
             for win in windowList {
                 let owner = (win[kCGWindowOwnerName as String] as? String ?? "").lowercased()
@@ -353,7 +352,7 @@ public class MediaManager: ObservableObject {
             self.activePlayerName = source
             self.currentSong.title = track
             self.currentSong.artist = artist
-            self.currentSong.album = "\(source) Live Audio"
+            self.currentSong.album = "\(source) Stream"
             self.currentSong.source = source
             self.currentSong.isPlaying = isPlaying
             AppState.shared.isAudioPlaying = isPlaying
@@ -366,6 +365,9 @@ public class MediaManager: ObservableObject {
                       .replacingOccurrences(of: "▶", with: "")
                       .trimmingCharacters(in: .whitespacesAndNewlines)
 
+        if text.hasPrefix("Stream ") {
+            text = String(text.dropFirst("Stream ".count))
+        }
         if text.hasPrefix("SoundCloud - ") {
             text = String(text.dropFirst("SoundCloud - ".count))
         } else if text.hasPrefix("SoundCloud: ") {
@@ -451,7 +453,128 @@ public class MediaManager: ObservableObject {
         return output.stringValue
     }
 
-    // SYSTEM MEDIA CONTROL (Zero focus interruption, native media keys)
+    // SYSTEM MEDIA CONTROL (DIRECT SCRIPTING FOR ZERO FOCUS INTERRUPTION)
+    public func togglePlayPause() {
+        if currentSong.source == "Spotify" {
+            _ = runScript("tell application \"Spotify\" to playpause")
+        } else if currentSong.source == "Apple Music" {
+            _ = runScript("tell application \"Music\" to playpause")
+        } else if currentSong.source == "SoundCloud" || activePlayerName == "SoundCloud" {
+            // Direct JavaScript injection into SoundCloud tab
+            let chromeScript = """
+            tell application "Google Chrome"
+                repeat with w in windows
+                    repeat with t in tabs of w
+                        if (URL of t as text) contains "soundcloud.com" then
+                            execute t javascript "var btn = document.querySelector('.playControl') || document.querySelector('.playControls__play'); if(btn) btn.click();"
+                            return "ok"
+                        end if
+                    end repeat
+                end repeat
+            end tell
+            """
+            let braveScript = """
+            tell application "Brave Browser"
+                repeat with w in windows
+                    repeat with t in tabs of w
+                        if (URL of t as text) contains "soundcloud.com" then
+                            execute t javascript "var btn = document.querySelector('.playControl') || document.querySelector('.playControls__play'); if(btn) btn.click();"
+                            return "ok"
+                        end if
+                    end repeat
+                end repeat
+            end tell
+            """
+            if runScript(chromeScript) != "ok" {
+                _ = runScript(braveScript)
+            }
+        } else if currentSong.source == "YouTube" {
+            let ytScript = """
+            tell application "Google Chrome"
+                repeat with w in windows
+                    repeat with t in tabs of w
+                        if (URL of t as text) contains "youtube.com" then
+                            execute t javascript "var v = document.querySelector('video'); if(v) { v.paused ? v.play() : v.pause(); }"
+                            return "ok"
+                        end if
+                    end repeat
+                end repeat
+            end tell
+            """
+            _ = runScript(ytScript)
+        } else {
+            postMediaKey(key: 16)
+        }
+
+        currentSong.isPlaying.toggle()
+        AppState.shared.isAudioPlaying = currentSong.isPlaying
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+            self?.pollCurrentMedia()
+        }
+    }
+
+    public func skipNext() {
+        if currentSong.source == "Spotify" {
+            _ = runScript("tell application \"Spotify\" to next track")
+        } else if currentSong.source == "Apple Music" {
+            _ = runScript("tell application \"Music\" to next track")
+        } else if currentSong.source == "SoundCloud" || activePlayerName == "SoundCloud" {
+            let chromeScript = """
+            tell application "Google Chrome"
+                repeat with w in windows
+                    repeat with t in tabs of w
+                        if (URL of t as text) contains "soundcloud.com" then
+                            execute t javascript "var btn = document.querySelector('.skipControl__next') || document.querySelector('.playControls__next'); if(btn) btn.click();"
+                            return "ok"
+                        end if
+                    end repeat
+                end repeat
+            end tell
+            """
+            _ = runScript(chromeScript)
+        } else {
+            postMediaKey(key: 17)
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
+            self?.pollCurrentMedia()
+        }
+    }
+
+    public func skipPrev() {
+        if currentSong.source == "Spotify" {
+            _ = runScript("tell application \"Spotify\" to previous track")
+        } else if currentSong.source == "Apple Music" {
+            _ = runScript("tell application \"Music\" to previous track")
+        } else if currentSong.source == "SoundCloud" || activePlayerName == "SoundCloud" {
+            let chromeScript = """
+            tell application "Google Chrome"
+                repeat with w in windows
+                    repeat with t in tabs of w
+                        if (URL of t as text) contains "soundcloud.com" then
+                            execute t javascript "var btn = document.querySelector('.skipControl__previous') || document.querySelector('.playControls__prev'); if(btn) btn.click();"
+                            return "ok"
+                        end if
+                    end repeat
+                end repeat
+            end tell
+            """
+            _ = runScript(chromeScript)
+        } else {
+            postMediaKey(key: 18)
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
+            self?.pollCurrentMedia()
+        }
+    }
+
+    public func nextTrack() {
+        skipNext()
+    }
+
+    public func previousTrack() {
+        skipPrev()
+    }
+
     public func postMediaKey(key: Int32) {
         func doKey(down: Bool) {
             let flags = NSEvent.ModifierFlags(rawValue: down ? 0xa00 : 0xb00)
@@ -473,55 +596,6 @@ public class MediaManager: ObservableObject {
         doKey(down: false)
     }
 
-    public func togglePlayPause() {
-        if currentSong.source == "Spotify" {
-            _ = runScript("tell application \"Spotify\" to playpause")
-        } else if currentSong.source == "Apple Music" {
-            _ = runScript("tell application \"Music\" to playpause")
-        } else {
-            // NX_KEYTYPE_PLAY = 16 (System Play/Pause toggle)
-            postMediaKey(key: 16)
-        }
-        currentSong.isPlaying.toggle()
-        AppState.shared.isAudioPlaying = currentSong.isPlaying
-    }
-
-    public func skipNext() {
-        if currentSong.source == "Spotify" {
-            _ = runScript("tell application \"Spotify\" to next track")
-        } else if currentSong.source == "Apple Music" {
-            _ = runScript("tell application \"Music\" to next track")
-        } else {
-            // NX_KEYTYPE_NEXT = 17 (System Next Track)
-            postMediaKey(key: 17)
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
-            self?.pollCurrentMedia()
-        }
-    }
-
-    public func skipPrev() {
-        if currentSong.source == "Spotify" {
-            _ = runScript("tell application \"Spotify\" to previous track")
-        } else if currentSong.source == "Apple Music" {
-            _ = runScript("tell application \"Music\" to previous track")
-        } else {
-            // NX_KEYTYPE_PREVIOUS = 18 (System Previous Track)
-            postMediaKey(key: 18)
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
-            self?.pollCurrentMedia()
-        }
-    }
-
-    public func nextTrack() {
-        skipNext()
-    }
-
-    public func previousTrack() {
-        skipPrev()
-    }
-
     public func launchPlayer(_ player: DetectedPlayer) {
         if player.name == "Spotify" {
             NSWorkspace.shared.openApplication(at: URL(fileURLWithPath: "/Applications/Spotify.app"), configuration: NSWorkspace.OpenConfiguration())
@@ -539,14 +613,14 @@ public class MediaManager: ObservableObject {
     }
 }
 
-// MARK: - NOW PLAYING VIEW (Redesigned: Prominent Theme Accent, Monochromatic Frosted Glass, Less Colorful)
+// MARK: - NOW PLAYING VIEW (Prominent Theme Accent, Monochromatic Frosted Glass, Matching User UI Spec)
 public struct NowPlayingView: View {
     @ObservedObject var appState = AppState.shared
     @ObservedObject var media = MediaManager.shared
 
     public var body: some View {
         VStack(spacing: 12) {
-            // DETECTED PLAYERS BAR (Sleek monochromatic frosted glass, theme highlight on active)
+            // DETECTED PLAYERS BAR (Theme-tinted pills)
             HStack(spacing: 8) {
                 Text("DETECTED PLAYERS")
                     .font(.system(size: 9, weight: .bold))
@@ -597,179 +671,176 @@ public struct NowPlayingView: View {
             .background(Color.white.opacity(0.025))
             .cornerRadius(8)
 
-            // MAIN PLAYER HERO & LYRICS SPLIT
-            HStack(spacing: 14) {
-                // LEFT: TRACK INFO, ARTWORK & SCRUBBER
-                VStack(alignment: .leading, spacing: 12) {
-                    HStack(spacing: 12) {
-                        // Square Artwork with prominent theme accent lighting
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(
-                                    LinearGradient(
-                                        colors: [
-                                            appState.currentTheme.primaryAccent.opacity(0.45),
-                                            Color.black.opacity(0.8)
-                                        ],
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    )
+            // MAIN PLAYER CARD (Matching User Screenshot Specification)
+            VStack(spacing: 14) {
+                HStack(spacing: 14) {
+                    // Album Artwork with Subtle Glow
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(
+                                LinearGradient(
+                                    colors: [
+                                        appState.currentTheme.primaryAccent.opacity(0.4),
+                                        Color.black.opacity(0.85)
+                                    ],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
                                 )
-                                .frame(width: 76, height: 76)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .stroke(appState.currentTheme.primaryAccent.opacity(0.4), lineWidth: 1)
-                                )
-                                .shadow(color: appState.currentTheme.primaryAccent.opacity(0.3), radius: 10, x: 0, y: 3)
+                            )
+                            .frame(width: 72, height: 72)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(appState.currentTheme.primaryAccent.opacity(0.4), lineWidth: 1)
+                            )
+                            .shadow(color: appState.currentTheme.primaryAccent.opacity(0.25), radius: 8, x: 0, y: 2)
 
-                            Image(systemName: media.hasActiveMedia && media.currentSong.isPlaying ? "waveform" : "music.note")
-                                .font(.system(size: 28))
+                        Image(systemName: media.currentSong.source == "SoundCloud" ? "cloud.fill" : (media.currentSong.isPlaying ? "waveform" : "music.note"))
+                            .font(.system(size: 28))
+                            .foregroundColor(appState.currentTheme.primaryAccent)
+                    }
+
+                    // Title & Artist Info
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack(spacing: 8) {
+                            Text(media.currentSong.title)
+                                .font(.system(size: 14, weight: .bold))
+                                .foregroundColor(.white)
+                                .lineLimit(1)
+
+                            Text(media.currentSong.source.uppercased())
+                                .font(.system(size: 8, weight: .heavy))
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 2)
+                                .background(appState.currentTheme.primaryAccent.opacity(0.25))
                                 .foregroundColor(appState.currentTheme.primaryAccent)
+                                .cornerRadius(4)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 4)
+                                        .stroke(appState.currentTheme.primaryAccent.opacity(0.5), lineWidth: 0.8)
+                                )
                         }
 
-                        VStack(alignment: .leading, spacing: 3) {
-                            HStack {
-                                Text(media.currentSong.title)
-                                    .font(.system(size: 14, weight: .bold))
-                                    .foregroundColor(.white)
-                                    .lineLimit(1)
-
-                                Text(media.currentSong.source.uppercased())
-                                    .font(.system(size: 8, weight: .heavy))
-                                    .padding(.horizontal, 5)
-                                    .padding(.vertical, 2)
-                                    .background(appState.currentTheme.primaryAccent.opacity(0.25))
-                                    .foregroundColor(.white)
-                                    .cornerRadius(4)
-                            }
-
-                            Text(media.currentSong.artist)
-                                .font(.system(size: 12, weight: .medium))
-                                .foregroundColor(.white.opacity(0.8))
-                                .lineLimit(1)
-
-                            Text(media.currentSong.album)
-                                .font(.system(size: 10))
-                                .foregroundColor(.white.opacity(0.45))
-                                .lineLimit(1)
-                        }
-                    }
-
-                    // Scrubber Bar (Prominent Theme Accent)
-                    VStack(spacing: 3) {
-                        ProgressView(value: media.currentSong.currentTime, total: media.currentSong.duration)
-                            .tint(appState.currentTheme.primaryAccent)
-
-                        HStack {
-                            Text(formatTime(media.currentSong.currentTime))
-                                .font(.system(size: 9, design: .monospaced))
-                                .foregroundColor(.white.opacity(0.5))
-                            Spacer()
-                            Text(formatTime(media.currentSong.duration))
-                                .font(.system(size: 9, design: .monospaced))
-                                .foregroundColor(.white.opacity(0.5))
-                        }
-                    }
-
-                    // Transport Controls
-                    HStack(spacing: 16) {
-                        Button(action: { media.skipPrev() }) {
-                            Image(systemName: "backward.fill")
-                                .font(.system(size: 15))
-                                .foregroundColor(.white.opacity(0.8))
-                        }
-                        .buttonStyle(.plain)
-
-                        // Prominent Hero Play/Pause Button
-                        Button(action: { media.togglePlayPause() }) {
-                            ZStack {
-                                Circle()
-                                    .fill(appState.currentTheme.primaryAccent)
-                                    .frame(width: 38, height: 38)
-                                    .shadow(color: appState.currentTheme.primaryAccent.opacity(0.5), radius: 8, x: 0, y: 2)
-
-                                Image(systemName: media.currentSong.isPlaying ? "pause.fill" : "play.fill")
-                                    .font(.system(size: 15, weight: .bold))
-                                    .foregroundColor(.white)
-                            }
-                        }
-                        .buttonStyle(.plain)
-
-                        Button(action: { media.skipNext() }) {
-                            Image(systemName: "forward.fill")
-                                .font(.system(size: 15))
-                                .foregroundColor(.white.opacity(0.8))
-                        }
-                        .buttonStyle(.plain)
-
-                        Spacer()
-
-                        // Sync Button
-                        Button(action: { media.pollCurrentMedia() }) {
-                            HStack(spacing: 4) {
-                                Image(systemName: "arrow.clockwise")
-                                Text("Resync")
-                            }
-                            .font(.system(size: 10, weight: .semibold))
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 4)
-                            .background(Color.white.opacity(0.08))
-                            .cornerRadius(6)
+                        Text(media.currentSong.artist)
+                            .font(.system(size: 12, weight: .medium))
                             .foregroundColor(.white.opacity(0.8))
-                        }
-                        .buttonStyle(.plain)
-                    }
-                }
-                .frame(maxWidth: 340)
+                            .lineLimit(1)
 
-                Divider()
-                    .background(Color.white.opacity(0.08))
-
-                // RIGHT: LIVE STREAM CONTEXT & LYRICS (High contrast, monochromatic with theme accents)
-                VStack(alignment: .leading, spacing: 8) {
-                    HStack {
-                        Text("STREAM CONTEXT & LYRICS")
-                            .font(.system(size: 10, weight: .bold))
-                            .foregroundColor(.white.opacity(0.45))
-                            .tracking(0.8)
-                        Spacer()
-                        HStack(spacing: 4) {
+                        HStack(spacing: 5) {
                             Circle()
                                 .fill(appState.currentTheme.primaryAccent)
                                 .frame(width: 5, height: 5)
-                            Text("LIVE")
-                                .font(.system(size: 8, weight: .heavy))
+                            Text(media.currentSong.isPlaying ? "Streaming Audio · Active" : "Paused")
+                                .font(.system(size: 10, weight: .medium))
                                 .foregroundColor(appState.currentTheme.primaryAccent)
                         }
                     }
 
-                    ScrollView(showsIndicators: false) {
-                        VStack(alignment: .leading, spacing: 9) {
-                            ForEach(Array(media.currentSong.lyrics.enumerated()), id: \.element.id) { index, line in
-                                HStack(spacing: 8) {
-                                    if index == 1 {
-                                        RoundedRectangle(cornerRadius: 1)
-                                            .fill(appState.currentTheme.primaryAccent)
-                                            .frame(width: 2.5, height: 14)
-                                    }
-                                    Text(line.text)
-                                        .font(.system(size: 11, weight: index == 1 ? .bold : .medium))
-                                        .foregroundColor(index == 1 ? .white : .white.opacity(0.6))
-                                }
-                            }
-                        }
-                        .padding(.top, 4)
+                    Spacer()
+                }
+
+                // Scrubber Bar
+                VStack(spacing: 4) {
+                    ProgressView(value: media.currentSong.currentTime, total: media.currentSong.duration)
+                        .tint(appState.currentTheme.primaryAccent)
+
+                    HStack {
+                        Text(formatTime(media.currentSong.currentTime))
+                            .font(.system(size: 9, design: .monospaced))
+                            .foregroundColor(.white.opacity(0.5))
+                        Spacer()
+                        Text(formatTime(media.currentSong.duration))
+                            .font(.system(size: 9, design: .monospaced))
+                            .foregroundColor(.white.opacity(0.5))
                     }
                 }
-                .frame(maxWidth: .infinity)
+
+                // Transport Controls
+                HStack(spacing: 20) {
+                    Button(action: { media.skipPrev() }) {
+                        Image(systemName: "backward.fill")
+                            .font(.system(size: 16))
+                            .foregroundColor(.white.opacity(0.85))
+                    }
+                    .buttonStyle(.plain)
+
+                    Button(action: { media.togglePlayPause() }) {
+                        ZStack {
+                            Circle()
+                                .fill(appState.currentTheme.primaryAccent)
+                                .frame(width: 40, height: 40)
+                                .shadow(color: appState.currentTheme.primaryAccent.opacity(0.4), radius: 8, x: 0, y: 2)
+
+                            Image(systemName: media.currentSong.isPlaying ? "pause.fill" : "play.fill")
+                                .font(.system(size: 16, weight: .bold))
+                                .foregroundColor(.white)
+                        }
+                    }
+                    .buttonStyle(.plain)
+
+                    Button(action: { media.skipNext() }) {
+                        Image(systemName: "forward.fill")
+                            .font(.system(size: 16))
+                            .foregroundColor(.white.opacity(0.85))
+                    }
+                    .buttonStyle(.plain)
+
+                    Spacer()
+
+                    Button(action: { media.pollCurrentMedia() }) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "arrow.clockwise")
+                            Text("Resync")
+                        }
+                        .font(.system(size: 10, weight: .semibold))
+                        .padding(.horizontal, 9)
+                        .padding(.vertical, 5)
+                        .background(Color.white.opacity(0.08))
+                        .cornerRadius(6)
+                        .foregroundColor(.white.opacity(0.8))
+                    }
+                    .buttonStyle(.plain)
+                }
             }
             .padding(14)
             .background(Color.white.opacity(0.035))
             .cornerRadius(12)
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
-                    .stroke(Color.white.opacity(0.07), lineWidth: 1)
+                    .stroke(appState.currentTheme.primaryAccent.opacity(0.2), lineWidth: 1)
             )
+
+            // LYRICS & CONTEXT ACCORDION
+            VStack(alignment: .leading, spacing: 6) {
+                HStack {
+                    Text("LIVE STREAM CONTEXT & LYRICS")
+                        .font(.system(size: 9, weight: .bold))
+                        .foregroundColor(.white.opacity(0.4))
+                        .tracking(0.8)
+                    Spacer()
+                }
+
+                ScrollView(showsIndicators: false) {
+                    VStack(alignment: .leading, spacing: 6) {
+                        ForEach(Array(media.currentSong.lyrics.enumerated()), id: \.element.id) { index, line in
+                            HStack(spacing: 8) {
+                                if index == 1 {
+                                    RoundedRectangle(cornerRadius: 1)
+                                        .fill(appState.currentTheme.primaryAccent)
+                                        .frame(width: 2.5, height: 12)
+                                }
+                                Text(line.text)
+                                    .font(.system(size: 11, weight: index == 1 ? .bold : .medium))
+                                    .foregroundColor(index == 1 ? .white : .white.opacity(0.6))
+                            }
+                        }
+                    }
+                    .padding(.top, 2)
+                }
+                .frame(maxHeight: 90)
+            }
+            .padding(12)
+            .background(Color.white.opacity(0.02))
+            .cornerRadius(10)
         }
         .padding(14)
     }

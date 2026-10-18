@@ -162,7 +162,7 @@ public struct HomeDashboardView: View {
             HStack(spacing: 6) {
                 // Mic Privacy Pill
                 Button(action: {
-                    appState.isMicMuted.toggle()
+                    appState.toggleMicMute()
                 }) {
                     statusPill(
                         icon: appState.isMicMuted ? "mic.slash.fill" : "mic.fill",
@@ -207,136 +207,142 @@ public struct HomeDashboardView: View {
     }
 
     // --- ROW 2A: ACTIVE NOW PLAYING HERO CARD (SOUNDCLOUD / SPOTIFY / MUSIC) ---
-    private var activeMusicHeroCard: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                HStack(spacing: 5) {
-                    Image(systemName: media.currentSong.source == "SoundCloud" ? "cloud.fill" : "music.note")
-                        .font(.system(size: 11))
-                        .foregroundColor(appState.currentTheme.primaryAccent)
-                    Text(media.currentSong.source == "SoundCloud" ? "SoundCloud Live" : "Active Music")
-                        .font(.system(size: 11, weight: .bold))
-                        .foregroundColor(.white)
-                }
+    private var musicHeader: some View {
+        HStack {
+            HStack(spacing: 5) {
+                Image(systemName: media.currentSong.source == "SoundCloud" ? "cloud.fill" : "music.note")
+                    .font(.system(size: 11))
+                    .foregroundColor(appState.currentTheme.primaryAccent)
+                Text(media.currentSong.source == "SoundCloud" ? "SoundCloud Live" : "Active Music")
+                    .font(.system(size: 11, weight: .bold))
+                    .foregroundColor(.white)
+            }
 
-                Spacer()
+            Spacer()
 
-                // Active Source Pill with live equalizer
-                HStack(spacing: 4) {
-                    if media.currentSong.isPlaying {
-                        HStack(spacing: 1.5) {
-                            ForEach(0..<3) { i in
-                                RoundedRectangle(cornerRadius: 1)
-                                    .fill(appState.currentTheme.primaryAccent)
-                                    .frame(width: 2, height: CGFloat([8, 13, 9][i]))
-                            }
+            HStack(spacing: 4) {
+                if media.currentSong.isPlaying {
+                    HStack(spacing: 1.5) {
+                        ForEach(0..<3) { i in
+                            RoundedRectangle(cornerRadius: 1)
+                                .fill(appState.currentTheme.primaryAccent)
+                                .frame(width: 2, height: CGFloat([8, 13, 9][i]))
                         }
                     }
-                    Text(media.hasActiveMedia ? media.activePlayerName.uppercased() : "READY")
-                        .font(.system(size: 8, weight: .heavy))
-                        .foregroundColor(appState.currentTheme.primaryAccent)
                 }
-                .padding(.horizontal, 6)
-                .padding(.vertical, 2)
-                .background(appState.currentTheme.primaryAccent.opacity(0.16))
-                .cornerRadius(4)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 4)
-                        .stroke(appState.currentTheme.primaryAccent.opacity(0.35), lineWidth: 0.6)
-                )
+                Text(media.hasActiveMedia ? media.activePlayerName.uppercased() : "READY")
+                    .font(.system(size: 8, weight: .heavy))
+                    .foregroundColor(appState.currentTheme.primaryAccent)
             }
+            .padding(.horizontal, 6)
+            .padding(.vertical, 2)
+            .background(appState.currentTheme.primaryAccent.opacity(0.16))
+            .cornerRadius(4)
+            .overlay(
+                RoundedRectangle(cornerRadius: 4)
+                    .stroke(appState.currentTheme.primaryAccent.opacity(0.35), lineWidth: 0.6)
+            )
+        }
+    }
 
-            HStack(spacing: 10) {
-                // Album Art / Visualizer Box
-                ZStack {
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(
-                            LinearGradient(
-                                colors: [
-                                    appState.currentTheme.primaryAccent.opacity(0.4),
-                                    Color.black.opacity(0.8)
-                                ],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
+    private var musicTrackInfo: some View {
+        HStack(spacing: 10) {
+            ZStack {
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                appState.currentTheme.primaryAccent.opacity(0.4),
+                                Color.black.opacity(0.8)
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
                         )
-                        .frame(width: 48, height: 48)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(appState.currentTheme.primaryAccent.opacity(0.35), lineWidth: 0.8)
-                        )
+                    )
+                    .frame(width: 48, height: 48)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(appState.currentTheme.primaryAccent.opacity(0.35), lineWidth: 0.8)
+                    )
 
-                    Image(systemName: media.currentSong.source == "SoundCloud" ? "cloud.fill" : "headphones")
-                        .font(.system(size: 18))
-                        .foregroundColor(appState.currentTheme.primaryAccent)
-                }
-                .shadow(color: appState.currentTheme.primaryAccent.opacity(0.25), radius: 6, x: 0, y: 2)
-
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(media.currentSong.title)
-                        .font(.system(size: 12, weight: .bold))
-                        .foregroundColor(.white)
-                        .lineLimit(1)
-
-                    Text(media.currentSong.artist)
-                        .font(.system(size: 10, weight: .medium))
-                        .foregroundColor(.white.opacity(0.75))
-                        .lineLimit(1)
-
-                    HStack(spacing: 4) {
-                        Circle()
-                            .fill(media.currentSong.isPlaying ? appState.currentTheme.primaryAccent : Color.white.opacity(0.3))
-                            .frame(width: 4, height: 4)
-                        Text(media.currentSong.isPlaying ? "Streaming Audio" : "Paused")
-                            .font(.system(size: 9))
-                            .foregroundColor(.white.opacity(0.45))
-                    }
-                }
-                Spacer()
+                Image(systemName: media.currentSong.source == "SoundCloud" ? "cloud.fill" : "headphones")
+                    .font(.system(size: 18))
+                    .foregroundColor(appState.currentTheme.primaryAccent)
             }
+            .shadow(color: appState.currentTheme.primaryAccent.opacity(0.25), radius: 6, x: 0, y: 2)
 
-            // Scrub Bar & Controls
-            HStack(spacing: 8) {
-                Button(action: { media.previousTrack() }) {
-                    Image(systemName: "backward.fill")
-                        .font(.system(size: 11))
-                        .foregroundColor(.white.opacity(0.75))
-                }
-                .buttonStyle(.plain)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(media.currentSong.title)
+                    .font(.system(size: 12, weight: .bold))
+                    .foregroundColor(.white)
+                    .lineLimit(1)
 
-                Button(action: { media.togglePlayPause() }) {
-                    Image(systemName: media.currentSong.isPlaying ? "pause.circle.fill" : "play.circle.fill")
-                        .font(.system(size: 22))
-                        .foregroundColor(appState.currentTheme.primaryAccent)
-                }
-                .buttonStyle(.plain)
+                Text(media.currentSong.artist)
+                    .font(.system(size: 10, weight: .medium))
+                    .foregroundColor(.white.opacity(0.75))
+                    .lineLimit(1)
 
-                Button(action: { media.nextTrack() }) {
-                    Image(systemName: "forward.fill")
-                        .font(.system(size: 11))
-                        .foregroundColor(.white.opacity(0.75))
+                HStack(spacing: 4) {
+                    Circle()
+                        .fill(media.currentSong.isPlaying ? appState.currentTheme.primaryAccent : Color.white.opacity(0.3))
+                        .frame(width: 4, height: 4)
+                    Text(media.currentSong.isPlaying ? "Streaming Audio" : "Paused")
+                        .font(.system(size: 9))
+                        .foregroundColor(.white.opacity(0.45))
                 }
-                .buttonStyle(.plain)
-
-                // Mini scrub track bar
-                GeometryReader { geo in
-                    ZStack(alignment: .leading) {
-                        Capsule().fill(Color.white.opacity(0.08)).frame(height: 3)
-                        Capsule().fill(appState.currentTheme.primaryAccent).frame(width: geo.size.width * 0.42, height: 3)
-                    }
-                    .frame(height: geo.size.height)
-                }
-                .frame(height: 10)
-
-                Button(action: {
-                    appState.activeTab = .nowPlaying
-                }) {
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 11))
-                        .foregroundColor(.white.opacity(0.4))
-                }
-                .buttonStyle(.plain)
             }
+            Spacer()
+        }
+    }
+
+    private var musicControls: some View {
+        HStack(spacing: 8) {
+            Button(action: { media.previousTrack() }) {
+                Image(systemName: "backward.fill")
+                    .font(.system(size: 11))
+                    .foregroundColor(.white.opacity(0.75))
+            }
+            .buttonStyle(.plain)
+
+            Button(action: { media.togglePlayPause() }) {
+                Image(systemName: media.currentSong.isPlaying ? "pause.circle.fill" : "play.circle.fill")
+                    .font(.system(size: 22))
+                    .foregroundColor(appState.currentTheme.primaryAccent)
+            }
+            .buttonStyle(.plain)
+
+            Button(action: { media.nextTrack() }) {
+                Image(systemName: "forward.fill")
+                    .font(.system(size: 11))
+                    .foregroundColor(.white.opacity(0.75))
+            }
+            .buttonStyle(.plain)
+
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    Capsule().fill(Color.white.opacity(0.08)).frame(height: 3)
+                    Capsule().fill(appState.currentTheme.primaryAccent).frame(width: geo.size.width * 0.42, height: 3)
+                }
+                .frame(height: geo.size.height)
+            }
+            .frame(height: 10)
+
+            Button(action: {
+                appState.activeTab = .nowPlaying
+            }) {
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 11))
+                    .foregroundColor(.white.opacity(0.4))
+            }
+            .buttonStyle(.plain)
+        }
+    }
+
+    private var activeMusicHeroCard: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            musicHeader
+            musicTrackInfo
+            musicControls
         }
         .padding(12)
         .frame(maxWidth: .infinity)

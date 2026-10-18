@@ -1,84 +1,375 @@
 import SwiftUI
+import AppKit
+
+// MARK: - MULTI-NOTE STORAGE & MANAGER
+public struct NoteItem: Identifiable, Codable, Equatable {
+    public var id: UUID
+    public var title: String
+    public var content: String
+    public var updatedAt: Date
+
+    public init(id: UUID = UUID(), title: String, content: String, updatedAt: Date = Date()) {
+        self.id = id
+        self.title = title
+        self.content = content
+        self.updatedAt = updatedAt
+    }
+}
 
 public class NotesManager: ObservableObject {
     public static let shared = NotesManager()
 
-    @Published public var noteText: String = """
-    # AuraNotch Quick Scratchpad
-    - [x] Connected real system stats (CPU, RAM, Disk, Battery)
-    - [x] Connected live clipboard monitor
-    - [x] Added multi-player detection (Spotify, Apple Music, SoundCloud)
-    - [x] Added real ambient audio engine to Focus sounds
-    - [x] Added paste/clear/editing tools to Teleprompter
-    """
-}
+    @Published public var notes: [NoteItem] = []
+    @Published public var selectedNoteId: UUID?
+    @Published public var searchQuery: String = ""
 
-public struct QuickNotesView: View {
-    @ObservedObject var notesMgr = NotesManager.shared
+    private let storageKey = "auranotch_multi_notes_v1"
 
-    public var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text("Scratchpad & Persistent Notes")
-                    .font(.system(size: 11, weight: .semibold))
-                    .foregroundColor(.white.opacity(0.5))
-                    .textCase(.uppercase)
-                Spacer()
-                Text("Auto-saved locally")
-                    .font(.system(size: 10))
-                    .foregroundColor(.green)
-            }
-
-            TextEditor(text: $notesMgr.noteText)
-                .font(.system(size: 13, design: .monospaced))
-                .foregroundColor(.white)
-                .scrollContentBackground(.hidden)
-                .background(Color.white.opacity(0.04))
-                .cornerRadius(10)
-                .padding(.top, 2)
+    public init() {
+        loadNotes()
+        if notes.isEmpty {
+            createInitialNotes()
         }
-        .padding(14)
+        if selectedNoteId == nil {
+            selectedNoteId = notes.first?.id
+        }
+    }
+
+    public var selectedNote: NoteItem? {
+        notes.first(where: { $0.id == selectedNoteId })
+    }
+
+    public var filteredNotes: [NoteItem] {
+        if searchQuery.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            return notes
+        }
+        let q = searchQuery.lowercased()
+        return notes.filter { $0.title.lowercased().contains(q) || $0.content.lowercased().contains(q) }
+    }
+
+    public func loadNotes() {
+        if let data = UserDefaults.standard.data(forKey: storageKey),
+           let decoded = try? JSONDecoder().decode([NoteItem].self, from: data) {
+            self.notes = decoded
+        }
+    }
+
+    public func saveNotes() {
+        if let encoded = try? JSONEncoder().encode(notes) {
+            UserDefaults.standard.set(encoded, forKey: storageKey)
+        }
+    }
+
+    public func createNote() {
+        let newNote = NoteItem(
+            title: "New Note",
+            content: "",
+            updatedAt: Date()
+        )
+        notes.insert(newNote, at: 0)
+        selectedNoteId = newNote.id
+        saveNotes()
+    }
+
+    public func deleteNote(id: UUID) {
+        notes.removeAll { $0.id == id }
+        if selectedNoteId == id {
+            selectedNoteId = notes.first?.id
+        }
+        saveNotes()
+    }
+
+    public func updateTitle(_ newTitle: String) {
+        guard let id = selectedNoteId, let idx = notes.firstIndex(where: { $0.id == id }) else { return }
+        notes[idx].title = newTitle
+        notes[idx].updatedAt = Date()
+        saveNotes()
+    }
+
+    public func updateContent(_ newContent: String) {
+        guard let id = selectedNoteId, let idx = notes.firstIndex(where: { $0.id == id }) else { return }
+        notes[idx].content = newContent
+        notes[idx].updatedAt = Date()
+        saveNotes()
+    }
+
+    private func createInitialNotes() {
+        let initial = [
+            NoteItem(
+                title: "Welcome to AuraNotch Notes",
+                content: """
+                # AuraNotch Native Scratchpad
+                - Create multiple notes via the left vertical sidebar.
+                - Notes are automatically saved locally on your Mac.
+                - Zero cloud tracking, completely private.
+                - Use for quick meeting notes, clipboard snippets, or task planning.
+                """,
+                updatedAt: Date()
+            ),
+            NoteItem(
+                title: "Daily Standup Notes",
+                content: """
+                - [x] Connected real hardware microphone mute toggle
+                - [x] Implemented native camera mirror with AVCaptureSession
+                - [x] Added left vertical navigation bar
+                - [x] Fixed drag-and-drop file shelf
+                """,
+                updatedAt: Date().addingTimeInterval(-3600)
+            )
+        ]
+        self.notes = initial
+        saveNotes()
     }
 }
 
+// MARK: - VERTICAL MULTI-NOTE INTERFACE
+public struct QuickNotesView: View {
+    @ObservedObject var appState = AppState.shared
+    @ObservedObject var notesMgr = NotesManager.shared
+
+    public var body: some View {
+        HStack(spacing: 0) {
+            // LEFT COLUMN: VERTICAL NOTES LIST
+            VStack(spacing: 8) {
+                // Top Header with + New Note Button
+                HStack {
+                    Text("Notes")
+                        .font(.system(size: 13, weight: .bold))
+                        .foregroundColor(.white)
+
+                    Spacer()
+
+                    Button(action: {
+                        withAnimation(.easeInOut(duration: 0.15)) {
+                            notesMgr.createNote()
+                        }
+                    }) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "plus")
+                                .font(.system(size: 10, weight: .bold))
+                            Text("New Note")
+                                .font(.system(size: 11, weight: .semibold))
+                        }
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(appState.currentTheme.primaryAccent.opacity(0.25))
+                        .foregroundColor(.white)
+                        .cornerRadius(6)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 6)
+                                .stroke(appState.currentTheme.primaryAccent.opacity(0.5), lineWidth: 0.8)
+                        )
+                    }
+                    .buttonStyle(.plain)
+                }
+                .padding(.horizontal, 10)
+                .padding(.top, 10)
+
+                // Search Filter
+                HStack(spacing: 6) {
+                    Image(systemName: "magnifyingglass")
+                        .font(.system(size: 10))
+                        .foregroundColor(.white.opacity(0.4))
+                    TextField("Search notes...", text: $notesMgr.searchQuery)
+                        .textFieldStyle(.plain)
+                        .font(.system(size: 11))
+                        .foregroundColor(.white)
+                }
+                .padding(.horizontal, 8)
+                .padding(.vertical, 5)
+                .background(Color.white.opacity(0.05))
+                .cornerRadius(6)
+                .padding(.horizontal, 10)
+
+                Divider()
+                    .background(Color.white.opacity(0.08))
+
+                // Vertical List of Notes
+                ScrollView(showsIndicators: false) {
+                    LazyVStack(spacing: 4) {
+                        ForEach(notesMgr.filteredNotes) { note in
+                            let isSelected = notesMgr.selectedNoteId == note.id
+                            Button(action: {
+                                notesMgr.selectedNoteId = note.id
+                            }) {
+                                HStack(alignment: .top, spacing: 8) {
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text(note.title.isEmpty ? "Untitled Note" : note.title)
+                                            .font(.system(size: 11, weight: isSelected ? .bold : .medium))
+                                            .foregroundColor(isSelected ? .white : .white.opacity(0.85))
+                                            .lineLimit(1)
+
+                                        let preview = note.content.replacingOccurrences(of: "\n", with: " ")
+                                        Text(preview.isEmpty ? "No content..." : preview)
+                                            .font(.system(size: 10))
+                                            .foregroundColor(.white.opacity(0.4))
+                                            .lineLimit(1)
+
+                                        Text(formatDate(note.updatedAt))
+                                            .font(.system(size: 8))
+                                            .foregroundColor(.white.opacity(0.3))
+                                    }
+
+                                    Spacer()
+
+                                    if isSelected && notesMgr.notes.count > 1 {
+                                        Button(action: {
+                                            notesMgr.deleteNote(id: note.id)
+                                        }) {
+                                            Image(systemName: "trash")
+                                                .font(.system(size: 10))
+                                                .foregroundColor(.red.opacity(0.7))
+                                        }
+                                        .buttonStyle(.plain)
+                                    }
+                                }
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 6)
+                                .background(
+                                    isSelected ?
+                                    appState.currentTheme.primaryAccent.opacity(0.2) :
+                                    Color.white.opacity(0.02)
+                                )
+                                .cornerRadius(7)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 7)
+                                        .stroke(isSelected ? appState.currentTheme.primaryAccent.opacity(0.4) : Color.clear, lineWidth: 0.8)
+                                )
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                    .padding(.horizontal, 8)
+                }
+            }
+            .frame(width: 200)
+            .background(Color.black.opacity(0.25))
+
+            Divider()
+                .background(Color.white.opacity(0.08))
+
+            // RIGHT COLUMN: NOTE EDITOR
+            VStack(alignment: .leading, spacing: 8) {
+                if let selectedNote = notesMgr.selectedNote {
+                    // Title field
+                    TextField(
+                        "Title",
+                        text: Binding(
+                            get: { selectedNote.title },
+                            set: { notesMgr.updateTitle($0) }
+                        )
+                    )
+                    .textFieldStyle(.plain)
+                    .font(.system(size: 16, weight: .bold))
+                    .foregroundColor(.white)
+                    .padding(.top, 4)
+
+                    Divider()
+                        .background(Color.white.opacity(0.06))
+
+                    // Body editor
+                    TextEditor(
+                        text: Binding(
+                            get: { selectedNote.content },
+                            set: { notesMgr.updateContent($0) }
+                        )
+                    )
+                    .font(.system(size: 13, design: .monospaced))
+                    .foregroundColor(.white)
+                    .scrollContentBackground(.hidden)
+                    .background(Color.clear)
+
+                    // Footer bar
+                    HStack {
+                        HStack(spacing: 4) {
+                            Circle().fill(Color.green).frame(width: 5, height: 5)
+                            Text("Auto-saved locally")
+                                .font(.system(size: 10))
+                                .foregroundColor(.white.opacity(0.5))
+                        }
+                        Spacer()
+                        Text("\(selectedNote.content.count) chars")
+                            .font(.system(size: 10, design: .monospaced))
+                            .foregroundColor(.white.opacity(0.4))
+                    }
+                    .padding(.top, 4)
+                } else {
+                    Spacer()
+                    Text("Select or create a note")
+                        .font(.system(size: 12))
+                        .foregroundColor(.white.opacity(0.4))
+                    Spacer()
+                }
+            }
+            .padding(14)
+        }
+    }
+
+    private func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        formatter.dateStyle = .none
+        return formatter.string(from: date)
+    }
+}
+
+// MARK: - SETTINGS VIEW (Renamed from Customizer; Aesthetics renamed to Style; Theme previews; Key section removed)
 public struct SettingsView: View {
     @ObservedObject var appState = AppState.shared
-    @State private var inputKey: String = ""
-    @State private var activationStatus: String? = nil
 
     public var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: 14) {
-                // ROW 1: THEME, GLASS & ACCENT CONTROLS
+                // SECTION 1: STYLE (With Interactive Visual Previews for Themes)
                 VStack(alignment: .leading, spacing: 10) {
-                    Text("Liquid Glass Theme & Aesthetics")
-                        .font(.system(size: 11, weight: .bold))
-                        .foregroundColor(.white.opacity(0.5))
-                        .textCase(.uppercase)
+                    HStack {
+                        Text("Style")
+                            .font(.system(size: 11, weight: .bold))
+                            .foregroundColor(.white.opacity(0.5))
+                            .textCase(.uppercase)
+                        Spacer()
+                        Text("Interactive Theme Previews")
+                            .font(.system(size: 10))
+                            .foregroundColor(appState.currentTheme.primaryAccent)
+                    }
 
-                    // Theme selector chips
-                    HStack(spacing: 8) {
+                    // Visual theme preview cards
+                    HStack(spacing: 10) {
                         ForEach(GlassTheme.allCases) { theme in
                             let isSelected = appState.currentTheme == theme
                             Button(action: {
-                                appState.currentTheme = theme
-                            }) {
-                                HStack(spacing: 6) {
-                                    Circle()
-                                        .fill(theme.primaryAccent)
-                                        .frame(width: 8, height: 8)
-                                    Text(theme.rawValue)
-                                        .font(.system(size: 11, weight: isSelected ? .bold : .medium))
+                                withAnimation(.spring(response: 0.25, dampingFraction: 0.75)) {
+                                    appState.currentTheme = theme
                                 }
-                                .padding(.horizontal, 10)
-                                .padding(.vertical, 6)
-                                .background(isSelected ? theme.primaryAccent.opacity(0.25) : Color.white.opacity(0.06))
-                                .cornerRadius(8)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .stroke(isSelected ? theme.primaryAccent.opacity(0.6) : Color.clear, lineWidth: 1)
-                                )
-                                .foregroundColor(isSelected ? .white : .white.opacity(0.7))
+                            }) {
+                                VStack(spacing: 6) {
+                                    // Visual preview chip showing actual gradient and accent glow
+                                    ZStack {
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .fill(theme.backgroundGradient)
+                                            .frame(height: 48)
+
+                                        Circle()
+                                            .fill(theme.primaryAccent)
+                                            .frame(width: 14, height: 14)
+                                            .shadow(color: theme.primaryAccent.opacity(0.8), radius: 6)
+                                    }
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .stroke(
+                                                isSelected ? theme.primaryAccent : Color.white.opacity(0.12),
+                                                lineWidth: isSelected ? 2 : 1
+                                            )
+                                    )
+
+                                    Text(theme.rawValue)
+                                        .font(.system(size: 10, weight: isSelected ? .bold : .medium))
+                                        .foregroundColor(isSelected ? .white : .white.opacity(0.65))
+                                        .lineLimit(1)
+                                }
+                                .padding(6)
+                                .background(isSelected ? theme.primaryAccent.opacity(0.12) : Color.white.opacity(0.03))
+                                .cornerRadius(10)
                             }
                             .buttonStyle(.plain)
                         }
@@ -113,12 +404,18 @@ public struct SettingsView: View {
                         }
                     }
                     .padding(.top, 4)
+
+                    // Edge Motion Flair Toggle
+                    Toggle("Glowing Edge Flair in Motion on Hover", isOn: $appState.showEdgeMotionFlair)
+                        .font(.system(size: 11, weight: .medium))
+                        .foregroundColor(.white)
+                        .padding(.top, 2)
                 }
                 .padding(14)
                 .background(Color.white.opacity(0.04))
                 .cornerRadius(12)
 
-                // ROW 2: HUD SIZING & INTERACTION BEHAVIOR
+                // SECTION 2: TRIGGER & INTERACTION
                 HStack(alignment: .top, spacing: 14) {
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Trigger & Interaction")
@@ -177,9 +474,9 @@ public struct SettingsView: View {
                             .textCase(.uppercase)
 
                         VStack(spacing: 6) {
-                            sizePresetButton(title: "Compact", sizeText: "680 × 480 pt", w: 680, h: 480)
-                            sizePresetButton(title: "Balanced (Recommended)", sizeText: "750 × 540 pt", w: 750, h: 540)
-                            sizePresetButton(title: "Expanded Studio", sizeText: "820 × 580 pt", w: 820, h: 580)
+                            sizePresetButton(title: "Compact", sizeText: "720 × 490 pt", w: 720, h: 490)
+                            sizePresetButton(title: "Balanced (Recommended)", sizeText: "780 × 550 pt", w: 780, h: 550)
+                            sizePresetButton(title: "Expanded Studio", sizeText: "840 × 600 pt", w: 840, h: 600)
                         }
                     }
                     .frame(maxWidth: .infinity)
@@ -188,27 +485,20 @@ public struct SettingsView: View {
                     .cornerRadius(10)
                 }
 
-                // ROW 3: LICENSE KEY & KEYCHAIN
+                // Info Footer
                 HStack {
-                    VStack(alignment: .leading, spacing: 3) {
-                        HStack(spacing: 6) {
-                            Circle().fill(Color.green).frame(width: 7, height: 7)
-                            Text("AuraNotch Pro · Lifetime VIP Activated")
-                                .font(.system(size: 12, weight: .bold))
-                                .foregroundColor(.white)
-                        }
-                        Text("Key: \(appState.licenseKey) · Stored securely in macOS Keychain")
-                            .font(.system(size: 10, design: .monospaced))
-                            .foregroundColor(.white.opacity(0.5))
+                    HStack(spacing: 6) {
+                        Circle().fill(Color.green).frame(width: 6, height: 6)
+                        Text("AuraNotch Pro · Version 2.5.0")
+                            .font(.system(size: 11, weight: .semibold))
+                            .foregroundColor(.white.opacity(0.8))
                     }
                     Spacer()
-                    Text("Version 2.5.0")
+                    Text("100% On-Device · Private by Design")
                         .font(.system(size: 10))
                         .foregroundColor(.white.opacity(0.4))
                 }
-                .padding(12)
-                .background(Color.white.opacity(0.04))
-                .cornerRadius(10)
+                .padding(.horizontal, 6)
             }
             .padding(14)
         }
@@ -231,7 +521,7 @@ public struct SettingsView: View {
             }
             .padding(.horizontal, 10)
             .padding(.vertical, 6)
-            .background(isCurrent ? Color.purple.opacity(0.3) : Color.white.opacity(0.05))
+            .background(isCurrent ? appState.currentTheme.primaryAccent.opacity(0.3) : Color.white.opacity(0.05))
             .cornerRadius(6)
             .foregroundColor(isCurrent ? .white : .white.opacity(0.8))
         }

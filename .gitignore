@@ -6,6 +6,7 @@
 # Swift Package Manager & App Build Outputs
 app/.build/
 app/build/
+app/.cache/
 app/.module-cache/
 .module-cache/
 .build/
