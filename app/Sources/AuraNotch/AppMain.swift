@@ -52,24 +52,35 @@ public class AppDelegate: NSObject, NSApplicationDelegate {
     private func createMonochromeNotchIcon() -> NSImage {
         let size = NSSize(width: 18, height: 18)
         let image = NSImage(size: size, flipped: false) { rect in
-            // Outer miniature camera notch bezel
-            let notchRect = NSRect(x: 2, y: 5.5, width: 14, height: 8)
-            let notchPath = NSBezierPath(roundedRect: notchRect, xRadius: 2.5, yRadius: 2.5)
-            NSColor.black.setFill()
-            notchPath.fill()
+            guard let ctx = NSGraphicsContext.current?.cgContext else { return false }
 
-            // Miniature camera lens aperture cutout
-            let lensRect = NSRect(x: 7.5, y: 8, width: 3, height: 3)
-            let lensPath = NSBezierPath(ovalIn: lensRect)
-            NSColor.clear.setFill()
-            lensPath.fill()
+            ctx.setAllowsAntialiasing(true)
+            ctx.setShouldAntialias(true)
 
-            // Micro LED indicator dot
-            let ledRect = NSRect(x: 12.2, y: 8.8, width: 1.6, height: 1.6)
-            let ledPath = NSBezierPath(ovalIn: ledRect)
-            NSColor.clear.setFill()
-            ledPath.fill()
+            // Sleek MacBook Display Notch silhouette (vertically centered in 18x18 frame)
+            let notchRect = CGRect(x: 1.5, y: 4.5, width: 15.0, height: 9.0)
+            let notchPath = CGPath(roundedRect: notchRect, cornerWidth: 2.5, cornerHeight: 2.5, transform: nil)
 
+            ctx.setFillColor(NSColor.black.cgColor)
+            ctx.addPath(notchPath)
+            ctx.fillPath()
+
+            // True transparent aperture punch-outs via .clear blend mode
+            ctx.setBlendMode(.clear)
+
+            // Ambient light sensor micro cutout (left)
+            let sensorRect = CGRect(x: 3.8, y: 8.4, width: 1.4, height: 1.4)
+            ctx.fillEllipse(in: sensorRect)
+
+            // Main FaceTime camera lens cutout (center)
+            let lensRect = CGRect(x: 7.5, y: 7.5, width: 3.0, height: 3.0)
+            ctx.fillEllipse(in: lensRect)
+
+            // Status LED micro indicator cutout (right)
+            let ledRect = CGRect(x: 12.4, y: 8.3, width: 1.6, height: 1.6)
+            ctx.fillEllipse(in: ledRect)
+
+            ctx.setBlendMode(.normal)
             return true
         }
         image.isTemplate = true

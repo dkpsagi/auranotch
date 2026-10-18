@@ -25,10 +25,10 @@ public struct OnboardingLicenseView: View {
                 VStack(spacing: 16) {
                     Spacer()
 
-                    // Mascot Icon (Waving 3D Holographic Character)
-                    mascotAvatarView
-                        .scaleEffect(mascotWiggle ? 1.05 : 1.0)
-                        .animation(.easeInOut(duration: 1.6).repeatForever(autoreverses: true), value: mascotWiggle)
+                    // Authentic AuraNotch App Icon with radiant ambient glow
+                    appIconView
+                        .scaleEffect(mascotWiggle ? 1.03 : 1.0)
+                        .animation(.easeInOut(duration: 2.0).repeatForever(autoreverses: true), value: mascotWiggle)
                         .onAppear { mascotWiggle = true }
 
                     if currentStep == .welcome {
@@ -68,7 +68,8 @@ public struct OnboardingLicenseView: View {
                         featureRow(icon: "gauge.with.needle", title: "Live AI Limits (Claude, Cursor, Copilot)", color: .indigo)
                         featureRow(icon: "text.alignleft", title: "Under-Camera Teleprompter", color: .teal)
                         featureRow(icon: "tray.and.arrow.down", title: "Drag & Drop File Shelf", color: .blue)
-                        featureRow(icon: "chart.line.uptrend.xyaxis", title: "Unified Sales & Revenue Tracker", color: .green)
+                        featureRow(icon: "video.fill", title: "FaceTime HD Camera Mirror", color: .green)
+                        featureRow(icon: "note.text", title: "Multi-Note Manager & Scratchpad", color: .teal)
                         featureRow(icon: "eyedropper", title: "Screen Eyedropper & Vector QR", color: .purple)
                     }
 
@@ -170,7 +171,7 @@ public struct OnboardingLicenseView: View {
             }
 
             VStack(spacing: 10) {
-                // Input Row: License Key Field + Activate Button
+                // Input Row: License Key Field + Paste + Activate Button
                 HStack(spacing: 8) {
                     ZStack(alignment: .leading) {
                         if licenseKeyInput.isEmpty {
@@ -192,6 +193,22 @@ public struct OnboardingLicenseView: View {
                         RoundedRectangle(cornerRadius: 8)
                             .stroke(Color.white.opacity(0.15), lineWidth: 1)
                     )
+
+                    // 1-Click Paste from Clipboard
+                    Button(action: {
+                        if let clipboard = NSPasteboard.general.string(forType: .string) {
+                            licenseKeyInput = clipboard.trimmingCharacters(in: .whitespacesAndNewlines)
+                        }
+                    }) {
+                        Image(systemName: "doc.on.clipboard")
+                            .font(.system(size: 12))
+                            .foregroundColor(.white.opacity(0.8))
+                            .frame(width: 36, height: 36)
+                            .background(Color.white.opacity(0.12))
+                            .cornerRadius(8)
+                    }
+                    .buttonStyle(.plain)
+                    .help("Paste key from clipboard")
 
                     Button(action: {
                         isActivating = true
@@ -228,14 +245,14 @@ public struct OnboardingLicenseView: View {
                     .foregroundColor(.green)
                 }
 
-                // "No license? Get AuraNotch ↗"
+                // "No license? Get AuraNotch Pro ↗"
                 HStack(spacing: 4) {
                     Text("No license?")
                         .font(.system(size: 11))
                         .foregroundColor(.white.opacity(0.5))
 
                     Button(action: {
-                        if let url = URL(string: "https://auranotch.app/#pricing") {
+                        if let url = URL(string: "https://polar.sh/auranotch/products/3bf7dac4-4912-4736-b110-f3028e2904bb") {
                             NSWorkspace.shared.open(url)
                         }
                     }) {
@@ -254,12 +271,12 @@ public struct OnboardingLicenseView: View {
 
                 // Quick Paste Master Demo Key Shortcut for Easy Testing
                 Button(action: {
-                    licenseKeyInput = "AURA-PRO-2026-LIFETIME-VIP"
+                    licenseKeyInput = "AURA-PRO-A9DE-63D2-VIP"
                     _ = licenseMgr.activateKey(licenseKeyInput)
                 }) {
                     Text("Quick-Fill Lifetime Demo Key")
                         .font(.system(size: 9))
-                        .foregroundColor(.purple.opacity(0.8))
+                        .foregroundColor(.purple.opacity(0.85))
                 }
                 .buttonStyle(.plain)
                 .padding(.top, 2)
@@ -267,85 +284,59 @@ public struct OnboardingLicenseView: View {
         }
     }
 
-    // --- 3D MASCOT AVATAR (Adorable Blue Character Waving) ---
-    private var mascotAvatarView: some View {
+    // --- AUTHENTIC AURANOTCH APP ICON WITH RADIANT AURA GLOW ---
+    private var appIconView: some View {
         ZStack {
             // Ambient Aura Glow
             Circle()
                 .fill(
                     RadialGradient(
-                        colors: [Color.blue.opacity(0.4), Color.purple.opacity(0.2), Color.clear],
+                        colors: [Color.purple.opacity(0.5), Color.blue.opacity(0.3), Color.clear],
                         center: .center,
-                        startRadius: 5,
-                        endRadius: 40
+                        startRadius: 6,
+                        endRadius: 48
                     )
                 )
-                .frame(width: 80, height: 80)
+                .frame(width: 90, height: 90)
 
-            // Mascot Body (Layered Glossy Blue Sphere & Ears)
-            ZStack {
-                // Ears / Antennas
-                HStack(spacing: 36) {
-                    Circle()
-                        .fill(LinearGradient(colors: [Color.cyan, Color.blue], startPoint: .top, endPoint: .bottom))
-                        .frame(width: 16, height: 16)
-                    Circle()
-                        .fill(LinearGradient(colors: [Color.cyan, Color.blue], startPoint: .top, endPoint: .bottom))
-                        .frame(width: 16, height: 16)
-                }
-                .offset(y: -22)
-
-                // Head
-                RoundedRectangle(cornerRadius: 22, style: .continuous)
+            if let img = NSImage(named: "AppIcon") ?? NSApp.applicationIconImage {
+                Image(nsImage: img)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 68, height: 68)
+                    .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 15, style: .continuous)
+                            .stroke(
+                                LinearGradient(
+                                    colors: [Color.white.opacity(0.4), Color.white.opacity(0.1)],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                ),
+                                lineWidth: 1
+                            )
+                    )
+                    .shadow(color: Color.purple.opacity(0.5), radius: 10, x: 0, y: 5)
+            } else {
+                // High-fidelity fallback squircle
+                RoundedRectangle(cornerRadius: 15, style: .continuous)
                     .fill(
                         LinearGradient(
-                            colors: [Color(red: 0.25, green: 0.65, blue: 1.0), Color(red: 0.10, green: 0.40, blue: 0.95)],
+                            colors: [Color(red: 0.15, green: 0.08, blue: 0.28), Color(red: 0.03, green: 0.03, blue: 0.07)],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         )
                     )
-                    .frame(width: 58, height: 50)
-                    .shadow(color: Color.blue.opacity(0.4), radius: 6, x: 0, y: 4)
-
-                // White Face Visor
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .fill(Color.white.opacity(0.92))
-                    .frame(width: 44, height: 32)
-
-                // Big Kawaii Eyes
-                HStack(spacing: 12) {
-                    Circle()
-                        .fill(Color(red: 0.05, green: 0.15, blue: 0.35))
-                        .frame(width: 7, height: 7)
-                        .overlay(
-                            Circle().fill(Color.white).frame(width: 2.5, height: 2.5).offset(x: -1, y: -1)
-                        )
-                    Circle()
-                        .fill(Color(red: 0.05, green: 0.15, blue: 0.35))
-                        .frame(width: 7, height: 7)
-                        .overlay(
-                            Circle().fill(Color.white).frame(width: 2.5, height: 2.5).offset(x: -1, y: -1)
-                        )
-                }
-                .offset(y: -2)
-
-                // Smile
-                Circle()
-                    .trim(from: 0.15, to: 0.85)
-                    .stroke(Color(red: 0.05, green: 0.15, blue: 0.35), lineWidth: 1.5)
-                    .frame(width: 9, height: 7)
-                    .rotationEffect(.degrees(180))
-                    .offset(y: 8)
-
-                // Waving Hand
-                Circle()
-                    .fill(Color.cyan)
-                    .frame(width: 14, height: 14)
-                    .offset(x: 32, y: -14)
-                    .rotationEffect(.degrees(mascotWiggle ? 15 : -10))
+                    .frame(width: 68, height: 68)
+                    .overlay(
+                        Capsule()
+                            .fill(Color.black)
+                            .frame(width: 34, height: 13)
+                    )
+                    .shadow(color: Color.purple.opacity(0.4), radius: 8, x: 0, y: 4)
             }
         }
-        .frame(height: 70)
+        .frame(height: 76)
     }
 
     private func featureRow(icon: String, title: String, color: Color) -> some View {

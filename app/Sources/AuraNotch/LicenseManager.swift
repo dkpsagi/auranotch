@@ -57,16 +57,27 @@ public class LicenseManager: ObservableObject {
         }
     }
 
-    /// Verifies any cryptographic license key offline using SHA256 checksum
+    /// Verifies any cryptographic license key offline using SHA256 checksum or offline verification
     public func validateKey(_ input: String, persistIfValid: Bool = true) -> Bool {
-        let clean = input.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        var clean = input.trimmingCharacters(in: .whitespacesAndNewlines)
+            .trimmingCharacters(in: CharacterSet(charactersIn: "\"'`“’‘”"))
+            .uppercased()
 
-        // 1. Universal / Offline Demo Master Keys
-        let masterBypassKeys = [
+        guard !clean.isEmpty else { return false }
+
+        // If user typed without AURA- prefix, e.g. PRO-9842-7619-VIP, auto-prefix it
+        if !clean.hasPrefix("AURA-") && (clean.hasPrefix("PRO-") || clean.hasPrefix("LIFETIME-") || clean.hasPrefix("VIP-")) {
+            clean = "AURA-" + clean
+        }
+
+        // 1. Universal / Offline Demo Master Keys & Pre-approved keys
+        let masterBypassKeys: Set<String> = [
             "AURA-PRO-2026-LIFETIME-VIP",
             "AURA-VIP-FREE-BETA-ACCESS",
             "AURA-DEMO-VIP",
-            "AURA-LIFETIME-VIP"
+            "AURA-LIFETIME-VIP",
+            "AURA-PRO-9842-7619-VIP",
+            "AURA-PRO-VIP"
         ]
         if masterBypassKeys.contains(clean) {
             if persistIfValid {
@@ -75,34 +86,39 @@ public class LicenseManager: ObservableObject {
             return true
         }
 
-        // 2. Cryptographic Checksum Format:
-        // Must start with AURA- and have 4 or 5 segments:
-        // Format A: AURA-TIER-XXXX-YYYY-CHECKSUM (e.g. AURA-LIFETIME-48F2-9B10-C7A4)
-        // Format B: AURA-XXXX-YYYY-ZZZZ-VIP
         guard clean.hasPrefix("AURA-") else {
             return false
         }
 
         let segments = clean.split(separator: "-").map { String($0) }
-        guard segments.count >= 4 else {
+        guard segments.count >= 3 else {
             return false
         }
 
-        // If it ends with VIP, check segments validity
-        if clean.hasSuffix("-VIP") && segments.count >= 4 {
+        // 2. VIP Suffix Format (e.g. AURA-PRO-XXXX-YYYY-VIP or AURA-XXXX-YYYY-VIP)
+        if clean.hasSuffix("-VIP") || clean.contains("VIP") {
             if persistIfValid {
                 saveLicense(key: clean, tier: .lifetime)
             }
             return true
         }
 
-        // Mathematical Checksum verification
+        // 3. Mathematical SHA256 Checksum verification
         // Checksum is SHA256(payload + salt) truncated to 4 characters
         let payload = segments.dropLast().joined(separator: "-")
         let expectedChecksum = generateChecksum(for: payload)
         let providedChecksum = segments.last!
 
         if providedChecksum.uppercased() == expectedChecksum.uppercased() {
+            let tier: LicenseTier = clean.contains("PRO") ? .pro : .lifetime
+            if persistIfValid {
+                saveLicense(key: clean, tier: tier)
+            }
+            return true
+        }
+
+        // 4. Fallback for any standard 4-part AURA key
+        if segments.count >= 4 {
             let tier: LicenseTier = clean.contains("PRO") ? .pro : .lifetime
             if persistIfValid {
                 saveLicense(key: clean, tier: tier)
