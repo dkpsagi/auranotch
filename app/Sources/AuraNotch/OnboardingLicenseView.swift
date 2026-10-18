@@ -252,7 +252,7 @@ public struct OnboardingLicenseView: View {
                         .foregroundColor(.white.opacity(0.5))
 
                     Button(action: {
-                        if let url = URL(string: "https://polar.sh/auranotch/products/3bf7dac4-4912-4736-b110-f3028e2904bb") {
+                        if let url = URL(string: "https://buy.polar.sh/polar_cl_kbUCiJQkgYFAtqH2LXEEHbznV6qYJ05HpuOhU1i9gUx") {
                             NSWorkspace.shared.open(url)
                         }
                     }) {

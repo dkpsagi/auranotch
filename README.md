@@ -3,7 +3,7 @@
 > **The Intelligent Camera Notch & HUD for macOS Sonoma & Sequoia**  
 > *Pure Swift · Engineered Natively on macOS with 27 Pro Tools & Zero Battery Drain.*
 
-[![License: Proprietary](https://img.shields.io/badge/License-VIP%20Lifetime-purple.svg)](https://polar.sh/auranotch/products/3bf7dac4-4912-4736-b110-f3028e2904bb)
+[![License: Proprietary](https://img.shields.io/badge/License-VIP%20Lifetime-purple.svg)](https://buy.polar.sh/polar_cl_kbUCiJQkgYFAtqH2LXEEHbznV6qYJ05HpuOhU1i9gUx)
 [![macOS 14+](https://img.shields.io/badge/macOS-14%2B%20%7C%20Sequoia%20Ready-black.svg?logo=apple)](https://dkpsagi.github.io/auranotch/)
 [![Live Web Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-blue.svg)](https://dkpsagi.github.io/auranotch/)
 [![Download DMG](https://img.shields.io/badge/Download-AuraNotch.dmg-green.svg)](https://dkpsagi.github.io/auranotch/AuraNotch.dmg)
@@ -13,10 +13,9 @@
 ## 🌐 Official Links & Deployment
 
 - **Live Landing Page & Interactive Simulator:** [https://dkpsagi.github.io/auranotch/](https://dkpsagi.github.io/auranotch/)
-- **Purchase AuraNotch Lifetime ($5.00 via Polar.sh):** [https://polar.sh/auranotch/products/3bf7dac4-4912-4736-b110-f3028e2904bb](https://polar.sh/auranotch/products/3bf7dac4-4912-4736-b110-f3028e2904bb)
+- **Purchase AuraNotch Lifetime ($5.00 via Polar.sh):** [https://buy.polar.sh/polar_cl_kbUCiJQkgYFAtqH2LXEEHbznV6qYJ05HpuOhU1i9gUx](https://buy.polar.sh/polar_cl_kbUCiJQkgYFAtqH2LXEEHbznV6qYJ05HpuOhU1i9gUx)
 - **Order Success & License Key Page:** [https://dkpsagi.github.io/auranotch/success/](https://dkpsagi.github.io/auranotch/success/)
 - **Direct Installer Download:** [AuraNotch.dmg](https://dkpsagi.github.io/auranotch/AuraNotch.dmg)
-- **Stripe Express Settlement:** `acct_1URjvqDTuPR7hHvr`
 
 ---
 

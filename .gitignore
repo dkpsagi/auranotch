@@ -19,3 +19,9 @@ node_modules/
 .env
 .env.local
 .vercel/
+
+# Private License Keys & Spreadsheets
+*.csv
+*License_Keys*
+*license_keys*
+AuraNotch_License_Keys.csv
