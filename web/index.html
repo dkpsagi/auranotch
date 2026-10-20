@@ -100,35 +100,6 @@
             border-radius: 9999px;
         }
 
-        /* Authentic MacBook Camera Notch Cutout Geometry */
-        .macbook-notch-base {
-            background: #000000;
-            position: relative;
-            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.85);
-        }
-        .notch-ears {
-            position: relative;
-        }
-        .notch-ears::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -10px;
-            width: 10px;
-            height: 10px;
-            background: radial-gradient(circle at 0 100%, transparent 10px, #000000 10.5px);
-            pointer-events: none;
-        }
-        .notch-ears::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: -10px;
-            width: 10px;
-            height: 10px;
-            background: radial-gradient(circle at 100% 100%, transparent 10px, #000000 10.5px);
-            pointer-events: none;
-        }
         /* macOS Sequoia Wallpaper Mesh Gradient */
         .sequoia-wallpaper {
             background: 
@@ -219,39 +190,19 @@
 
     <!-- LIVE INTERACTIVE NOTCH SIMULATOR INSIDE REAL MACOS SEQUOIA DESKTOP -->
     <section id="interactive-demo" class="py-12 px-4 max-w-6xl mx-auto">
-        <div class="text-center mb-6">
+        <div class="text-center mb-8">
             <h2 class="text-xs uppercase tracking-widest text-purple-400 font-semibold mb-2">Live Web Simulator</h2>
             <h3 class="text-2xl sm:text-3xl font-bold">Experience the Notch in your browser right now</h3>
             <p class="text-sm text-apple-subtext mt-1">Hover or click the camera notch below to test the vertical sidebar, glowing border motion flair, and live tools.</p>
         </div>
 
-        <!-- Live Simulator Controls & State Switcher -->
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 bg-neutral-900/60 border border-white/10 rounded-2xl p-3 px-4 backdrop-blur-md">
-            <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></span>
-                <span class="text-xs font-semibold text-white">Live Simulator Mode:</span>
-                <span id="simulator-mode-badge" class="text-xs text-purple-300 font-mono">Resting Camera Notch (Closed)</span>
-            </div>
-            
-            <div class="flex items-center gap-2">
-                <button onclick="setSimulatorState(false)" id="sim-state-btn-collapsed" class="px-3.5 py-1.5 rounded-xl bg-purple-600 text-white font-bold text-xs shadow-md shadow-purple-600/30 transition-all flex items-center gap-1.5">
-                    <span>✨</span>
-                    <span>Resting Camera Notch (Image 2)</span>
-                </button>
-                <button onclick="setSimulatorState(true)" id="sim-state-btn-expanded" class="px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-white/70 hover:text-white font-medium text-xs transition-all flex items-center gap-1.5">
-                    <span>🖥</span>
-                    <span>Mission Control HUD (Image 1)</span>
-                </button>
-            </div>
-        </div>
-
         <!-- Simulated MacBook Pro Aluminum Screen Bezel -->
         <div class="relative rounded-t-3xl border-8 border-b-0 border-neutral-800 shadow-2xl overflow-hidden min-h-[660px] flex flex-col justify-between sequoia-wallpaper">
             
-            <!-- Authentic Apple macOS Top Menu Bar (Image 2) -->
+            <!-- Authentic Apple macOS Top Menu Bar -->
             <div class="w-full h-8 bg-black/40 backdrop-blur-xl border-b border-white/10 px-4 flex items-center justify-between text-xs text-white/90 select-none z-40 relative">
                 <!-- Left Menu Items -->
-                <div class="flex items-center gap-3 text-[11px] font-medium">
+                <div class="flex items-center gap-3.5 text-[11px] font-medium">
                     <span class="text-sm font-semibold cursor-default"></span>
                     <span class="font-bold cursor-default">Finder</span>
                     <span class="hidden sm:inline cursor-default text-white/70 hover:text-white">File</span>
@@ -260,23 +211,12 @@
                     <span class="hidden md:inline cursor-default text-white/70 hover:text-white">Go</span>
                     <span class="hidden md:inline cursor-default text-white/70 hover:text-white">Window</span>
                     <span class="hidden md:inline cursor-default text-white/70 hover:text-white">Help</span>
-                    <span class="hidden lg:inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-white/10 text-[9px] font-mono text-purple-300 font-bold border border-white/10">48</span>
-                    <span class="hidden lg:inline text-white/50 text-[10px]">≡</span>
-                    <span class="hidden lg:inline text-white/50 text-[10px]">✎</span>
                 </div>
 
-                <!-- Right System Menubar Items (Matching Image 2) -->
-                <div class="flex items-center gap-2.5 text-[11px] font-medium text-white/80">
-                    <span class="cursor-pointer hover:opacity-80 transition-opacity" title="Docker Engine Active">🐳</span>
-                    <span class="cursor-pointer hover:opacity-80 transition-opacity" title="QuickTime Screen Record">⏺</span>
-                    <span class="cursor-pointer hover:opacity-80 transition-opacity text-emerald-400" title="OpenAI Copilot">✳️</span>
-                    <span class="cursor-pointer hover:opacity-80 transition-opacity" title="Media Transport Playing">▶</span>
-                    <span class="cursor-pointer hover:opacity-80 transition-opacity text-purple-400" title="AI Intelligence">✦</span>
-                    <span class="cursor-pointer hover:opacity-80 transition-opacity text-amber-400" title="Figma Desktop">❖</span>
-                    <span class="cursor-pointer hover:opacity-80 transition-opacity text-red-400" title="Megaphone / System Audio">Ⓜ️</span>
-                    
-                    <!-- Monochrome AuraNotch Status Bar Shortcut Icon -->
-                    <div class="flex items-center gap-1 px-1.5 py-0.5 rounded bg-white/10 hover:bg-white/20 cursor-pointer border border-white/10 transition-colors ml-0.5" onclick="toggleNotchSimulator()" title="Toggle AuraNotch HUD (Option+N)">
+                <!-- Right System Menubar Items -->
+                <div class="flex items-center gap-3 text-[11px] font-medium text-white/80">
+                    <!-- Monochrome AuraNotch Status Bar Icon (Requested Feature) -->
+                    <div class="flex items-center gap-1 px-1.5 py-0.5 rounded bg-white/10 hover:bg-white/20 cursor-pointer border border-white/10 transition-colors" onclick="toggleNotchSimulator()" title="Toggle AuraNotch HUD (Option+N)">
                         <svg class="w-3.5 h-3 text-white" viewBox="0 0 16 12" fill="none">
                             <path d="M0 2C0 0.89543 0.89543 0 2 0H14C15.1046 0 16 0.89543 16 2V3C16 4.10457 15.1046 5 14 5H11C9.89543 5 9 5.89543 9 7V9C9 10.1046 8.10457 11 7 11H5C3.89543 11 3 10.1046 3 9V7C3 5.89543 2.10457 5 1 5H2C0.89543 5 0 4.10457 0 3V2Z" fill="currentColor"/>
                             <circle cx="6" cy="8" r="1" fill="#22c55e"/>
@@ -284,65 +224,65 @@
                         <span class="text-[9px] font-mono text-purple-300">⌥N</span>
                     </div>
 
-                    <span class="cursor-default ml-1">100% ⚡️</span>
+                    <span class="cursor-default">100% ⚡️</span>
                     <span class="cursor-default">
                         <svg class="w-3.5 h-3.5 inline text-white/90" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L12 22l7.03-4.39C20.26 16.07 21 14.12 21 12c0-4.97-4.03-9-9-9zm0 14c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>
                     </span>
                     <span class="cursor-default">
                         <svg class="w-3.5 h-3.5 inline text-white/90" fill="currentColor" viewBox="0 0 24 24"><path d="M12 6.5a7.5 7.5 0 0 0-5.3 12.8l1.4-1.4A5.5 5.5 0 0 1 12 8.5a5.5 5.5 0 0 1 3.9 9.4l1.4 1.4A7.5 7.5 0 0 0 12 6.5z"/></svg>
                     </span>
-                    <span class="cursor-default font-mono text-[11px] whitespace-nowrap">Sun Oct 18 9:41 AM</span>
+                    <span class="cursor-default font-mono text-[11px]">Sun Oct 18 9:41 AM</span>
                 </div>
             </div>
 
-            <!-- Physical Center Hardware Camera Notch & Interactive HUD Container -->
-            <div class="absolute top-0 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center pointer-events-auto">
-                
-                <!-- STATE 1: COLLAPSED PHYSICAL HARDWARE NOTCH (Exact Image 2 replica) -->
-                <div id="notch-collapsed-pill" 
-                     class="glowing-flair-border notch-ears cursor-pointer bg-black text-white px-3.5 h-[34px] flex items-center justify-between gap-2.5 transition-all duration-300 hover:shadow-xl hover:shadow-purple-500/30 border border-t-0 border-white/20 select-none group"
-                     style="width: 210px; border-radius: 0 0 16px 16px;"
-                     onclick="toggleNotchSimulator()"
-                     title="Click or hover to expand AuraNotch HUD">
-                    <!-- Sparkle Icon -->
-                    <span class="text-purple-300 text-xs flex items-center group-hover:scale-110 transition-transform">✨</span>
-                    <!-- AuraNotch Brand Title -->
-                    <span class="font-bold text-white tracking-tight text-[12px] flex items-center gap-1.5">
-                        AuraNotch
-                    </span>
-                    <!-- Dropdown Chevron -->
-                    <svg class="w-3 h-3 text-white/70 group-hover:text-white transition-colors group-hover:translate-y-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                        <path d="M6 9l6 6 6-6"/>
-                    </svg>
-                </div>
+            <!-- Physical Center Camera Cut-Out & AuraNotch Simulator -->
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center">
+                <!-- Interactive Notch Element with Glowing Motion Flair Border -->
+                <div id="sim-notch" 
+                     class="glowing-flair-border group cursor-pointer transition-all duration-300 ease-out bg-black border border-white/20 notch-shadow flex flex-col items-center overflow-hidden"
+                     style="width: 250px; height: 38px; border-radius: 0 0 20px 20px;"
+                     onclick="toggleNotchSimulator()">
+                    
+                    <!-- Closed State Header (Inside Notch) -->
+                    <div id="notch-collapsed-content" class="w-full h-[38px] flex items-center justify-between px-3 text-xs">
+                        <div class="flex items-center gap-1 text-purple-400">
+                            <span class="inline-block w-1.5 h-3 bg-purple-500 rounded-full animate-bounce"></span>
+                            <span class="inline-block w-1.5 h-4 bg-purple-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></span>
+                            <span class="inline-block w-1.5 h-2 bg-purple-600 rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-black border border-white/40 flex items-center justify-center">
+                                <span class="w-1 h-1 rounded-full bg-green-500"></span>
+                            </span>
+                            <span id="sim-notch-title" class="font-semibold text-white/90 text-[11px]">AuraNotch Pro</span>
+                        </div>
+                        <div class="text-purple-300 font-mono text-[10px] bg-white/5 px-1.5 py-0.5 rounded border border-white/10">
+                            ⌥N
+                        </div>
+                    </div>
 
-                <!-- STATE 2: EXPANDED MISSION CONTROL HUD (Exact Image 1 replica) -->
-                <div id="notch-expanded-hud"
-                     class="hidden glowing-flair-border flex-col bg-neutral-950/95 backdrop-blur-2xl text-white p-3 pt-2 text-left border border-white/15 notch-shadow transition-all duration-300 select-none"
-                     style="width: 780px; max-width: 95vw; height: 500px; border-radius: 0 0 22px 22px;">
-                     
-                     <!-- Top Clearance & Title Bar -->
-                     <div class="flex items-center justify-between border-b border-white/10 pb-2 mb-2 text-xs">
-                         <div class="flex items-center gap-2">
-                             <span class="w-2 h-2 rounded-full bg-purple-500 shadow-sm shadow-purple-500/50"></span>
-                             <span id="expanded-active-title" class="font-bold text-white text-xs">Home Dashboard</span>
-                             <span class="text-[10px] text-white/40 font-mono">· Native Swift</span>
-                         </div>
+                    <!-- Expanded State Container (Left Vertical Sidebar + Right Content Area) -->
+                    <div id="notch-expanded-content" class="hidden w-full flex-col h-full p-3 pt-2 text-left select-none">
+                        <!-- Top Clearance & Title Bar -->
+                        <div class="flex items-center justify-between border-b border-white/10 pb-2 mb-2 text-xs">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-purple-500 shadow-sm shadow-purple-500/50"></span>
+                                <span id="expanded-active-title" class="font-bold text-white text-xs">Home Dashboard</span>
+                                <span class="text-[10px] text-white/40 font-mono">· Native Swift</span>
+                            </div>
 
-                         <!-- Physical Camera Notch Mockup in Center -->
-                         <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-black border border-white/15 text-[10px] text-white/70 shadow-inner">
-                             <span class="w-2.5 h-2.5 rounded-full bg-neutral-900 border border-white/30 flex items-center justify-center">
-                                 <span class="w-1 h-1 rounded-full bg-blue-900"></span>
-                             </span>
-                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-sm shadow-emerald-400/50"></span>
-                             <span class="font-medium">FaceTime HD Camera</span>
-                         </div>
+                            <!-- Physical Camera Notch Mockup in Center -->
+                            <div class="flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-neutral-900 border border-white/10 text-[10px] text-white/60">
+                                <span class="w-2 h-2 rounded-full bg-black border border-white/30"></span>
+                                <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                <span>FaceTime HD Camera</span>
+                            </div>
 
-                         <div class="flex items-center gap-2.5">
-                             <span class="text-[10px] px-2 py-0.5 rounded bg-green-500/20 text-green-400 font-semibold border border-green-500/30">VIP Lifetime</span>
-                             <button onclick="event.stopPropagation(); toggleNotchSimulator()" class="w-5 h-5 rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white flex items-center justify-center text-xs font-bold transition-colors" title="Collapse Notch">&times;</button>
-                         </div>
-                     </div>
+                            <div class="flex items-center gap-2.5">
+                                <span class="text-[10px] px-2 py-0.5 rounded bg-green-500/20 text-green-400 font-semibold border border-green-500/30">VIP Lifetime</span>
+                                <button onclick="event.stopPropagation(); toggleNotchSimulator()" class="w-5 h-5 rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white flex items-center justify-center text-xs font-bold transition-colors">&times;</button>
+                            </div>
+                        </div>
 
                         <!-- 2-COLUMN LAYOUT: LEFT VERTICAL SIDEBAR + RIGHT CONTENT AREA -->
                         <div class="flex-1 flex gap-3 overflow-hidden">
@@ -920,7 +860,7 @@
             </div>
 
             <!-- MacBook Desktop Environment (Icons on right of wallpaper) -->
-            <div id="desktop-icons-container" class="flex-1 p-8 flex justify-end items-start pointer-events-none select-none relative z-10 transition-opacity duration-300">
+            <div class="flex-1 p-8 flex justify-end items-start pointer-events-none select-none relative z-10">
                 <div class="flex flex-col items-center gap-6 text-center">
                     <div class="flex flex-col items-center group cursor-pointer pointer-events-auto">
                         <div class="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-2xl shadow-lg">
@@ -971,75 +911,6 @@
                     </div>
                     <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-neutral-600 to-neutral-800 flex items-center justify-center text-xl shadow-md cursor-pointer hover:scale-110 transition-transform">
                         ⚙️
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- DUAL DISPLAY ARCHITECTURE: PHYSICAL NOTCH VS DYNAMIC ISLAND -->
-    <section class="py-14 max-w-6xl mx-auto px-4 sm:px-6">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
-            
-            <!-- Left: Physical Camera Notch Mode -->
-            <div class="glass-panel rounded-3xl p-6 sm:p-8 border border-white/10 relative overflow-hidden group hover:border-purple-500/40 transition-all flex flex-col justify-between">
-                <div>
-                    <div class="w-10 h-10 rounded-2xl bg-purple-500/20 text-purple-300 flex items-center justify-center text-xl mb-4 border border-purple-500/30">
-                        ✨
-                    </div>
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="text-xs font-bold text-purple-400 uppercase tracking-widest">Hardware Mode</span>
-                        <span class="text-[9px] font-bold px-2 py-0.5 rounded bg-green-500/20 text-green-400 border border-green-500/30">ZERO PIXELS WASTED</span>
-                    </div>
-                    <h3 class="text-xl sm:text-2xl font-bold text-white mb-3">Seamless Physical Camera Notch Integration</h3>
-                    <p class="text-xs sm:text-sm text-apple-subtext leading-relaxed mb-6">
-                        On MacBook Pro (14" / 16") and MacBook Air (M2 / M3), AuraNotch rests completely invisible inside the black camera bezel until your cursor hovers. Liquid spring physics smoothly expand the housing into an expansive 27-in-1 mission control.
-                    </p>
-                </div>
-                <div class="rounded-2xl bg-black/60 border border-white/10 p-4 space-y-2">
-                    <div class="flex items-center justify-between text-xs text-white/70">
-                        <span>Resting Height:</span>
-                        <span class="font-mono text-purple-300 font-bold">34px (Hardware Bezel Flush)</span>
-                    </div>
-                    <div class="flex items-center justify-between text-xs text-white/70">
-                        <span>Expanded HUD:</span>
-                        <span class="font-mono text-white font-bold">780px × 500px Native Panel</span>
-                    </div>
-                    <div class="flex items-center justify-between text-xs text-white/70">
-                        <span>Hover Latency:</span>
-                        <span class="font-mono text-green-400 font-bold">0.0ms (Hardware Accelerated)</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Right: Dynamic Island Mode for Notch-less Macs -->
-            <div class="glass-panel rounded-3xl p-6 sm:p-8 border border-white/10 relative overflow-hidden group hover:border-blue-500/40 transition-all flex flex-col justify-between">
-                <div>
-                    <div class="w-10 h-10 rounded-2xl bg-blue-500/20 text-blue-300 flex items-center justify-center text-xl mb-4 border border-blue-500/30">
-                        🏝
-                    </div>
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="text-xs font-bold text-blue-400 uppercase tracking-widest">Universal Mode</span>
-                        <span class="text-[9px] font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">ALL MACS SUPPORTED</span>
-                    </div>
-                    <h3 class="text-xl sm:text-2xl font-bold text-white mb-3">Synthetic Floating Dynamic Island</h3>
-                    <p class="text-xs sm:text-sm text-apple-subtext leading-relaxed mb-6">
-                        Using an iMac, Mac mini, Mac Studio, or external Studio Display? AuraNotch automatically detects your display architecture and synthesizes an elegant, floating Dynamic Island at the top of your screen with identical tools and animations.
-                    </p>
-                </div>
-                <div class="rounded-2xl bg-black/60 border border-white/10 p-4 space-y-2">
-                    <div class="flex items-center justify-between text-xs text-white/70">
-                        <span>Auto-Detection:</span>
-                        <span class="font-mono text-blue-300 font-bold">NSScreen Hardware API</span>
-                    </div>
-                    <div class="flex items-center justify-between text-xs text-white/70">
-                        <span>Multi-Monitor:</span>
-                        <span class="font-mono text-white font-bold">Follows Active Screen Focus</span>
-                    </div>
-                    <div class="flex items-center justify-between text-xs text-white/70">
-                        <span>Battery Impact:</span>
-                        <span class="font-mono text-green-400 font-bold">0.0% CPU When Idle</span>
                     </div>
                 </div>
             </div>
@@ -1936,41 +1807,27 @@
             'settings': 'Settings & Style Themes'
         };
 
-        function setSimulatorState(expanded) {
-            isExpanded = expanded;
-            const collapsed = document.getElementById('notch-collapsed-pill');
-            const expandedHud = document.getElementById('notch-expanded-hud');
-            const btnCollapsed = document.getElementById('sim-state-btn-collapsed');
-            const btnExpanded = document.getElementById('sim-state-btn-expanded');
-            const modeBadge = document.getElementById('simulator-mode-badge');
-
-            if (isExpanded) {
-                if (collapsed) collapsed.classList.add('hidden');
-                if (expandedHud) {
-                    expandedHud.classList.remove('hidden');
-                    expandedHud.classList.add('flex');
-                }
-                if (modeBadge) modeBadge.textContent = 'Mission Control HUD (Expanded)';
-                if (btnCollapsed && btnExpanded) {
-                    btnCollapsed.className = "px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-white/70 hover:text-white font-medium text-xs transition-all flex items-center gap-1.5";
-                    btnExpanded.className = "px-3.5 py-1.5 rounded-xl bg-purple-600 text-white font-bold text-xs shadow-md shadow-purple-600/30 transition-all flex items-center gap-1.5";
-                }
-            } else {
-                if (expandedHud) {
-                    expandedHud.classList.add('hidden');
-                    expandedHud.classList.remove('flex');
-                }
-                if (collapsed) collapsed.classList.remove('hidden');
-                if (modeBadge) modeBadge.textContent = 'Resting Camera Notch (Closed)';
-                if (btnCollapsed && btnExpanded) {
-                    btnCollapsed.className = "px-3.5 py-1.5 rounded-xl bg-purple-600 text-white font-bold text-xs shadow-md shadow-purple-600/30 transition-all flex items-center gap-1.5";
-                    btnExpanded.className = "px-3.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-white/70 hover:text-white font-medium text-xs transition-all flex items-center gap-1.5";
-                }
-            }
-        }
-
         function toggleNotchSimulator() {
-            setSimulatorState(!isExpanded);
+            const notch = document.getElementById('sim-notch');
+            const collapsed = document.getElementById('notch-collapsed-content');
+            const expanded = document.getElementById('notch-expanded-content');
+
+            isExpanded = !isExpanded;
+            if (isExpanded) {
+                notch.style.width = '740px';
+                notch.style.height = '480px';
+                notch.style.borderRadius = '0 0 24px 24px';
+                collapsed.classList.add('hidden');
+                expanded.classList.remove('hidden');
+                expanded.classList.add('flex');
+            } else {
+                notch.style.width = '250px';
+                notch.style.height = '38px';
+                notch.style.borderRadius = '0 0 20px 20px';
+                collapsed.classList.remove('hidden');
+                expanded.classList.add('hidden');
+                expanded.classList.remove('flex');
+            }
         }
 
         // Set Tab & Update Vertical Sidebar
@@ -2070,21 +1927,12 @@
             isDeskClean = !isDeskClean;
             const pill = document.getElementById('sim-desk-pill');
             const text = document.getElementById('sim-desk-text');
-            const deskIcons = document.getElementById('desktop-icons-container');
             if (isDeskClean) {
                 pill.className = "px-2 py-0.5 rounded-md bg-white/[0.05] text-white/80 text-[10px] font-semibold border border-white/10 flex items-center gap-1.5 transition-all";
                 text.textContent = "Desk Clean";
-                if (deskIcons) {
-                    deskIcons.classList.add('opacity-0');
-                    deskIcons.classList.remove('opacity-100');
-                }
             } else {
-                pill.className = "px-2 py-0.5 rounded-md bg-purple-500/20 text-purple-300 text-[10px] font-semibold border border-purple-500/30 flex items-center gap-1.5 transition-all";
+                pill.className = "px-2 py-0.5 rounded-md bg-cyan-500/20 text-cyan-300 text-[10px] font-semibold border border-cyan-500/30 flex items-center gap-1.5 transition-all";
                 text.textContent = "Icons On";
-                if (deskIcons) {
-                    deskIcons.classList.remove('opacity-0');
-                    deskIcons.classList.add('opacity-100');
-                }
             }
         }
 
