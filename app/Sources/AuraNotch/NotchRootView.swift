@@ -6,6 +6,8 @@ public struct NotchRootView: View {
     @ObservedObject var timerMgr = TimerManager.shared
     @ObservedObject var soundEngine = FocusSoundSynthesizer.shared
     @ObservedObject var licenseMgr = LicenseManager.shared
+    @ObservedObject var adhd = ADHDManager.shared
+    @State private var showMusicPopover: Bool = false
 
     public var body: some View {
         ZStack(alignment: .top) {
@@ -30,76 +32,172 @@ public struct NotchRootView: View {
         .animation(.easeInOut(duration: 0.16), value: appState.activeTab)
     }
 
-    // Closed Pill View (Hugs physical camera notch or draws floating island)
+    // MARK: - REVERSE-ENGINEERED NOTCHFLOW HARDWARE BAR (Black, Safety Orange & White)
     private var closedPillView: some View {
         HStack(spacing: 8) {
-            // Left Live Indicator
-            if media.hasActiveMedia && media.currentSong.isPlaying {
-                HStack(spacing: 2.5) {
-                    ForEach(0..<3) { i in
-                        RoundedRectangle(cornerRadius: 1)
-                            .fill(appState.currentTheme.primaryAccent)
-                            .frame(width: 2.5, height: CGFloat([8, 14, 10][i]))
+            // 1. Circular Stop Button (■)
+            Button(action: {
+                adhd.resetSprint()
+                NSSound(named: "Pop")?.play()
+            }) {
+                ZStack {
+                    Circle()
+                        .fill(Color(red: 0.12, green: 0.12, blue: 0.14))
+                        .frame(width: 24, height: 24)
+                        .overlay(Circle().stroke(Color.white.opacity(0.12), lineWidth: 0.8))
+                    RoundedRectangle(cornerRadius: 1.5)
+                        .fill(Color.white)
+                        .frame(width: 7, height: 7)
+                }
+            }
+            .buttonStyle(.plain)
+            .help("Stop / Reset Timer")
+
+            // 2. Vibrant Orange Play / Pause Button (▶ / ⏸)
+            Button(action: {
+                if adhd.isSprintActive {
+                    adhd.pauseSprint()
+                } else {
+                    adhd.startSprint()
+                }
+                NSSound(named: "Tink")?.play()
+            }) {
+                ZStack {
+                    Circle()
+                        .fill(Color(red: 1.0, green: 0.38, blue: 0.05)) // Electric Safety Orange
+                        .frame(width: 26, height: 26)
+                        .shadow(color: Color(red: 1.0, green: 0.38, blue: 0.05).opacity(0.45), radius: 5, x: 0, y: 1)
+                    Image(systemName: adhd.isSprintActive ? "pause.fill" : "play.fill")
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundColor(.white)
+                        .offset(x: adhd.isSprintActive ? 0 : 0.8)
+                }
+            }
+            .buttonStyle(.plain)
+            .help(adhd.isSprintActive ? "Pause Flow" : "Start Flow")
+
+            // 3. Digital Segment Timer with Vertical Orange Sweep Line (NotchFlow Signature)
+            GeometryReader { geo in
+                let totalSecs = max(adhd.sprintMinutes * 60, 1)
+                let elapsed = Double(totalSecs - adhd.secondsRemaining)
+                let progress = min(max(elapsed / Double(totalSecs), 0.0), 1.0)
+                let sweepX = geo.size.width * CGFloat(progress)
+
+                ZStack(alignment: .leading) {
+                    // Inset dark track
+                    RoundedRectangle(cornerRadius: 6, style: .continuous)
+                        .fill(Color(red: 0.06, green: 0.06, blue: 0.07))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 6, style: .continuous)
+                                .stroke(Color.white.opacity(0.08), lineWidth: 0.8)
+                        )
+
+                    // Subtle orange fill behind progress sweep
+                    RoundedRectangle(cornerRadius: 6, style: .continuous)
+                        .fill(
+                            LinearGradient(
+                                colors: [Color(red: 1.0, green: 0.38, blue: 0.05).opacity(0.18), Color.clear],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
+                        .frame(width: max(sweepX, 0))
+
+                    // Vertical Orange Progress Cursor Line
+                    Rectangle()
+                        .fill(Color(red: 1.0, green: 0.38, blue: 0.05))
+                        .frame(width: 2, height: geo.size.height - 4)
+                        .offset(x: max(sweepX - 1, 2))
+                        .shadow(color: Color(red: 1.0, green: 0.38, blue: 0.05).opacity(0.85), radius: 2)
+
+                    // Countdown text centered in crisp mono white
+                    HStack {
+                        Spacer()
+                        Text(timeString(from: adhd.secondsRemaining))
+                            .font(.system(size: 14, weight: .bold, design: .monospaced))
+                            .foregroundColor(.white)
+                            .tracking(1.0)
+                        Spacer()
                     }
                 }
-                .padding(.leading, 10)
-            } else if soundEngine.isPlaying {
-                Image(systemName: "headphones")
-                    .font(.system(size: 10))
-                    .foregroundColor(.orange)
-                    .padding(.leading, 10)
-            } else {
-                Image(systemName: "sparkles")
-                    .font(.system(size: 10))
-                    .foregroundColor(.white.opacity(0.6))
-                    .padding(.leading, 10)
+            }
+            .frame(width: 95, height: 24)
+
+            // 4. Coffee Break Toggle Button (☕)
+            Button(action: {
+                adhd.toggleCoffeeBreak()
+                NSSound(named: "Pop")?.play()
+            }) {
+                ZStack {
+                    Circle()
+                        .fill(adhd.isBreakMode ? Color(red: 1.0, green: 0.38, blue: 0.05).opacity(0.28) : Color(red: 0.12, green: 0.12, blue: 0.14))
+                        .frame(width: 24, height: 24)
+                        .overlay(
+                            Circle()
+                                .stroke(adhd.isBreakMode ? Color(red: 1.0, green: 0.38, blue: 0.05) : Color.white.opacity(0.12), lineWidth: 0.8)
+                        )
+                    Image(systemName: "cup.and.saucer.fill")
+                        .font(.system(size: 10))
+                        .foregroundColor(adhd.isBreakMode ? Color(red: 1.0, green: 0.38, blue: 0.05) : .white)
+                }
+            }
+            .buttonStyle(.plain)
+            .help(adhd.isBreakMode ? "Coffee Break Active (5m)" : "Take a Coffee Break (5m)")
+
+            // 5. Album Artwork / Music Popover Trigger
+            Button(action: {
+                withAnimation(.spring(response: 0.28, dampingFraction: 0.8)) {
+                    showMusicPopover.toggle()
+                }
+            }) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 5, style: .continuous)
+                        .fill(Color(red: 0.15, green: 0.15, blue: 0.18))
+                        .frame(width: 24, height: 24)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 5, style: .continuous)
+                                .stroke(Color.white.opacity(0.15), lineWidth: 0.8)
+                        )
+                    Image(systemName: media.hasActiveMedia && media.currentSong.isPlaying ? "waveform" : "music.note")
+                        .font(.system(size: 10))
+                        .foregroundColor(media.hasActiveMedia && media.currentSong.isPlaying ? Color(red: 1.0, green: 0.38, blue: 0.05) : .white.opacity(0.8))
+                }
+            }
+            .buttonStyle(.plain)
+            .help("Now Playing Music & Volume Dial")
+            .popover(isPresented: $showMusicPopover) {
+                NotchFlowMusicPopoverView()
             }
 
-            Spacer()
-
-            // Center Dynamic Activity Indicator
-            if timerMgr.isRunning {
-                HStack(spacing: 4) {
-                    Circle().fill(Color.orange).frame(width: 5, height: 5)
-                    Text(timeString(from: timerMgr.secondsRemaining))
-                        .font(.system(size: 11, weight: .bold, design: .monospaced))
-                        .foregroundColor(.orange)
-                }
-            } else if appState.isMicMuted {
-                HStack(spacing: 4) {
-                    Image(systemName: "mic.slash.fill")
-                        .font(.system(size: 9))
-                        .foregroundColor(.red)
-                    Text("Muted")
+            // 6. Menu / Expand Trigger Button (≡)
+            Button(action: {
+                NotchWindowController.shared.toggleExpand()
+            }) {
+                ZStack {
+                    Circle()
+                        .fill(Color(red: 0.12, green: 0.12, blue: 0.14))
+                        .frame(width: 24, height: 24)
+                        .overlay(Circle().stroke(Color.white.opacity(0.12), lineWidth: 0.8))
+                    Image(systemName: "line.3.horizontal")
                         .font(.system(size: 10, weight: .bold))
-                        .foregroundColor(.red)
+                        .foregroundColor(.white)
                 }
-            } else {
-                Text(appState.miniStatusText)
-                    .font(.system(size: 11, weight: .semibold, design: .rounded))
-                    .foregroundColor(.white.opacity(0.85))
-                    .lineLimit(1)
             }
-
-            Spacer()
-
-            // Right Chevron Hint
-            Image(systemName: "chevron.compact.down")
-                .font(.system(size: 9, weight: .bold))
-                .foregroundColor(.white.opacity(0.4))
-                .padding(.trailing, 10)
+            .buttonStyle(.plain)
+            .help("Expand AuraNotch 27-Tool Mission Control")
         }
+        .padding(.horizontal, 10)
         .frame(width: appState.notchWidth, height: 34)
         .background(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
+            RoundedRectangle(cornerRadius: 17, style: .continuous)
                 .fill(Color.black)
-                .shadow(color: Color.black.opacity(0.5), radius: 8, x: 0, y: 3)
+                .shadow(color: Color.black.opacity(0.75), radius: 10, x: 0, y: 3)
         )
         .overlay(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
+            RoundedRectangle(cornerRadius: 17, style: .continuous)
                 .stroke(
                     LinearGradient(
-                        colors: [Color.white.opacity(0.2), Color.white.opacity(0.05)],
+                        colors: [Color.white.opacity(0.20), Color.white.opacity(0.04)],
                         startPoint: .top,
                         endPoint: .bottom
                     ),
@@ -107,9 +205,6 @@ public struct NotchRootView: View {
                 )
         )
         .contentShape(Rectangle())
-        .onTapGesture {
-            NotchWindowController.shared.toggleExpand()
-        }
     }
 
     // EXPANDED MODERN GLOSSY LIQUID GLASS HUD VIEW (WITH VERTICAL MENUBAR & MOTION FLAIR)
@@ -399,6 +494,290 @@ public struct GlowingEdgeMotionFlair: View {
                         )
                         .blur(radius: 3.5)
                 )
+        }
+    }
+}
+
+// MARK: - NOTCHFLOW TACTILE MUSIC POPOVER & ROTARY VOLUME DIAL
+public struct NotchFlowMusicPopoverView: View {
+    @ObservedObject var media = MediaManager.shared
+    @ObservedObject var adhd = ADHDManager.shared
+    @State private var isShuffleActive: Bool = false
+
+    private var playerBadge: String {
+        if media.hasActiveMedia {
+            return media.activePlayerName.uppercased()
+        }
+        return "FOCUS SOUNDSCAPES"
+    }
+
+    private var displayTitle: String {
+        if media.hasActiveMedia && !media.currentSong.title.isEmpty {
+            return media.currentSong.title
+        }
+        return "NotchFlow Focus Stream"
+    }
+
+    private var displayArtist: String {
+        if media.hasActiveMedia && !media.currentSong.artist.isEmpty {
+            return media.currentSong.artist
+        }
+        return adhd.selectedSound
+    }
+
+    private var isCurrentlyPlaying: Bool {
+        if media.hasActiveMedia {
+            return media.currentSong.isPlaying
+        }
+        return adhd.isAudioEnabled
+    }
+
+    public var body: some View {
+        VStack(spacing: 14) {
+            // Header / App Badge
+            HStack {
+                HStack(spacing: 5) {
+                    Circle()
+                        .fill(Color(red: 1.0, green: 0.38, blue: 0.05))
+                        .frame(width: 6, height: 6)
+                    Text(playerBadge)
+                        .font(.system(size: 9, weight: .bold, design: .monospaced))
+                        .foregroundColor(.white.opacity(0.85))
+                }
+                .padding(.horizontal, 8)
+                .padding(.vertical, 3)
+                .background(
+                    Capsule()
+                        .fill(Color.white.opacity(0.08))
+                )
+
+                Spacer()
+
+                Text("AuraNotch Sound")
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundColor(.white.opacity(0.4))
+            }
+
+            // Track Artwork & Metadata
+            HStack(spacing: 12) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                        .fill(
+                            LinearGradient(
+                                colors: [Color(red: 0.20, green: 0.20, blue: 0.24), Color(red: 0.10, green: 0.10, blue: 0.12)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                        .frame(width: 54, height: 54)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .stroke(Color.white.opacity(0.12), lineWidth: 0.8)
+                        )
+                        .shadow(color: Color.black.opacity(0.4), radius: 6, x: 0, y: 3)
+
+                    Image(systemName: isCurrentlyPlaying ? "waveform" : "headphones")
+                        .font(.system(size: 22))
+                        .foregroundColor(Color(red: 1.0, green: 0.38, blue: 0.05))
+                }
+
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(displayTitle)
+                        .font(.system(size: 13, weight: .bold))
+                        .foregroundColor(.white)
+                        .lineLimit(1)
+
+                    Text(displayArtist)
+                        .font(.system(size: 11, weight: .medium))
+                        .foregroundColor(.white.opacity(0.6))
+                        .lineLimit(1)
+
+                    // Audio Stream status
+                    HStack(spacing: 4) {
+                        Image(systemName: "dot.radiowaves.left.and.right")
+                            .font(.system(size: 9))
+                            .foregroundColor(Color(red: 1.0, green: 0.38, blue: 0.05))
+                        Text(media.hasActiveMedia ? "System Synced" : "ADHD Audio Engine")
+                            .font(.system(size: 9, weight: .medium))
+                            .foregroundColor(.white.opacity(0.5))
+                    }
+                    .padding(.top, 2)
+                }
+                Spacer()
+            }
+
+            // Player Transport Controls
+            HStack(spacing: 18) {
+                Button(action: {
+                    isShuffleActive.toggle()
+                }) {
+                    Image(systemName: "shuffle")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundColor(isShuffleActive ? Color(red: 1.0, green: 0.38, blue: 0.05) : .white.opacity(0.5))
+                }
+                .buttonStyle(.plain)
+
+                Button(action: {
+                    media.skipPrev()
+                }) {
+                    Image(systemName: "backward.fill")
+                        .font(.system(size: 14))
+                        .foregroundColor(.white.opacity(0.85))
+                }
+                .buttonStyle(.plain)
+
+                // NotchFlow Signature Orange Play Button
+                Button(action: {
+                    if media.hasActiveMedia {
+                        media.togglePlayPause()
+                    } else {
+                        adhd.toggleAudio()
+                    }
+                }) {
+                    ZStack {
+                        Circle()
+                            .fill(Color(red: 1.0, green: 0.38, blue: 0.05))
+                            .frame(width: 38, height: 38)
+                            .shadow(color: Color(red: 1.0, green: 0.38, blue: 0.05).opacity(0.4), radius: 6, x: 0, y: 2)
+
+                        Image(systemName: isCurrentlyPlaying ? "pause.fill" : "play.fill")
+                            .font(.system(size: 15, weight: .bold))
+                            .foregroundColor(.white)
+                    }
+                }
+                .buttonStyle(.plain)
+
+                Button(action: {
+                    media.skipNext()
+                }) {
+                    Image(systemName: "forward.fill")
+                        .font(.system(size: 14))
+                        .foregroundColor(.white.opacity(0.85))
+                }
+                .buttonStyle(.plain)
+
+                Button(action: {
+                    adhd.toggleAudio()
+                }) {
+                    Image(systemName: "waveform.badge.magnifyingglass")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundColor(adhd.isAudioEnabled ? Color(red: 1.0, green: 0.38, blue: 0.05) : .white.opacity(0.5))
+                }
+                .buttonStyle(.plain)
+            }
+            .padding(.vertical, 4)
+
+            Divider()
+                .background(Color.white.opacity(0.08))
+
+            // Tactile Rotary Volume Dial Knob (NotchFlow Signature)
+            TactileRotaryVolumeKnob(volume: Binding(
+                get: { media.volume },
+                set: { newVol in
+                    media.volume = max(0.0, min(1.0, newVol))
+                }
+            ))
+            .padding(.vertical, 2)
+        }
+        .padding(16)
+        .frame(width: 270)
+        .background(
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .fill(Color(red: 0.07, green: 0.07, blue: 0.08))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 18, style: .continuous)
+                        .stroke(Color.white.opacity(0.12), lineWidth: 0.8)
+                )
+                .shadow(color: Color.black.opacity(0.8), radius: 18, x: 0, y: 8)
+        )
+    }
+}
+
+// MARK: - TACTILE ROTARY VOLUME KNOB (12-Dot Radial Ring & Center Marker)
+public struct TactileRotaryVolumeKnob: View {
+    @Binding public var volume: Double
+
+    // Arc range from -120 deg to +120 deg (total 240 deg sweep)
+    private let totalDots = 12
+    private let sweepAngle: Double = 240.0
+    private let startAngle: Double = -120.0
+
+    @State private var dragStartVolume: Double = 0.0
+
+    public var body: some View {
+        VStack(spacing: 8) {
+            ZStack {
+                // Outer ring of 12 tactile status dots
+                ForEach(0..<totalDots, id: \.self) { index in
+                    let fraction = Double(index) / Double(totalDots - 1)
+                    let angleDeg = startAngle + (fraction * sweepAngle)
+                    let angleRad = (angleDeg - 90.0) * .pi / 180.0
+                    let radius: CGFloat = 32.0
+                    let x = cos(angleRad) * radius
+                    let y = sin(angleRad) * radius
+                    let isActive = fraction <= volume
+
+                    Circle()
+                        .fill(isActive ? Color(red: 1.0, green: 0.38, blue: 0.05) : Color.white.opacity(0.15))
+                        .frame(width: 4, height: 4)
+                        .offset(x: x, y: y)
+                }
+
+                // Center dark metallic dial knob
+                Circle()
+                    .fill(
+                        RadialGradient(
+                            colors: [Color(red: 0.22, green: 0.22, blue: 0.25), Color(red: 0.10, green: 0.10, blue: 0.12)],
+                            center: .center,
+                            startRadius: 2,
+                            endRadius: 24
+                        )
+                    )
+                    .frame(width: 44, height: 44)
+                    .overlay(
+                        Circle()
+                            .stroke(Color.white.opacity(0.15), lineWidth: 0.8)
+                    )
+                    .shadow(color: Color.black.opacity(0.5), radius: 4, x: 0, y: 2)
+                    .overlay(
+                        // Radial orange tick indicator pointing towards the active angle
+                        Rectangle()
+                            .fill(Color(red: 1.0, green: 0.38, blue: 0.05))
+                            .frame(width: 2.5, height: 9)
+                            .offset(y: -14)
+                            .rotationEffect(.degrees(startAngle + (volume * sweepAngle)))
+                    )
+                    .gesture(
+                        DragGesture(minimumDistance: 1)
+                            .onChanged { value in
+                                let delta = -Double(value.translation.height) / 120.0
+                                let updated = max(0.0, min(1.0, dragStartVolume + delta))
+                                volume = updated
+                            }
+                            .onEnded { _ in
+                                dragStartVolume = volume
+                            }
+                    )
+                    .onAppear {
+                        dragStartVolume = volume
+                    }
+            }
+            .frame(width: 76, height: 76)
+
+            // Volume Label & Level
+            HStack(spacing: 4) {
+                Text("ROTARY VOLUME")
+                    .font(.system(size: 8, weight: .bold, design: .monospaced))
+                    .foregroundColor(.white.opacity(0.45))
+                    .tracking(1)
+
+                Spacer()
+
+                Text("\(Int(volume * 100))%")
+                    .font(.system(size: 10, weight: .bold, design: .monospaced))
+                    .foregroundColor(Color(red: 1.0, green: 0.38, blue: 0.05))
+            }
+            .padding(.horizontal, 10)
         }
     }
 }

@@ -43,6 +43,7 @@ public enum NotchTriggerMode: String, CaseIterable, Identifiable {
 }
 
 public enum GlassTheme: String, CaseIterable, Identifiable {
+    case flowOrange = "NotchFlow Orange"
     case liquidObsidian = "Liquid Obsidian"
     case frostedTitanium = "Frosted Titanium"
     case cyberpunkEmber = "Cyberpunk Ember"
@@ -53,6 +54,7 @@ public enum GlassTheme: String, CaseIterable, Identifiable {
 
     public var primaryAccent: Color {
         switch self {
+        case .flowOrange: return Color(red: 1.0, green: 0.38, blue: 0.05) // NotchFlow Electric Safety Orange
         case .liquidObsidian: return Color.purple
         case .frostedTitanium: return Color.cyan
         case .cyberpunkEmber: return Color.orange
@@ -63,6 +65,7 @@ public enum GlassTheme: String, CaseIterable, Identifiable {
 
     public var secondaryAccent: Color {
         switch self {
+        case .flowOrange: return Color.white
         case .liquidObsidian: return Color.indigo
         case .frostedTitanium: return Color.blue
         case .cyberpunkEmber: return Color.red
@@ -73,6 +76,12 @@ public enum GlassTheme: String, CaseIterable, Identifiable {
 
     public var backgroundGradient: LinearGradient {
         switch self {
+        case .flowOrange:
+            return LinearGradient(
+                colors: [Color(red: 0.05, green: 0.05, blue: 0.06), Color(red: 0.02, green: 0.02, blue: 0.02)],
+                startPoint: .top,
+                endPoint: .bottom
+            )
         case .liquidObsidian:
             return LinearGradient(colors: [Color(red: 0.08, green: 0.07, blue: 0.12), Color(red: 0.04, green: 0.04, blue: 0.06)], startPoint: .top, endPoint: .bottom)
         case .frostedTitanium:
@@ -95,19 +104,19 @@ public class AppState: ObservableObject {
     @Published public var activeTab: NotchTab = .home
     @Published public var triggerMode: NotchTriggerMode = .hover
     @Published public var hoverDelayMs: Double = 160.0
-    @Published public var notchWidth: CGFloat = 220.0
+    @Published public var notchWidth: CGFloat = 330.0
     @Published public var expandedWidth: CGFloat = 780.0
     @Published public var expandedHeight: CGFloat = 550.0
     @Published public var topNotchClearance: CGFloat = 44.0
     @Published public var showOnAllScreens: Bool = true
     @Published public var playHapticFeedback: Bool = true
 
-    // Theme & Styling Customization
-    @Published public var currentTheme: GlassTheme = .liquidObsidian
-    @Published public var glassOpacity: Double = 0.94
+    // Theme & Styling Customization (Default: NotchFlow Black, Orange & White)
+    @Published public var currentTheme: GlassTheme = .flowOrange
+    @Published public var glassOpacity: Double = 0.96
     @Published public var showGlowEffects: Bool = true
     @Published public var showEdgeMotionFlair: Bool = true
-    @Published public var customAccentColor: Color = Color.purple
+    @Published public var customAccentColor: Color = Color(red: 1.0, green: 0.38, blue: 0.05)
 
     // License State
     @Published public var isLicensed: Bool = true

@@ -17,6 +17,8 @@ public class ADHDManager: ObservableObject {
     @Published public var secondsRemaining: Int = 25 * 60
     @Published public var sprintsCompletedToday: Int = 3
     @Published public var encouragementText: String = "One task at a time. Ignore the rest of the world for 25 minutes."
+    @Published public var isBreakMode: Bool = false // Coffee Break Mode (NotchFlow reverse-engineered)
+    @Published public var breakMinutes: Int = 5
     private var sprintTimer: Timer?
 
     // 2. Audio Engine Controls (Live Synthesizer Integration)
@@ -122,6 +124,29 @@ public class ADHDManager: ObservableObject {
         if !isSprintActive {
             startSprint()
         }
+    }
+
+    // --- Coffee Break Mode (Reverse-Engineered from NotchFlow) ---
+    public func toggleCoffeeBreak() {
+        isBreakMode.toggle()
+        if isBreakMode {
+            sprintMinutes = breakMinutes
+            secondsRemaining = breakMinutes * 60
+            encouragementText = "☕ Take a well-deserved coffee break to recharge and refresh."
+            AppState.shared.miniStatusText = "Coffee Break ☕"
+            if isSprintActive {
+                startSprint()
+            }
+        } else {
+            sprintMinutes = 25
+            secondsRemaining = 25 * 60
+            encouragementText = "Back in flow. 25-minute Pomodoro focus session."
+            AppState.shared.miniStatusText = "AuraNotch"
+            if isSprintActive {
+                startSprint()
+            }
+        }
+        AppState.shared.activeTimerSecondsRemaining = secondsRemaining
     }
 
     // --- Audio Control Methods ---

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AuraNotch for Mac — The Intelligent Camera Notch & HUD</title>
+    <title>AuraNotch Pro for Mac — NotchFlow Ergonomics, Black & Orange Theme, 27 Native Tools</title>
     <meta name="description" content="Turn your MacBook camera notch into an intelligent on-device workspace. 27 native tools: private AI assistant, music sync, file shelf, AI usage meters, teleprompter, video mirror, and notes.">
     <link rel="icon" type="image/png" href="app_icon.png">
     
@@ -16,12 +16,12 @@
                     colors: {
                         apple: {
                             bg: '#000000',
-                            card: '#161617',
+                            card: '#121214',
                             border: 'rgba(255, 255, 255, 0.12)',
-                            blue: '#2997ff',
-                            purple: '#a855f7',
-                            glow: '#7c3aed',
-                            subtext: '#86868b'
+                            orange: '#FF5722',
+                            amber: '#FF8A00',
+                            glow: '#FF5722',
+                            subtext: '#8e8e93'
                         }
                     },
                     fontFamily: {
@@ -41,7 +41,7 @@
             animation: pulseGlow 6s ease-in-out infinite;
         }
 
-        /* Glowing Edge Motion Flair */
+        /* Glowing Edge Motion Flair - Precision Black, Safety Orange, and White */
         @keyframes borderFlairMotion {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -56,20 +56,20 @@
             inset: -2px;
             border-radius: inherit;
             padding: 2px;
-            background: linear-gradient(90deg, #a855f7, #3b82f6, #ec4899, #8b5cf6, #06b6d4, #a855f7);
+            background: linear-gradient(90deg, #ff5722, #ff8a00, #ffffff, #ff5722, #ff3d00, #ffffff);
             background-size: 300% 300%;
             animation: borderFlairMotion 4s linear infinite;
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
             pointer-events: none;
-            opacity: 0.75;
-            filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.65));
+            opacity: 0.85;
+            filter: drop-shadow(0 0 10px rgba(255, 87, 34, 0.75));
             transition: opacity 0.3s ease, filter 0.3s ease;
         }
         .glowing-flair-border:hover::before {
             opacity: 1;
-            filter: drop-shadow(0 0 16px rgba(168, 85, 247, 0.9));
+            filter: drop-shadow(0 0 16px rgba(255, 87, 34, 0.95));
         }
 
         /* Card Hover Flair */
@@ -78,18 +78,18 @@
         }
         .feature-card:hover {
             transform: translateY(-3px);
-            border-color: rgba(168, 85, 247, 0.5);
-            box-shadow: 0 16px 36px -10px rgba(124, 58, 237, 0.25);
+            border-color: rgba(255, 87, 34, 0.5);
+            box-shadow: 0 16px 36px -10px rgba(255, 87, 34, 0.25);
         }
 
         .glass-panel {
-            background: rgba(22, 22, 23, 0.75);
+            background: rgba(18, 18, 20, 0.85);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             border: 1px solid rgba(255, 255, 255, 0.12);
         }
         .notch-shadow {
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(124, 58, 237, 0.25);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 30px rgba(255, 87, 34, 0.25);
         }
         .custom-scrollbar::-webkit-scrollbar {
             width: 4px;
@@ -100,25 +100,25 @@
             border-radius: 9999px;
         }
 
-        /* macOS Sequoia Wallpaper Mesh Gradient */
+        /* Dark Matte Studio Wallpaper Mesh Gradient */
         .sequoia-wallpaper {
             background: 
-                radial-gradient(circle at 50% 100%, rgba(220, 38, 38, 0.45) 0%, transparent 60%),
-                radial-gradient(circle at 15% 30%, rgba(245, 158, 11, 0.55) 0%, transparent 50%),
-                radial-gradient(circle at 85% 20%, rgba(147, 51, 234, 0.6) 0%, transparent 55%),
-                radial-gradient(circle at 50% 40%, rgba(59, 130, 246, 0.4) 0%, transparent 60%),
-                linear-gradient(180deg, #09090b 0%, #1e1035 30%, #311340 60%, #170928 100%);
+                radial-gradient(circle at 50% 100%, rgba(255, 87, 34, 0.25) 0%, transparent 60%),
+                radial-gradient(circle at 15% 30%, rgba(255, 138, 0, 0.20) 0%, transparent 50%),
+                radial-gradient(circle at 85% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 55%),
+                radial-gradient(circle at 50% 40%, rgba(0, 0, 0, 0.85) 0%, transparent 60%),
+                linear-gradient(180deg, #09090b 0%, #121214 30%, #18181b 60%, #09090b 100%);
         }
     </style>
 </head>
-<body class="bg-black text-white font-sans antialiased selection:bg-purple-600 selection:text-white">
+<body class="bg-black text-white font-sans antialiased selection:bg-orange-600 selection:text-white">
 
     <!-- Flash Sale Announcement Ribbon -->
-    <div class="bg-gradient-to-r from-purple-900 via-indigo-900 to-blue-900 py-2.5 px-4 text-center text-xs sm:text-sm font-medium border-b border-purple-500/20">
+    <div class="bg-gradient-to-r from-neutral-950 via-stone-900 to-black py-2.5 px-4 text-center text-xs sm:text-sm font-medium border-b border-orange-500/30">
         <span class="inline-flex items-center gap-2">
-            <span class="px-2 py-0.5 rounded-full bg-purple-500/30 text-purple-200 text-xs font-semibold uppercase tracking-wider">Launch Special</span>
-            <span>AuraNotch Pro is here. Lifetime License for <strong>$5.00</strong> (normally $19.99).</span>
-            <a href="#pricing" class="underline underline-offset-4 hover:text-purple-200 transition-colors ml-1 font-bold">Claim Deal &rarr;</a>
+            <span class="px-2 py-0.5 rounded-full bg-orange-500/20 text-orange-400 text-xs font-bold uppercase tracking-wider border border-orange-500/40">NotchFlow Edition</span>
+            <span>AuraNotch Pro: Tactile Pomodoro + Sweep Line + Rotary Volume Dial + 27 Native Tools for <strong>$5.00 Lifetime</strong> (vs NotchFlow $20).</span>
+            <a href="#pricing" class="underline underline-offset-4 text-orange-400 hover:text-orange-300 transition-colors ml-1 font-bold">Claim Deal &rarr;</a>
         </span>
     </div>
 
@@ -126,9 +126,9 @@
     <header class="sticky top-0 z-50 glass-panel border-b border-white/10">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
             <a href="#" class="flex items-center gap-2.5 group">
-                <img src="app_icon.png" alt="AuraNotch Icon" class="w-8 h-8 rounded-xl shadow-lg shadow-purple-500/30 group-hover:scale-105 transition-transform">
+                <img src="app_icon.png" alt="AuraNotch Icon" class="w-8 h-8 rounded-xl shadow-lg shadow-orange-500/30 group-hover:scale-105 transition-transform">
                 <span class="font-bold text-lg tracking-tight">AuraNotch</span>
-                <span class="text-[10px] font-mono uppercase bg-white/10 text-purple-300 px-1.5 py-0.5 rounded border border-white/10">PRO</span>
+                <span class="text-[10px] font-mono uppercase bg-white/10 text-orange-300 px-1.5 py-0.5 rounded border border-white/10">PRO</span>
             </a>
 
             <nav class="hidden md:flex items-center gap-7 text-xs font-medium text-apple-subtext">
@@ -150,17 +150,17 @@
     <!-- Hero Section -->
     <section class="relative pt-20 pb-16 md:pt-28 md:pb-24 overflow-hidden">
         <!-- Glow Backdrops -->
-        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-gradient-to-tr from-purple-600/30 to-blue-500/20 blur-[120px] rounded-full pointer-events-none animate-glow"></div>
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-gradient-to-tr from-orange-600/30 to-amber-500/20 blur-[120px] rounded-full pointer-events-none animate-glow"></div>
 
         <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center relative z-10">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-purple-300 mb-6 backdrop-blur-md">
-                <span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-orange-300 mb-6 backdrop-blur-md">
+                <span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
                 <span>Pure Swift · Engineered Natively for macOS Sequoia 15+</span>
             </div>
 
             <h1 class="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white mb-6">
                 Turn your Mac notch into <br>
-                <span class="bg-gradient-to-r from-purple-400 via-indigo-200 to-blue-400 bg-clip-text text-transparent">an intelligent command center.</span>
+                <span class="bg-gradient-to-r from-orange-400 via-amber-200 to-white bg-clip-text text-transparent">an intelligent command center.</span>
             </h1>
 
             <p class="max-w-2xl mx-auto text-base sm:text-lg text-apple-subtext mb-10 leading-relaxed">
@@ -173,7 +173,7 @@
                     <span class="text-xs text-neutral-500 line-through font-normal">$19.99</span>
                 </a>
                 <a href="#interactive-demo" class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-white/10 hover:bg-white/15 text-white font-medium text-sm transition-all border border-white/10 flex items-center justify-center gap-2">
-                    <svg class="w-4 h-4 text-purple-400" fill="currentColor" viewBox="0 0 20 20">
+                    <svg class="w-4 h-4 text-orange-400" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/>
                     </svg>
                     <span>Try Interactive Notch Simulator</span>
@@ -191,7 +191,7 @@
     <!-- LIVE INTERACTIVE NOTCH SIMULATOR INSIDE REAL MACOS SEQUOIA DESKTOP -->
     <section id="interactive-demo" class="py-12 px-4 max-w-6xl mx-auto">
         <div class="text-center mb-8">
-            <h2 class="text-xs uppercase tracking-widest text-purple-400 font-semibold mb-2">Live Web Simulator</h2>
+            <h2 class="text-xs uppercase tracking-widest text-orange-400 font-semibold mb-2">Live Web Simulator</h2>
             <h3 class="text-2xl sm:text-3xl font-bold">Experience the Notch in your browser right now</h3>
             <p class="text-sm text-apple-subtext mt-1">Hover or click the camera notch below to test the vertical sidebar, glowing border motion flair, and live tools.</p>
         </div>
@@ -221,7 +221,7 @@
                             <path d="M0 2C0 0.89543 0.89543 0 2 0H14C15.1046 0 16 0.89543 16 2V3C16 4.10457 15.1046 5 14 5H11C9.89543 5 9 5.89543 9 7V9C9 10.1046 8.10457 11 7 11H5C3.89543 11 3 10.1046 3 9V7C3 5.89543 2.10457 5 1 5H2C0.89543 5 0 4.10457 0 3V2Z" fill="currentColor"/>
                             <circle cx="6" cy="8" r="1" fill="#22c55e"/>
                         </svg>
-                        <span class="text-[9px] font-mono text-purple-300">⌥N</span>
+                        <span class="text-[9px] font-mono text-orange-300">⌥N</span>
                     </div>
 
                     <span class="cursor-default">100% ⚡️</span>
@@ -240,25 +240,111 @@
                 <!-- Interactive Notch Element with Glowing Motion Flair Border -->
                 <div id="sim-notch" 
                      class="glowing-flair-border group cursor-pointer transition-all duration-300 ease-out bg-black border border-white/20 notch-shadow flex flex-col items-center overflow-hidden"
-                     style="width: 250px; height: 38px; border-radius: 0 0 20px 20px;"
+                     style="width: 340px; height: 38px; border-radius: 0 0 18px 18px;"
                      onclick="toggleNotchSimulator()">
                     
-                    <!-- Closed State Header (Inside Notch) -->
-                    <div id="notch-collapsed-content" class="w-full h-[38px] flex items-center justify-between px-3 text-xs">
-                        <div class="flex items-center gap-1 text-purple-400">
-                            <span class="inline-block w-1.5 h-3 bg-purple-500 rounded-full animate-bounce"></span>
-                            <span class="inline-block w-1.5 h-4 bg-purple-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></span>
-                            <span class="inline-block w-1.5 h-2 bg-purple-600 rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
+                    <!-- Closed State Header (Reverse-Engineered NotchFlow Tactile Hardware Bar) -->
+                    <div id="notch-collapsed-content" class="w-full h-[38px] flex items-center justify-between px-2 text-xs select-none">
+                        <!-- 1. Stop Button (■) -->
+                        <button onclick="event.stopPropagation(); stopFocusTimerSim()" 
+                                class="w-6 h-6 rounded-full bg-[#1c1c1e] hover:bg-[#2c2c2e] border border-white/10 flex items-center justify-center text-white/70 hover:text-white transition-all shrink-0" 
+                                title="Reset Pomodoro Timer">
+                            <span class="text-[9px]">■</span>
+                        </button>
+
+                        <!-- 2. Electric Orange Play/Pause Button (▶) -->
+                        <button onclick="event.stopPropagation(); toggleFocusPlaySim()" 
+                                id="sim-pill-play-btn"
+                                class="w-6 h-6 rounded-full bg-[#FF5722] hover:bg-[#ff6d00] text-white flex items-center justify-center font-bold shadow-md shadow-orange-500/30 transition-all shrink-0 ml-1.5" 
+                                title="Start / Pause Timer">
+                            <span id="sim-pill-play-icon" class="text-[10px] ml-0.5">▶</span>
+                        </button>
+
+                        <!-- 3. Digital Segment Countdown Timer with Real-Time Orange Sweep Line -->
+                        <div class="relative mx-2 px-2.5 py-1 bg-[#121214] border border-white/10 rounded-md overflow-hidden flex items-center justify-center min-w-[74px] h-[26px]">
+                            <!-- Moving Orange Progress Cursor / Sweep Line -->
+                            <div id="sim-sweep-line" class="absolute top-0 bottom-0 w-[2px] bg-[#FF5722] shadow-[0_0_8px_#ff5722] transition-all duration-300" style="left: 4%;"></div>
+                            <span id="sim-notch-countdown" class="font-mono text-xs font-bold text-white tracking-wider relative z-10">24:23</span>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-black border border-white/40 flex items-center justify-center">
-                                <span class="w-1 h-1 rounded-full bg-green-500"></span>
-                            </span>
-                            <span id="sim-notch-title" class="font-semibold text-white/90 text-[11px]">AuraNotch Pro</span>
+
+                        <!-- 4. Coffee Break Toggle (☕) -->
+                        <button onclick="event.stopPropagation(); toggleCoffeeBreakSim()" 
+                                id="sim-pill-coffee-btn"
+                                class="w-6 h-6 rounded-full bg-[#1c1c1e] hover:bg-[#2c2c2e] border border-white/10 flex items-center justify-center text-white/70 hover:text-white transition-all shrink-0 mr-1.5" 
+                                title="Toggle 5-Min Coffee Break">
+                            <span class="text-xs">☕</span>
+                        </button>
+
+                        <!-- 5. Music Artwork & Rotary Dial Trigger Button -->
+                        <div class="relative shrink-0">
+                            <button onclick="event.stopPropagation(); toggleMusicPopoverSim()" 
+                                    id="sim-pill-music-btn"
+                                    class="w-6 h-6 rounded-md bg-[#18181b] hover:bg-[#27272a] border border-white/15 flex items-center justify-center text-[#FF5722] transition-all shadow-sm" 
+                                    title="Now Playing & Rotary Volume Dial">
+                                <svg class="w-3.5 h-3.5 text-[#FF5722]" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                                </svg>
+                            </button>
+
+                            <!-- NotchFlow Interactive Rotary Volume & Music Popover Card -->
+                            <div id="sim-music-popover" class="hidden absolute top-10 right-0 z-50 w-64 bg-[#0d0d0f] border border-white/15 rounded-2xl p-3.5 shadow-2xl text-left backdrop-blur-xl">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-[9px] font-mono font-bold text-[#FF5722] tracking-wider uppercase flex items-center gap-1.5">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-[#FF5722] animate-pulse"></span>
+                                        <span>SOUNDCLOUD STREAM</span>
+                                    </span>
+                                    <span class="text-[9px] text-white/40 font-mono">AuraNotch Sync</span>
+                                </div>
+
+                                <!-- Track Info -->
+                                <div class="flex items-center gap-2.5 mb-3">
+                                    <div class="w-11 h-11 rounded-lg bg-stone-900 border border-white/10 flex items-center justify-center text-orange-400 shrink-0 shadow-inner">
+                                        <span class="text-lg">🎧</span>
+                                    </div>
+                                    <div class="overflow-hidden">
+                                        <div class="text-xs font-bold text-white truncate">Deep Lo-Fi Study Beats</div>
+                                        <div class="text-[10px] text-white/50 truncate">NotchFlow Sound Engine</div>
+                                    </div>
+                                </div>
+
+                                <!-- Player Transport Buttons -->
+                                <div class="flex items-center justify-center gap-4 mb-3">
+                                    <button onclick="event.stopPropagation()" class="text-white/50 hover:text-white text-xs">🔀</button>
+                                    <button onclick="event.stopPropagation()" class="text-white/70 hover:text-white text-xs">⏮</button>
+                                    <button onclick="event.stopPropagation(); toggleSimMusic()" id="sim-popover-play" class="w-8 h-8 rounded-full bg-[#FF5722] hover:bg-[#ff6d00] text-white flex items-center justify-center text-xs font-bold shadow-md shadow-orange-500/30">⏸</button>
+                                    <button onclick="event.stopPropagation()" class="text-white/70 hover:text-white text-xs">⏭</button>
+                                    <button onclick="event.stopPropagation()" class="text-[#FF5722] text-xs">🔁</button>
+                                </div>
+
+                                <!-- Tactile Rotary Volume Dial Knob (NotchFlow Signature) -->
+                                <div class="pt-2 border-t border-white/10 flex flex-col items-center">
+                                    <div class="relative w-24 h-24 flex items-center justify-center mb-1">
+                                        <!-- 12 Radial Dots Ring -->
+                                        <div id="sim-rotary-dots-container" class="absolute inset-0"></div>
+
+                                        <!-- Center Metallic Knob -->
+                                        <div id="sim-rotary-knob" class="w-12 h-12 rounded-full bg-gradient-to-br from-neutral-800 to-neutral-950 border border-white/20 shadow-lg flex items-center justify-center cursor-pointer select-none relative"
+                                             onmousedown="startKnobDrag(event)">
+                                            <!-- Orange Radial Indicator Tick -->
+                                            <div id="sim-knob-indicator" class="w-0.5 h-3 bg-[#FF5722] rounded-full absolute -top-1 transition-transform" style="transform-origin: center 28px; transform: rotate(50deg);"></div>
+                                            <span class="text-[8px] font-mono text-white/30 font-bold">DIAL</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="w-full flex items-center justify-between text-[10px] font-mono px-2">
+                                        <span class="text-white/40 tracking-wider">ROTARY VOLUME</span>
+                                        <span id="sim-knob-volume-pct" class="text-[#FF5722] font-bold">75%</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="text-purple-300 font-mono text-[10px] bg-white/5 px-1.5 py-0.5 rounded border border-white/10">
-                            ⌥N
-                        </div>
+
+                        <!-- 6. Menu / Expand Trigger Button (≡) -->
+                        <button onclick="event.stopPropagation(); toggleNotchSimulator()" 
+                                class="w-6 h-6 rounded-full bg-[#1c1c1e] hover:bg-[#2c2c2e] border border-white/10 flex items-center justify-center text-white/80 hover:text-white transition-all shrink-0" 
+                                title="Expand 27-Tool Mission Control">
+                            <span class="text-[11px] font-bold">≡</span>
+                        </button>
                     </div>
 
                     <!-- Expanded State Container (Left Vertical Sidebar + Right Content Area) -->
@@ -266,7 +352,7 @@
                         <!-- Top Clearance & Title Bar -->
                         <div class="flex items-center justify-between border-b border-white/10 pb-2 mb-2 text-xs">
                             <div class="flex items-center gap-2">
-                                <span class="w-2 h-2 rounded-full bg-purple-500 shadow-sm shadow-purple-500/50"></span>
+                                <span class="w-2 h-2 rounded-full bg-orange-500/20 shadow-sm shadow-orange-500/30"></span>
                                 <span id="expanded-active-title" class="font-bold text-white text-xs">Home Dashboard</span>
                                 <span class="text-[10px] text-white/40 font-mono">· Native Swift</span>
                             </div>
@@ -289,7 +375,7 @@
                             <!-- LEFT VERTICAL MENUBAR / SIDEBAR (Requested Native Redesign) -->
                             <div class="w-16 bg-white/[0.03] rounded-xl border border-white/10 p-1.5 flex flex-col items-center justify-between gap-1 shrink-0 overflow-y-auto custom-scrollbar">
                                 <div class="flex flex-col items-center gap-1 w-full">
-                                    <button onclick="event.stopPropagation(); setSimTab('home')" id="vtab-home" class="sim-vtab w-12 h-10 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs flex flex-col items-center justify-center font-bold shadow-md shadow-purple-600/30 transition-all" title="Home">
+                                    <button onclick="event.stopPropagation(); setSimTab('home')" id="vtab-home" class="sim-vtab w-12 h-10 rounded-lg bg-gradient-to-r from-orange-600 to-amber-600 text-white text-xs flex flex-col items-center justify-center font-bold shadow-md shadow-orange-500/30 transition-all" title="Home">
                                         <span class="text-sm">🏠</span>
                                         <span class="text-[8px] leading-none mt-0.5">Home</span>
                                     </button>
@@ -336,13 +422,13 @@
                                     <!-- Mission Control Bar -->
                                     <div class="flex items-center justify-between bg-white/[0.03] rounded-xl p-2.5 border border-white/10 text-xs">
                                         <div class="flex items-center gap-2">
-                                            <span class="w-2 h-2 rounded-full bg-purple-500 shadow-sm shadow-purple-500/50"></span>
+                                            <span class="w-2 h-2 rounded-full bg-orange-500/20 shadow-sm shadow-orange-500/30"></span>
                                             <span class="font-bold text-white uppercase text-[10px] tracking-wider">Mission Control</span>
                                             <span class="text-[10px] text-white/40">· Live Hardware Feed</span>
                                         </div>
                                         <div class="flex items-center gap-2">
-                                            <button onclick="event.stopPropagation(); toggleMic()" id="sim-mic-pill" class="px-2 py-0.5 rounded-md bg-purple-500/20 text-white text-[10px] font-semibold border border-purple-500/30 flex items-center gap-1.5 transition-all">
-                                                <span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
+                                            <button onclick="event.stopPropagation(); toggleMic()" id="sim-mic-pill" class="px-2 py-0.5 rounded-md bg-orange-500/20 text-white text-[10px] font-semibold border border-orange-500/30 flex items-center gap-1.5 transition-all">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-[#FF5722]"></span>
                                                 <span id="sim-mic-text">Mic Live</span>
                                             </button>
                                             <button onclick="event.stopPropagation(); toggleDesk()" id="sim-desk-pill" class="px-2 py-0.5 rounded-md bg-white/[0.05] text-white/80 text-[10px] font-semibold border border-white/10 flex items-center gap-1.5 transition-all">
@@ -356,36 +442,36 @@
                                     <!-- 2-Column Split: Active SoundCloud / Spotify Player + Focus Sound Engine -->
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                         <!-- Active SoundCloud Music Card -->
-                                        <div class="bg-white/[0.03] rounded-xl p-3 border border-purple-500/40 relative overflow-hidden group">
+                                        <div class="bg-white/[0.03] rounded-xl p-3 border border-orange-500/30 relative overflow-hidden group">
                                             <div class="flex items-center justify-between mb-2">
                                                 <span class="font-bold text-xs text-white flex items-center gap-1.5">
-                                                    <span class="text-purple-400">☁️</span> SoundCloud Live Stream
+                                                    <span class="text-orange-400">☁️</span> SoundCloud Live Stream
                                                 </span>
-                                                <span class="text-[8px] font-black px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/40 flex items-center gap-1">
-                                                    <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse"></span>
+                                                <span class="text-[8px] font-black px-1.5 py-0.5 rounded bg-orange-500/20 text-orange-300 border border-orange-500/30 flex items-center gap-1">
+                                                    <span class="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse"></span>
                                                     <span>ACTIVE</span>
                                                 </span>
                                             </div>
                                             <div class="flex items-center gap-2.5 mb-2.5">
-                                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-600/40 to-neutral-900 border border-purple-500/40 flex items-center justify-center text-lg shrink-0 shadow-md shadow-purple-500/20">
+                                                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-[#FF5722]/30 to-neutral-900 border border-orange-500/30 flex items-center justify-center text-lg shrink-0 shadow-md shadow-orange-500/30">
                                                     ☁️
                                                 </div>
                                                 <div class="flex-1 min-w-0">
                                                     <div class="font-bold text-xs text-white truncate">Deep Wednesday (8-12-26)</div>
                                                     <div class="text-[10px] text-white/70 truncate">RaquElevate · SoundCloud Stream</div>
-                                                    <div class="text-[9px] text-purple-400/90 font-medium">● System Transport Linked</div>
+                                                    <div class="text-[9px] text-orange-400/90 font-medium">● System Transport Linked</div>
                                                 </div>
                                             </div>
                                             <div class="flex items-center justify-between text-xs pt-1.5 border-t border-white/5">
                                                 <div class="flex items-center gap-1" id="sim-eq-bars">
-                                                    <span class="w-1 h-3.5 bg-purple-500 rounded-full animate-bounce"></span>
-                                                    <span class="w-1 h-4 bg-purple-400 rounded-full animate-bounce" style="animation-delay: 0.15s"></span>
-                                                    <span class="w-1 h-2 bg-indigo-400 rounded-full animate-bounce" style="animation-delay: 0.3s"></span>
-                                                    <span class="w-1 h-3 bg-purple-600 rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
+                                                    <span class="w-1 h-3.5 bg-orange-500/20 rounded-full animate-bounce"></span>
+                                                    <span class="w-1 h-4 bg-[#FF5722] rounded-full animate-bounce" style="animation-delay: 0.15s"></span>
+                                                    <span class="w-1 h-2 bg-[#FF8A00] rounded-full animate-bounce" style="animation-delay: 0.3s"></span>
+                                                    <span class="w-1 h-3 bg-orange-600 rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
                                                 </div>
                                                 <div class="flex items-center gap-3">
                                                     <button onclick="event.stopPropagation()" class="text-white/60 hover:text-white text-xs transition-colors">⏮</button>
-                                                    <button onclick="event.stopPropagation(); toggleMusicPlay()" id="sim-music-btn" class="w-6 h-6 rounded-full bg-purple-600 hover:bg-purple-500 text-white flex items-center justify-center font-bold text-[10px] shadow-sm shadow-purple-500/30 transition-all">⏸</button>
+                                                    <button onclick="event.stopPropagation(); toggleMusicPlay()" id="sim-music-btn" class="w-6 h-6 rounded-full bg-orange-600 hover:bg-orange-500/20 text-white flex items-center justify-center font-bold text-[10px] shadow-sm shadow-orange-500/30 transition-all">⏸</button>
                                                     <button onclick="event.stopPropagation()" class="text-white/60 hover:text-white text-xs transition-colors">⏭</button>
                                                 </div>
                                             </div>
@@ -395,12 +481,12 @@
                                         <div class="bg-white/[0.03] rounded-xl p-3 border border-white/10">
                                             <div class="flex items-center justify-between mb-2">
                                                 <span class="font-bold text-xs text-white flex items-center gap-1.5">
-                                                    <span class="text-purple-400">⏱</span> Focus & Sound Sync
+                                                    <span class="text-orange-400">⏱</span> Focus & Sound Sync
                                                 </span>
-                                                <span class="text-[8px] font-black px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30">ACTIVE</span>
+                                                <span class="text-[8px] font-black px-1.5 py-0.5 rounded bg-orange-500/20 text-orange-300 border border-orange-500/30">ACTIVE</span>
                                             </div>
                                             <div class="flex items-center justify-between mb-2">
-                                                <div id="sim-timer-display" class="text-2xl font-bold font-mono text-purple-300">25:00</div>
+                                                <div id="sim-timer-display" class="text-2xl font-bold font-mono text-orange-300">25:00</div>
                                                 <div class="flex items-center gap-1">
                                                     <button onclick="event.stopPropagation(); adjustFocusTimer(-5)" class="px-1.5 py-0.5 bg-white/[0.06] hover:bg-white/[0.12] rounded text-[10px] font-bold text-white transition-colors">-5m</button>
                                                     <button onclick="event.stopPropagation(); adjustFocusTimer(-1)" class="px-1.5 py-0.5 bg-white/[0.06] hover:bg-white/[0.12] rounded text-[10px] text-white transition-colors">-1m</button>
@@ -410,7 +496,7 @@
                                             </div>
                                             <div class="flex items-center justify-between text-[10px] text-white/60 pt-2 border-t border-white/5">
                                                 <span class="flex items-center gap-1">🌧 <span>Rain & Thunder (Lo-Fi Synced)</span></span>
-                                                <button onclick="event.stopPropagation(); toggleFocusPlay()" id="sim-focus-toggle-btn" class="text-purple-400 font-bold hover:text-purple-300 transition-colors">Pause</button>
+                                                <button onclick="event.stopPropagation(); toggleFocusPlay()" id="sim-focus-toggle-btn" class="text-orange-400 font-bold hover:text-orange-300 transition-colors">Pause</button>
                                             </div>
                                         </div>
                                     </div>
@@ -419,28 +505,28 @@
                                     <div class="grid grid-cols-4 gap-2 text-left">
                                         <div class="bg-white/[0.03] p-2 rounded-xl border border-white/10">
                                             <div class="text-[9px] text-white/50 font-bold flex items-center gap-1">
-                                                <span class="text-purple-400">⚡️</span> CPU Load
+                                                <span class="text-orange-400">⚡️</span> CPU Load
                                             </div>
                                             <div class="text-xs font-bold text-white mt-0.5">18%</div>
                                             <div class="text-[8px] text-white/40">Nominal · 38°C</div>
                                         </div>
                                         <div class="bg-white/[0.03] p-2 rounded-xl border border-white/10">
                                             <div class="text-[9px] text-white/50 font-bold flex items-center gap-1">
-                                                <span class="text-purple-400">💾</span> RAM Free
+                                                <span class="text-orange-400">💾</span> RAM Free
                                             </div>
                                             <div class="text-xs font-bold text-white mt-0.5">16.4 GB</div>
                                             <div class="text-[8px] text-white/40">of 36 GB Total</div>
                                         </div>
                                         <div class="bg-white/[0.03] p-2 rounded-xl border border-white/10">
                                             <div class="text-[9px] text-white/50 font-bold flex items-center gap-1">
-                                                <span class="text-purple-400">🔋</span> Battery
+                                                <span class="text-orange-400">🔋</span> Battery
                                             </div>
                                             <div class="text-xs font-bold text-white mt-0.5">98% ⚡️</div>
                                             <div class="text-[8px] text-white/40">96W Adapter</div>
                                         </div>
                                         <div class="bg-white/[0.03] p-2 rounded-xl border border-white/10">
                                             <div class="text-[9px] text-white/50 font-bold flex items-center gap-1">
-                                                <span class="text-purple-400">🌐</span> Throughput
+                                                <span class="text-orange-400">🌐</span> Throughput
                                             </div>
                                             <div class="text-xs font-bold text-white mt-0.5">↓ 1.8 MB/s</div>
                                             <div class="text-[8px] text-white/40">↑ 140 KB/s</div>
@@ -451,16 +537,16 @@
                                     <div class="flex items-center gap-2">
                                         <div class="flex-1 bg-white/[0.03] rounded-xl p-2.5 border border-white/10 flex items-center justify-between text-xs">
                                             <div class="flex items-center gap-2 min-w-0">
-                                                <span class="text-purple-400">📋</span>
+                                                <span class="text-orange-400">📋</span>
                                                 <span class="text-[10px] text-white/40">Clip:</span>
-                                                <code class="text-[11px] font-mono text-purple-300 truncate">npm install @auranotch/sdk</code>
+                                                <code class="text-[11px] font-mono text-orange-300 truncate">npm install @auranotch/sdk</code>
                                             </div>
                                             <button onclick="event.stopPropagation(); copyDemoClip()" id="sim-copy-clip-btn" class="px-2 py-1 bg-white/[0.08] hover:bg-white/[0.15] rounded text-[10px] font-semibold text-white shrink-0 transition-colors">
                                                 Copy
                                             </button>
                                         </div>
                                         <button onclick="event.stopPropagation(); purgeDemoMemory()" id="sim-purge-ram-btn" class="px-3 py-2.5 bg-white/[0.04] hover:bg-white/[0.08] rounded-xl border border-white/10 text-[10px] font-bold text-white flex items-center gap-1.5 shrink-0 transition-colors">
-                                            <span class="text-purple-400">⚡️</span><span id="sim-purge-text">Free RAM</span>
+                                            <span class="text-orange-400">⚡️</span><span id="sim-purge-text">Free RAM</span>
                                         </button>
                                     </div>
                                 </div>
@@ -470,37 +556,37 @@
                                     <div class="flex items-center justify-between text-xs bg-white/[0.03] p-2.5 rounded-xl border border-white/10">
                                         <div class="flex items-center gap-2">
                                             <span class="text-[9px] font-bold text-white/40 uppercase tracking-wider">Detected System Players:</span>
-                                            <span class="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-bold text-[10px] border border-purple-500/40 flex items-center gap-1">
-                                                <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse"></span>
+                                            <span class="px-2 py-0.5 rounded bg-orange-500/20 text-orange-300 font-bold text-[10px] border border-orange-500/30 flex items-center gap-1">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse"></span>
                                                 SoundCloud (ACTIVE)
                                             </span>
                                             <span class="text-[10px] text-white/40">Spotify</span>
                                             <span class="text-[10px] text-white/40">Apple Music</span>
                                         </div>
-                                        <span class="text-purple-300 font-mono text-[9px] font-bold">● macOS Hardware Sync</span>
+                                        <span class="text-orange-300 font-mono text-[9px] font-bold">● macOS Hardware Sync</span>
                                     </div>
 
-                                    <div class="bg-white/[0.03] p-4 rounded-xl border border-purple-500/30 space-y-3">
+                                    <div class="bg-white/[0.03] p-4 rounded-xl border border-orange-500/30 space-y-3">
                                         <div class="flex items-center gap-3">
-                                            <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-purple-600/40 to-neutral-900 border border-purple-500/40 flex items-center justify-center text-3xl shadow-lg shadow-purple-500/20 shrink-0">
+                                            <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-[#FF5722]/30 to-neutral-900 border border-orange-500/30 flex items-center justify-center text-3xl shadow-lg shadow-orange-500/30 shrink-0">
                                                 ☁️
                                             </div>
                                             <div class="min-w-0 flex-1">
                                                 <div class="font-bold text-sm text-white truncate">Deep Wednesday (8-12-26)</div>
                                                 <div class="text-xs text-white/70 truncate">RaquElevate · SoundCloud Stream</div>
-                                                <div class="text-[10px] text-purple-400 font-mono mt-1">01:42 / 04:15 · 320 kbps High Quality</div>
+                                                <div class="text-[10px] text-orange-400 font-mono mt-1">01:42 / 04:15 · 320 kbps High Quality</div>
                                             </div>
                                         </div>
 
                                         <!-- Progress Bar -->
                                         <div class="w-full bg-white/10 rounded-full h-1.5 overflow-hidden">
-                                            <div class="bg-gradient-to-r from-purple-500 to-indigo-400 h-full w-[42%] rounded-full"></div>
+                                            <div class="bg-gradient-to-r from-orange-500 to-amber-400 h-full w-[42%] rounded-full"></div>
                                         </div>
 
                                         <!-- Transport Controls -->
                                         <div class="flex items-center justify-center gap-6 pt-2">
                                             <button class="text-white/60 hover:text-white text-base">⏮ Previous</button>
-                                            <button onclick="event.stopPropagation(); toggleMusicPlay()" class="w-10 h-10 rounded-full bg-purple-600 hover:bg-purple-500 text-white flex items-center justify-center font-bold text-sm shadow-md shadow-purple-600/40">⏸</button>
+                                            <button onclick="event.stopPropagation(); toggleMusicPlay()" class="w-10 h-10 rounded-full bg-orange-600 hover:bg-orange-500/20 text-white flex items-center justify-center font-bold text-sm shadow-md shadow-orange-500/30">⏸</button>
                                             <button class="text-white/60 hover:text-white text-base">Next ⏭</button>
                                         </div>
                                     </div>
@@ -514,7 +600,7 @@
                                             <div class="text-[10px] text-white/50">Real token usage & billing quotas across tools</div>
                                         </div>
                                         <div class="flex items-center gap-2">
-                                            <button onclick="event.stopPropagation(); triggerAiSync()" id="sim-sync-ai-btn" class="px-2.5 py-1 rounded bg-purple-600/30 hover:bg-purple-600/40 text-purple-200 border border-purple-500/40 font-bold text-[10px] flex items-center gap-1 transition-all">
+                                            <button onclick="event.stopPropagation(); triggerAiSync()" id="sim-sync-ai-btn" class="px-2.5 py-1 rounded bg-orange-600/30 hover:bg-orange-600/40 text-orange-200 border border-orange-500/30 font-bold text-[10px] flex items-center gap-1 transition-all">
                                                 <span>🔄</span> <span id="sim-sync-text">Sync Now</span>
                                             </button>
                                             <span class="text-[10px] text-green-400 font-mono">Auto-Update: 5m</span>
@@ -523,7 +609,7 @@
 
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                                         <!-- Claude Code -->
-                                        <div class="bg-white/[0.03] p-3 rounded-xl border border-purple-500/30 space-y-2">
+                                        <div class="bg-white/[0.03] p-3 rounded-xl border border-orange-500/30 space-y-2">
                                             <div class="flex items-center justify-between">
                                                 <span class="font-bold text-white flex items-center gap-1.5">
                                                     <span>🟣</span> Claude Code / 3.7
@@ -532,7 +618,7 @@
                                             </div>
                                             <div class="text-[11px] text-white/70">Usage: <strong>142,500 / 200,000</strong> tokens</div>
                                             <div class="w-full bg-white/10 h-1 rounded-full overflow-hidden">
-                                                <div class="bg-purple-500 h-full w-[71%]"></div>
+                                                <div class="bg-orange-500/20 h-full w-[71%]"></div>
                                             </div>
                                             <div class="text-[9px] text-white/40">Renews in 4h 12m · Active session</div>
                                         </div>
@@ -562,7 +648,7 @@
                                             </div>
                                             <div class="text-[11px] text-white/70">Rate: <strong>48 tokens/sec</strong> streaming</div>
                                             <div class="w-full bg-white/10 h-1 rounded-full overflow-hidden">
-                                                <div class="bg-indigo-400 h-full w-[35%]"></div>
+                                                <div class="bg-[#FF8A00] h-full w-[35%]"></div>
                                             </div>
                                             <div class="text-[9px] text-white/40">Tier 1 · Pay as you go</div>
                                         </div>
@@ -585,7 +671,7 @@
 
                                 <!-- PANEL 5: FILE SHELF & AIRDROP FLICK -->
                                 <div id="panel-fileShelf" class="sim-panel hidden space-y-3">
-                                    <div class="border-2 border-dashed border-purple-500/40 rounded-xl p-5 text-center bg-purple-500/5 hover:bg-purple-500/10 transition-colors cursor-pointer">
+                                    <div class="border-2 border-dashed border-orange-500/30 rounded-xl p-5 text-center bg-orange-500/20 hover:bg-orange-500/20 transition-colors cursor-pointer">
                                         <div class="text-2xl mb-1">📥</div>
                                         <div class="text-xs font-bold text-white">Drag & Drop files onto the Notch</div>
                                         <div class="text-[10px] text-white/50 mt-0.5">Or click to stage files for quick AirDrop and drag-out</div>
@@ -625,22 +711,22 @@
                                     </div>
 
                                     <!-- 2. Single Active Task Title Text Area -->
-                                    <div class="bg-white/[0.03] p-3 rounded-xl border border-purple-500/30 space-y-2 text-xs">
+                                    <div class="bg-white/[0.03] p-3 rounded-xl border border-orange-500/30 space-y-2 text-xs">
                                         <div class="flex items-center justify-between">
                                             <span class="text-[10px] text-white/50 font-bold uppercase tracking-wider">Single Active Focus Goal</span>
                                             <div class="flex items-center gap-2">
-                                                <button onclick="event.stopPropagation(); copyFocusTask()" class="text-[10px] text-purple-300 hover:text-purple-200">Copy</button>
+                                                <button onclick="event.stopPropagation(); copyFocusTask()" class="text-[10px] text-orange-300 hover:text-orange-200">Copy</button>
                                                 <button onclick="event.stopPropagation(); clearFocusTask()" class="text-[10px] text-white/40 hover:text-white/60">Clear</button>
                                             </div>
                                         </div>
-                                        <textarea id="sim-adhd-task-input" rows="2" class="w-full bg-white/[0.05] border border-white/10 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-purple-500 transition-colors resize-none leading-relaxed" placeholder="What single task are you conquering right now?">Review PR #142 and ship AuraNotch Pro 2.5 with unified ADHD & Focus Suite</textarea>
+                                        <textarea id="sim-adhd-task-input" rows="2" class="w-full bg-white/[0.05] border border-white/10 rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-orange-500/30 transition-colors resize-none leading-relaxed" placeholder="What single task are you conquering right now?">Review PR #142 and ship AuraNotch Pro 2.5 with unified ADHD & Focus Suite</textarea>
                                     </div>
 
                                     <!-- 3. Focus Clock & Timer Controls -->
-                                    <div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-3.5 space-y-3">
+                                    <div class="bg-stone-900/60 border border-orange-500/30 rounded-xl p-3.5 space-y-3">
                                         <div class="flex items-center justify-between">
                                             <div class="flex items-center gap-3">
-                                                <div id="sim-adhd-timer-display" class="text-3xl font-mono font-bold text-purple-300">25:00</div>
+                                                <div id="sim-adhd-timer-display" class="text-3xl font-mono font-bold text-orange-300">25:00</div>
                                                 <div class="text-[11px] text-white/60 leading-tight">
                                                     <div id="sim-adhd-status-text" class="font-bold text-white">Flow Mode Ready</div>
                                                     <div class="text-[9px] text-white/40">Pomodoro 25m interval</div>
@@ -650,7 +736,7 @@
                                             <!-- Presets -->
                                             <div class="flex items-center gap-1.5">
                                                 <button onclick="event.stopPropagation(); setSimAdhdPreset(15)" class="sim-preset-btn px-2 py-1 rounded bg-white/5 hover:bg-white/10 text-xs text-white/70 font-semibold transition-colors" data-mins="15">15m</button>
-                                                <button onclick="event.stopPropagation(); setSimAdhdPreset(25)" class="sim-preset-btn px-2 py-1 rounded bg-purple-600 text-white text-xs font-bold shadow-sm shadow-purple-600/30" data-mins="25">25m</button>
+                                                <button onclick="event.stopPropagation(); setSimAdhdPreset(25)" class="sim-preset-btn px-2 py-1 rounded bg-orange-600 text-white text-xs font-bold shadow-sm shadow-orange-500/30" data-mins="25">25m</button>
                                                 <button onclick="event.stopPropagation(); setSimAdhdPreset(45)" class="sim-preset-btn px-2 py-1 rounded bg-white/5 hover:bg-white/10 text-xs text-white/70 font-semibold transition-colors" data-mins="45">45m</button>
                                                 <button onclick="event.stopPropagation(); setSimAdhdPreset(60)" class="sim-preset-btn px-2 py-1 rounded bg-white/5 hover:bg-white/10 text-xs text-white/70 font-semibold transition-colors" data-mins="60">60m</button>
                                             </div>
@@ -658,7 +744,7 @@
 
                                         <!-- Action Buttons -->
                                         <div class="flex items-center gap-2 pt-1">
-                                            <button onclick="event.stopPropagation(); toggleSimAdhdSprint()" id="sim-adhd-toggle-btn" class="px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs shadow-md shadow-purple-600/30 transition-all flex items-center gap-1.5">
+                                            <button onclick="event.stopPropagation(); toggleSimAdhdSprint()" id="sim-adhd-toggle-btn" class="px-4 py-2 rounded-lg bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold text-xs shadow-md shadow-orange-500/30 transition-all flex items-center gap-1.5">
                                                 <span>▶</span> <span id="sim-adhd-toggle-text">Start Sprint</span>
                                             </button>
                                             <button onclick="event.stopPropagation(); completeSimAdhdSprint()" class="px-3.5 py-2 rounded-lg bg-green-500/20 hover:bg-green-500/30 border border-green-500/40 text-green-300 font-bold text-xs transition-colors flex items-center gap-1.5">
@@ -679,16 +765,16 @@
                                             <span class="text-[10px] text-white/50 font-bold uppercase tracking-wider flex items-center gap-1.5">
                                                 <span>🎧</span> Ambient Focus Audio Engine
                                             </span>
-                                            <button onclick="event.stopPropagation(); toggleSimFocusMusic()" id="sim-adhd-music-toggle-btn" class="px-2.5 py-1 rounded-md bg-purple-600/30 text-purple-200 border border-purple-500/40 font-bold text-[10px] flex items-center gap-1 transition-all">
+                                            <button onclick="event.stopPropagation(); toggleSimFocusMusic()" id="sim-adhd-music-toggle-btn" class="px-2.5 py-1 rounded-md bg-orange-600/30 text-orange-200 border border-orange-500/30 font-bold text-[10px] flex items-center gap-1 transition-all">
                                                 <span>🔊</span> <span id="sim-adhd-music-toggle-text">Music ON</span>
                                             </button>
                                         </div>
 
                                         <!-- Audio Track Cards -->
                                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
-                                            <button onclick="event.stopPropagation(); selectSimAudioTrack('Rain & Storm')" class="sim-audio-track p-2 rounded-lg bg-purple-500/20 border border-purple-500/40 font-bold text-purple-200 text-left text-xs transition-colors" data-track="Rain & Storm">
+                                            <button onclick="event.stopPropagation(); selectSimAudioTrack('Rain & Storm')" class="sim-audio-track p-2 rounded-lg bg-orange-500/20 border border-orange-500/30 font-bold text-orange-200 text-left text-xs transition-colors" data-track="Rain & Storm">
                                                 <div>🌧 Rain & Storm</div>
-                                                <div class="text-[9px] text-purple-300/70 font-normal">Brown noise</div>
+                                                <div class="text-[9px] text-orange-300/70 font-normal">Brown noise</div>
                                             </button>
                                             <button onclick="event.stopPropagation(); selectSimAudioTrack('Binaural 40Hz')" class="sim-audio-track p-2 rounded-lg bg-white/5 border border-white/5 text-white/70 hover:bg-white/10 text-left text-xs transition-colors" data-track="Binaural 40Hz">
                                                 <div>🧠 Binaural 40Hz</div>
@@ -708,7 +794,7 @@
                                         <div class="flex items-center justify-between pt-1 text-[11px] text-white/60">
                                             <div class="flex items-center gap-2">
                                                 <span>🔈 Volume:</span>
-                                                <input type="range" min="0" max="100" value="50" id="sim-adhd-volume-slider" class="w-20 accent-purple-500">
+                                                <input type="range" min="0" max="100" value="50" id="sim-adhd-volume-slider" class="w-20 accent-[#FF5722]">
                                             </div>
                                             <div class="text-[9px] text-green-400 font-mono flex items-center gap-1">
                                                 <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
@@ -724,23 +810,23 @@
                                                 <span>📥</span> Parked Thoughts Vault (Brain Dump)
                                             </span>
                                             <div class="flex items-center gap-2">
-                                                <button onclick="event.stopPropagation(); copyAllParkedThoughts()" class="text-[10px] text-purple-300 hover:text-purple-200">Copy All</button>
+                                                <button onclick="event.stopPropagation(); copyAllParkedThoughts()" class="text-[10px] text-orange-300 hover:text-orange-200">Copy All</button>
                                                 <button onclick="event.stopPropagation(); clearParkedThoughts()" class="text-[10px] text-white/40 hover:text-white/60">Clear</button>
                                             </div>
                                         </div>
                                         <div class="flex gap-2">
-                                            <input type="text" id="sim-parked-thought-input" placeholder="Got an intrusive idea? Park it here to stay in flow..." class="flex-1 bg-white/5 border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-purple-500" onkeydown="if(event.key==='Enter') parkThoughtFromInput()">
-                                            <button onclick="event.stopPropagation(); parkThoughtFromInput()" class="px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs transition-colors">
+                                            <input type="text" id="sim-parked-thought-input" placeholder="Got an intrusive idea? Park it here to stay in flow..." class="flex-1 bg-white/5 border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-orange-500/30" onkeydown="if(event.key==='Enter') parkThoughtFromInput()">
+                                            <button onclick="event.stopPropagation(); parkThoughtFromInput()" class="px-3 py-1.5 rounded-lg bg-orange-600 hover:bg-orange-500/20 text-white font-bold text-xs transition-colors">
                                                 Park
                                             </button>
                                         </div>
                                         <div id="sim-parked-thoughts-list" class="space-y-1 max-h-24 overflow-y-auto custom-scrollbar pt-1">
                                             <div class="flex items-center justify-between bg-white/[0.02] p-1.5 rounded border border-white/5 text-[11px] text-white/80">
-                                                <span class="truncate"><strong class="text-purple-400 font-mono">[14:22]</strong> Check flight prices for summer conference</span>
+                                                <span class="truncate"><strong class="text-orange-400 font-mono">[14:22]</strong> Check flight prices for summer conference</span>
                                                 <button onclick="this.parentElement.remove()" class="text-white/30 hover:text-white/60 px-1">✕</button>
                                             </div>
                                             <div class="flex items-center justify-between bg-white/[0.02] p-1.5 rounded border border-white/5 text-[11px] text-white/80">
-                                                <span class="truncate"><strong class="text-purple-400 font-mono">[16:05]</strong> Order replacement mechanical keyboard switches</span>
+                                                <span class="truncate"><strong class="text-orange-400 font-mono">[16:05]</strong> Order replacement mechanical keyboard switches</span>
                                                 <button onclick="this.parentElement.remove()" class="text-white/30 hover:text-white/60 px-1">✕</button>
                                             </div>
                                         </div>
@@ -751,7 +837,7 @@
                                 <div id="panel-teleprompter" class="sim-panel hidden space-y-3">
                                     <div class="flex items-center justify-between text-xs">
                                         <span class="font-bold text-white">Under-Camera Teleprompter</span>
-                                        <span class="text-purple-300 text-[10px] font-mono">140 WPM · Eyes Locked on Camera</span>
+                                        <span class="text-orange-300 text-[10px] font-mono">140 WPM · Eyes Locked on Camera</span>
                                     </div>
                                     <div class="bg-black/80 border border-white/10 rounded-xl p-3 text-xs leading-relaxed text-white/90 h-32 overflow-hidden relative">
                                         <div class="absolute inset-x-0 top-0 h-4 bg-gradient-to-b from-black to-transparent pointer-events-none"></div>
@@ -765,7 +851,7 @@
                                         </div>
                                         <div class="flex items-center gap-2 text-[10px] text-white/60">
                                             <span>Speed:</span>
-                                            <input type="range" min="80" max="220" value="140" class="w-20 accent-purple-500">
+                                            <input type="range" min="80" max="220" value="140" class="w-20 accent-[#FF5722]">
                                         </div>
                                     </div>
                                 </div>
@@ -779,11 +865,11 @@
                                         </span>
                                         <span class="text-green-400 font-mono text-[10px]">60 FPS · 1080p Live</span>
                                     </div>
-                                    <div class="relative w-full h-44 rounded-xl overflow-hidden border border-purple-500/30 bg-neutral-900 flex items-center justify-center">
+                                    <div class="relative w-full h-44 rounded-xl overflow-hidden border border-orange-500/30 bg-neutral-900 flex items-center justify-center">
                                         <!-- Simulated Live Video Viewfinder -->
-                                        <div class="absolute inset-0 bg-gradient-to-tr from-purple-900/30 via-neutral-900 to-indigo-900/40 flex items-center justify-center">
+                                        <div class="absolute inset-0 bg-gradient-to-tr from-stone-950 via-neutral-900 to-stone-900 flex items-center justify-center">
                                             <div class="text-center space-y-2">
-                                                <div class="w-16 h-16 rounded-full bg-purple-500/20 border-2 border-purple-400 flex items-center justify-center text-3xl mx-auto shadow-lg shadow-purple-500/30">
+                                                <div class="w-16 h-16 rounded-full bg-orange-500/20 border-2 border-[#FF5722] flex items-center justify-center text-3xl mx-auto shadow-lg shadow-orange-500/30">
                                                     👤
                                                 </div>
                                                 <div class="text-xs font-bold text-white">Lighting & Framing Check</div>
@@ -801,8 +887,8 @@
                                     <div class="grid grid-cols-3 gap-2.5 h-48">
                                         <!-- Notes List -->
                                         <div class="col-span-1 bg-white/[0.03] rounded-xl border border-white/10 p-2 space-y-1.5 overflow-y-auto custom-scrollbar text-xs">
-                                            <button class="w-full py-1 rounded bg-purple-600 text-white font-bold text-[10px] mb-1">+ New Note</button>
-                                            <div class="p-2 rounded bg-purple-500/20 border border-purple-500/40 text-left">
+                                            <button class="w-full py-1 rounded bg-orange-600 text-white font-bold text-[10px] mb-1">+ New Note</button>
+                                            <div class="p-2 rounded bg-orange-500/20 border border-orange-500/30 text-left">
                                                 <div class="font-bold text-white text-[11px] truncate">Sprint Goals</div>
                                                 <div class="text-[9px] text-white/50 truncate">Ship macOS build v2.5...</div>
                                             </div>
@@ -827,9 +913,9 @@
                                 <div id="panel-settings" class="sim-panel hidden space-y-3 text-xs">
                                     <div class="font-bold text-white text-xs">Style & Liquid Glass Themes</div>
                                     <div class="grid grid-cols-3 gap-2">
-                                        <div class="p-2.5 rounded-xl bg-purple-900/30 border border-purple-500/50 cursor-pointer">
+                                        <div class="p-2.5 rounded-xl bg-stone-900/80 border border-orange-500/30 cursor-pointer">
                                             <div class="font-bold text-white text-[11px]">Liquid Glass</div>
-                                            <div class="text-[9px] text-purple-300">Default Ultra-Frosted</div>
+                                            <div class="text-[9px] text-orange-300">Default Ultra-Frosted</div>
                                         </div>
                                         <div class="p-2.5 rounded-xl bg-neutral-900 border border-white/10 cursor-pointer">
                                             <div class="font-bold text-white text-[11px]">Obsidian</div>
@@ -847,7 +933,7 @@
                                         </div>
                                         <div class="flex items-center justify-between">
                                             <span>Global Hotkey</span>
-                                            <code class="px-1.5 py-0.5 rounded bg-white/10 font-mono text-purple-300">⌥ Option + N</code>
+                                            <code class="px-1.5 py-0.5 rounded bg-white/10 font-mono text-orange-300">⌥ Option + N</code>
                                         </div>
                                     </div>
                                 </div>
@@ -870,8 +956,8 @@
                     </div>
 
                     <div class="flex flex-col items-center group cursor-pointer pointer-events-auto" onclick="toggleNotchSimulator()">
-                        <img src="app_icon.png" alt="AuraNotch" class="w-12 h-12 rounded-xl shadow-xl shadow-purple-500/30 group-hover:scale-105 transition-transform">
-                        <span class="text-[10px] font-bold text-purple-200 drop-shadow-md mt-1">AuraNotch Pro</span>
+                        <img src="app_icon.png" alt="AuraNotch" class="w-12 h-12 rounded-xl shadow-xl shadow-orange-500/30 group-hover:scale-105 transition-transform">
+                        <span class="text-[10px] font-bold text-orange-200 drop-shadow-md mt-1">AuraNotch Pro</span>
                     </div>
 
                     <div class="flex flex-col items-center group cursor-pointer pointer-events-auto">
@@ -889,7 +975,7 @@
                     <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-400 flex items-center justify-center text-xl shadow-md cursor-pointer hover:scale-110 transition-transform">
                         😃
                     </div>
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-600 flex items-center justify-center text-xl shadow-md cursor-pointer hover:scale-110 transition-transform">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-500 to-amber-600 flex items-center justify-center text-xl shadow-md cursor-pointer hover:scale-110 transition-transform">
                         🧭
                     </div>
                     <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-green-500 to-emerald-600 flex items-center justify-center text-xl shadow-md cursor-pointer hover:scale-110 transition-transform">
@@ -922,7 +1008,7 @@
     <section id="features" class="py-20 bg-neutral-950 border-t border-white/10">
         <div class="max-w-6xl mx-auto px-4 sm:px-6">
             <div class="text-center max-w-3xl mx-auto mb-16">
-                <h2 class="text-xs uppercase tracking-widest text-purple-400 font-semibold mb-2">Unrivaled macOS Integration</h2>
+                <h2 class="text-xs uppercase tracking-widest text-orange-400 font-semibold mb-2">Unrivaled macOS Integration</h2>
                 <h3 class="text-3xl sm:text-4xl font-bold tracking-tight text-white">27 Native Tools in One Hover</h3>
                 <p class="text-apple-subtext text-sm sm:text-base mt-3">
                     Every tool is engineered natively in Swift with liquid spring physics, zero telemetry, and zero background battery impact.
@@ -935,8 +1021,8 @@
                 <div class="feature-card glass-panel rounded-2xl p-5 border border-white/10 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-3">
-                            <span class="w-9 h-9 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-lg">✨</span>
-                            <span class="text-[9px] font-bold uppercase bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded border border-purple-500/30">AI ASSIST</span>
+                            <span class="w-9 h-9 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center text-lg">✨</span>
+                            <span class="text-[9px] font-bold uppercase bg-orange-500/20 text-orange-300 px-2 py-0.5 rounded border border-orange-500/30">AI ASSIST</span>
                         </div>
                         <h4 class="font-bold text-base text-white mb-1">Private On-Device AI</h4>
                         <p class="text-apple-subtext text-xs leading-relaxed mb-4">Apple Intelligence foundation model runner. Rewrite, summarize, and debug code completely offline.</p>
@@ -949,7 +1035,7 @@
                             <span class="w-2 h-2 rounded-full bg-green-500/60"></span>
                             <span class="text-[9px] text-white/50 ml-1">On-Device LLM (0ms Latency)</span>
                         </div>
-                        <div class="text-purple-300">&gt; Prompt: Refactor async event stream</div>
+                        <div class="text-orange-300">&gt; Prompt: Refactor async event stream</div>
                         <div class="text-white/80 font-sans text-[11px] bg-white/5 p-1.5 rounded">"Converted to AsyncStream&lt;Event&gt; with backpressure buffer..."</div>
                     </div>
                 </div>
@@ -967,15 +1053,15 @@
                     <!-- UI Screenshot Preview Window -->
                     <div class="rounded-xl bg-black/60 border border-white/10 p-3 space-y-2">
                         <div class="flex items-center gap-2">
-                            <div class="w-8 h-8 rounded-lg bg-purple-600/40 border border-purple-500/40 flex items-center justify-center text-sm">☁️</div>
+                            <div class="w-8 h-8 rounded-lg bg-orange-600/40 border border-orange-500/30 flex items-center justify-center text-sm">☁️</div>
                             <div class="min-w-0 flex-1">
                                 <div class="text-xs font-bold text-white truncate">Deep Wednesday (8-12-26)</div>
-                                <div class="text-[10px] text-purple-400 truncate">RaquElevate · SoundCloud</div>
+                                <div class="text-[10px] text-orange-400 truncate">RaquElevate · SoundCloud</div>
                             </div>
                             <div class="flex gap-0.5 items-end h-4">
-                                <span class="w-1 h-3 bg-purple-400 rounded-full animate-bounce"></span>
-                                <span class="w-1 h-4 bg-purple-500 rounded-full animate-bounce"></span>
-                                <span class="w-1 h-2 bg-indigo-400 rounded-full animate-bounce"></span>
+                                <span class="w-1 h-3 bg-[#FF5722] rounded-full animate-bounce"></span>
+                                <span class="w-1 h-4 bg-orange-500/20 rounded-full animate-bounce"></span>
+                                <span class="w-1 h-2 bg-[#FF8A00] rounded-full animate-bounce"></span>
                             </div>
                         </div>
                     </div>
@@ -1019,7 +1105,7 @@
                             <span>CLIPBOARD (EXCLUDES PASSWORDS)</span>
                             <span class="text-green-400">ACTIVE</span>
                         </div>
-                        <div class="text-purple-300 truncate">npm install @auranotch/sdk</div>
+                        <div class="text-orange-300 truncate">npm install @auranotch/sdk</div>
                         <div class="text-white/60 truncate">ssh-ed25519 AAAAC3NzaC1...</div>
                     </div>
                 </div>
@@ -1038,10 +1124,10 @@
                     <div class="rounded-xl bg-black/60 border border-white/10 p-3 space-y-2 text-[10px]">
                         <div class="flex justify-between">
                             <span class="text-white font-semibold">Claude Code 3.7</span>
-                            <span class="text-purple-400 font-bold">142K / 200K tok</span>
+                            <span class="text-orange-400 font-bold">142K / 200K tok</span>
                         </div>
                         <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
-                            <div class="bg-purple-500 h-full w-[71%]"></div>
+                            <div class="bg-orange-500/20 h-full w-[71%]"></div>
                         </div>
                     </div>
                 </div>
@@ -1050,15 +1136,15 @@
                 <div class="feature-card glass-panel rounded-2xl p-5 border border-white/10 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-3">
-                            <span class="w-9 h-9 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-lg">🗣</span>
-                            <span class="text-[9px] font-bold uppercase bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded border border-indigo-500/30">CALLS</span>
+                            <span class="w-9 h-9 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center text-lg">🗣</span>
+                            <span class="text-[9px] font-bold uppercase bg-orange-500/20 text-orange-300 px-2 py-0.5 rounded border border-orange-500/30">CALLS</span>
                         </div>
                         <h4 class="font-bold text-base text-white mb-1">Under-Camera Teleprompter</h4>
                         <p class="text-apple-subtext text-xs leading-relaxed mb-4">Script scrolls directly beneath your webcam lens so your eyes remain locked on camera during calls.</p>
                     </div>
                     <!-- UI Screenshot Preview Window -->
                     <div class="rounded-xl bg-black/60 border border-white/10 p-3 text-[10px] leading-relaxed text-white/80">
-                        <div class="text-[9px] text-indigo-400 font-bold mb-1">140 WPM · PACING ACTIVE</div>
+                        <div class="text-[9px] text-orange-400 font-bold mb-1">140 WPM · PACING ACTIVE</div>
                         <div class="italic">"Good morning everyone. Today we are launching AuraNotch for Mac..."</div>
                     </div>
                 </div>
@@ -1097,7 +1183,7 @@
                     <div class="rounded-xl bg-black/60 border border-white/10 p-3 space-y-1 text-[10px]">
                         <div class="flex justify-between text-white/50 text-[9px]">
                             <span>3 NOTES SAVED</span>
-                            <span class="text-purple-300">+ New Note</span>
+                            <span class="text-orange-300">+ New Note</span>
                         </div>
                         <div class="font-bold text-white">Sprint Goals · Ship build v2.5</div>
                     </div>
@@ -1115,7 +1201,7 @@
                     </div>
                     <!-- UI Screenshot Preview Window -->
                     <div class="rounded-xl bg-black/60 border border-white/10 p-3 flex items-center justify-between">
-                        <span class="text-lg font-mono font-bold text-purple-300">25:00</span>
+                        <span class="text-lg font-mono font-bold text-orange-300">25:00</span>
                         <span class="text-[10px] text-white/60">🌧 Rainstorm Synced</span>
                         <span class="text-[9px] font-bold text-green-400 bg-green-500/10 px-2 py-0.5 rounded">ACTIVE</span>
                     </div>
@@ -1125,8 +1211,8 @@
                 <div class="feature-card glass-panel rounded-2xl p-5 border border-white/10 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-3">
-                            <span class="w-9 h-9 rounded-xl bg-purple-600/30 text-purple-300 flex items-center justify-center text-lg">🎨</span>
-                            <span class="text-[9px] font-bold uppercase bg-purple-500/30 text-purple-200 px-2 py-0.5 rounded">EXCLUSIVE</span>
+                            <span class="w-9 h-9 rounded-xl bg-orange-600/30 text-orange-300 flex items-center justify-center text-lg">🎨</span>
+                            <span class="text-[9px] font-bold uppercase bg-orange-500/20 text-orange-200 px-2 py-0.5 rounded">EXCLUSIVE</span>
                         </div>
                         <h4 class="font-bold text-base text-white mb-1">Screen Color Eyedropper</h4>
                         <p class="text-apple-subtext text-xs leading-relaxed mb-4">Click once to inspect any pixel on your display. Copies formatted HEX, RGB, or HSL to clipboard.</p>
@@ -1134,7 +1220,7 @@
                     <!-- UI Screenshot Preview Window -->
                     <div class="rounded-xl bg-black/60 border border-white/10 p-3 flex items-center justify-between font-mono text-[10px]">
                         <div class="flex items-center gap-2">
-                            <span class="w-4 h-4 rounded-full bg-purple-500 border border-white/30"></span>
+                            <span class="w-4 h-4 rounded-full bg-orange-500/20 border border-white/30"></span>
                             <span class="text-white font-bold">#A855F7</span>
                         </div>
                         <span class="text-[9px] text-green-400">Copied to Clipboard</span>
@@ -1145,8 +1231,8 @@
                 <div class="feature-card glass-panel rounded-2xl p-5 border border-white/10 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-3">
-                            <span class="w-9 h-9 rounded-xl bg-purple-600/30 text-purple-300 flex items-center justify-center text-lg">📱</span>
-                            <span class="text-[9px] font-bold uppercase bg-purple-500/30 text-purple-200 px-2 py-0.5 rounded">TOOL</span>
+                            <span class="w-9 h-9 rounded-xl bg-orange-600/30 text-orange-300 flex items-center justify-center text-lg">📱</span>
+                            <span class="text-[9px] font-bold uppercase bg-orange-500/20 text-orange-200 px-2 py-0.5 rounded">TOOL</span>
                         </div>
                         <h4 class="font-bold text-base text-white mb-1">Instant Vector QR Code</h4>
                         <p class="text-apple-subtext text-xs leading-relaxed mb-4">Turn URLs, Wi-Fi keys, or text into vector QR matrices. Drag generated QR images anywhere.</p>
@@ -1155,7 +1241,7 @@
                     <div class="rounded-xl bg-black/60 border border-white/10 p-3 flex items-center justify-between">
                         <div class="w-8 h-8 rounded bg-white p-0.5 text-black text-[9px] font-mono leading-none">■□■<br>□■□<br>■□■</div>
                         <div class="text-[10px] text-white/70">auranotch.app/pro</div>
-                        <span class="text-[9px] bg-purple-600 text-white px-2 py-0.5 rounded font-bold">Drag Out</span>
+                        <span class="text-[9px] bg-orange-600 text-white px-2 py-0.5 rounded font-bold">Drag Out</span>
                     </div>
                 </div>
 
@@ -1183,8 +1269,8 @@
                 <div class="feature-card glass-panel rounded-2xl p-5 border border-white/10 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-3">
-                            <span class="w-9 h-9 rounded-xl bg-purple-600/30 text-purple-300 flex items-center justify-center text-lg">🧠</span>
-                            <span class="text-[9px] font-bold uppercase bg-purple-500/30 text-purple-200 px-2 py-0.5 rounded">ADHD SUITE</span>
+                            <span class="w-9 h-9 rounded-xl bg-orange-600/30 text-orange-300 flex items-center justify-center text-lg">🧠</span>
+                            <span class="text-[9px] font-bold uppercase bg-orange-500/20 text-orange-200 px-2 py-0.5 rounded">ADHD SUITE</span>
                         </div>
                         <h4 class="font-bold text-base text-white mb-1">Hyper-Focus 10m Sprint</h4>
                         <p class="text-apple-subtext text-xs leading-relaxed mb-4">Next 1 Thing single-task dopamine countdown to beat ADHD task paralysis instantly.</p>
@@ -1192,7 +1278,7 @@
                     <!-- UI Screenshot Preview Window -->
                     <div class="rounded-xl bg-black/60 border border-white/10 p-3 flex items-center justify-between">
                         <div>
-                            <div class="text-[9px] text-purple-400 font-bold uppercase">Sprint Time</div>
+                            <div class="text-[9px] text-orange-400 font-bold uppercase">Sprint Time</div>
                             <div class="text-base font-mono font-bold text-white">08:42</div>
                         </div>
                         <span class="text-[10px] bg-green-500/20 text-green-300 border border-green-500/30 px-2 py-0.5 rounded font-bold">✓ Win Sprint</span>
@@ -1203,8 +1289,8 @@
                 <div class="feature-card glass-panel rounded-2xl p-5 border border-white/10 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-3">
-                            <span class="w-9 h-9 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-lg">💭</span>
-                            <span class="text-[9px] font-bold uppercase bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded">ADHD</span>
+                            <span class="w-9 h-9 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center text-lg">💭</span>
+                            <span class="text-[9px] font-bold uppercase bg-orange-500/20 text-orange-300 px-2 py-0.5 rounded">ADHD</span>
                         </div>
                         <h4 class="font-bold text-base text-white mb-1">Parked Thoughts Vault</h4>
                         <p class="text-apple-subtext text-xs leading-relaxed mb-4">Stash intrusive thoughts in half a second without breaking your flow state or opening an app.</p>
@@ -1212,7 +1298,7 @@
                     <!-- UI Screenshot Preview Window -->
                     <div class="rounded-xl bg-black/60 border border-white/10 p-3 space-y-1">
                         <div class="text-[9px] text-white/50">PARKED INTRUSIVE THOUGHT:</div>
-                        <div class="text-[10px] text-purple-300 truncate">"Check flight tickets for December conference"</div>
+                        <div class="text-[10px] text-orange-300 truncate">"Check flight tickets for December conference"</div>
                     </div>
                 </div>
 
@@ -1254,8 +1340,8 @@
                 <div class="feature-card glass-panel rounded-2xl p-5 border border-white/10 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-3">
-                            <span class="w-9 h-9 rounded-xl bg-purple-600/30 text-purple-300 flex items-center justify-center text-lg">🔍</span>
-                            <span class="text-[9px] font-bold uppercase bg-purple-500/30 text-purple-200 px-2 py-0.5 rounded">FOCUS</span>
+                            <span class="w-9 h-9 rounded-xl bg-orange-600/30 text-orange-300 flex items-center justify-center text-lg">🔍</span>
+                            <span class="text-[9px] font-bold uppercase bg-orange-500/20 text-orange-200 px-2 py-0.5 rounded">FOCUS</span>
                         </div>
                         <h4 class="font-bold text-base text-white mb-1">Single-App Isolation Mode</h4>
                         <p class="text-apple-subtext text-xs leading-relaxed mb-4">Minimizes all inactive background windows instantly to banish multi-tasking clutter.</p>
@@ -1263,7 +1349,7 @@
                     <!-- UI Screenshot Preview Window -->
                     <div class="rounded-xl bg-black/60 border border-white/10 p-3 flex items-center justify-between text-xs">
                         <span class="text-white text-[10px]">Active Window: Xcode</span>
-                        <span class="text-purple-300 font-mono text-[9px]">12 Apps Minimized</span>
+                        <span class="text-orange-300 font-mono text-[9px]">12 Apps Minimized</span>
                     </div>
                 </div>
 
@@ -1348,7 +1434,7 @@
                     <!-- UI Screenshot Preview Window -->
                     <div class="rounded-xl bg-black/60 border border-white/10 p-3 flex items-center justify-between text-xs">
                         <span class="text-white/80">Lock Mac Instantly</span>
-                        <code class="text-purple-300 text-[10px]">^⌘Q Shortcut</code>
+                        <code class="text-orange-300 text-[10px]">^⌘Q Shortcut</code>
                     </div>
                 </div>
 
@@ -1393,8 +1479,8 @@
                 <div class="feature-card glass-panel rounded-2xl p-5 border border-white/10 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-3">
-                            <span class="w-9 h-9 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-lg">📐</span>
-                            <span class="text-[9px] font-bold uppercase bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded">ERGONOMICS</span>
+                            <span class="w-9 h-9 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center text-lg">📐</span>
+                            <span class="text-[9px] font-bold uppercase bg-orange-500/20 text-orange-300 px-2 py-0.5 rounded">ERGONOMICS</span>
                         </div>
                         <h4 class="font-bold text-base text-white mb-1">Vertical Menubar Layout</h4>
                         <p class="text-apple-subtext text-xs leading-relaxed mb-4">Left sidebar design prevents notch clipping and allows effortless 1-click tool switching.</p>
@@ -1402,7 +1488,7 @@
                     <!-- UI Screenshot Preview Window -->
                     <div class="rounded-xl bg-black/60 border border-white/10 p-3 flex items-center gap-2">
                         <div class="flex flex-col gap-1 w-6 bg-white/10 p-1 rounded">
-                            <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+                            <span class="w-2 h-2 rounded-full bg-[#FF5722]"></span>
                             <span class="w-2 h-2 rounded-full bg-white/40"></span>
                             <span class="w-2 h-2 rounded-full bg-white/40"></span>
                         </div>
@@ -1423,7 +1509,7 @@
                     <!-- UI Screenshot Preview Window -->
                     <div class="rounded-xl bg-black/60 border border-white/10 p-3 flex items-center justify-between text-xs">
                         <div class="flex gap-1.5">
-                            <span class="w-3.5 h-3.5 rounded-full bg-purple-500"></span>
+                            <span class="w-3.5 h-3.5 rounded-full bg-orange-500/20"></span>
                             <span class="w-3.5 h-3.5 rounded-full bg-neutral-900 border border-white/20"></span>
                             <span class="w-3.5 h-3.5 rounded-full bg-cyan-400"></span>
                             <span class="w-3.5 h-3.5 rounded-full bg-emerald-500"></span>
@@ -1433,19 +1519,19 @@
                 </div>
 
                 <!-- Tool 27: Glowing Edge Motion Flair -->
-                <div class="feature-card glass-panel rounded-2xl p-5 border border-purple-500/40 flex flex-col justify-between glowing-flair-border">
+                <div class="feature-card glass-panel rounded-2xl p-5 border border-orange-500/30 flex flex-col justify-between glowing-flair-border">
                     <div>
                         <div class="flex items-center justify-between mb-3">
-                            <span class="w-9 h-9 rounded-xl bg-purple-600/30 text-purple-300 flex items-center justify-center text-lg">💫</span>
-                            <span class="text-[9px] font-bold uppercase bg-purple-500/40 text-purple-200 px-2 py-0.5 rounded">NEW MOTION</span>
+                            <span class="w-9 h-9 rounded-xl bg-orange-600/30 text-orange-300 flex items-center justify-center text-lg">💫</span>
+                            <span class="text-[9px] font-bold uppercase bg-orange-500/20 text-orange-200 px-2 py-0.5 rounded">NEW MOTION</span>
                         </div>
                         <h4 class="font-bold text-base text-white mb-1">Glowing Edge Motion Flair</h4>
                         <p class="text-apple-subtext text-xs leading-relaxed mb-4">Electric animated border light sweeps around the notch perimeter on hover for seamless feedback.</p>
                     </div>
                     <!-- UI Screenshot Preview Window -->
-                    <div class="rounded-xl bg-black/60 border border-purple-500/40 p-3 flex items-center justify-between text-xs">
-                        <span class="text-purple-300 font-bold">Traveling Laser Perimeter</span>
-                        <span class="w-2 h-2 rounded-full bg-purple-400 animate-ping"></span>
+                    <div class="rounded-xl bg-black/60 border border-orange-500/30 p-3 flex items-center justify-between text-xs">
+                        <span class="text-orange-300 font-bold">Traveling Laser Perimeter</span>
+                        <span class="w-2 h-2 rounded-full bg-[#FF5722] animate-ping"></span>
                     </div>
                 </div>
 
@@ -1456,7 +1542,7 @@
     <!-- COMPETITOR COMPARISON TABLE -->
     <section id="compare" class="py-20 max-w-6xl mx-auto px-4 sm:px-6">
         <div class="text-center max-w-2xl mx-auto mb-14">
-            <h2 class="text-xs uppercase tracking-widest text-purple-400 font-semibold mb-2">Transparent Comparison</h2>
+            <h2 class="text-xs uppercase tracking-widest text-orange-400 font-semibold mb-2">Transparent Comparison</h2>
             <h3 class="text-3xl font-bold">Why AuraNotch is in a league of its own</h3>
             <p class="text-apple-subtext text-sm mt-2">More native features, higher privacy, faster performance, and zero recurring fees.</p>
         </div>
@@ -1466,7 +1552,7 @@
                 <thead>
                     <tr class="border-b border-white/10 bg-white/5">
                         <th class="p-4 font-semibold text-white">Feature</th>
-                        <th class="p-4 font-bold text-purple-400 bg-purple-500/10 text-center">AuraNotch (Ours)</th>
+                        <th class="p-4 font-bold text-orange-400 bg-orange-500/20 text-center">AuraNotch (Ours)</th>
                         <th class="p-4 font-medium text-white/70 text-center">OmniNotch</th>
                         <th class="p-4 font-medium text-white/70 text-center">Alcove</th>
                         <th class="p-4 font-medium text-white/70 text-center">NotchNook</th>
@@ -1476,23 +1562,23 @@
                 <tbody class="divide-y divide-white/5">
                     <tr>
                         <td class="p-4 font-medium text-white">Price</td>
-                        <td class="p-4 text-center font-bold text-green-400 bg-purple-500/5">$5.00 Lifetime</td>
+                        <td class="p-4 text-center font-bold text-green-400 bg-orange-500/5">$5.00 Lifetime</td>
+                        <td class="p-4 text-center text-red-400 font-bold bg-white/[0.02]">$20 Lifetime / $3 mo</td>
                         <td class="p-4 text-center text-white/80">$5 (Sale) / $19.99</td>
                         <td class="p-4 text-center text-white/80">$14.99</td>
                         <td class="p-4 text-center text-white/80">$25.00 / Sub</td>
-                        <td class="p-4 text-center text-white/80">Free (Basic)</td>
                     </tr>
                     <tr>
                         <td class="p-4 font-medium text-white">Total Tools Included</td>
-                        <td class="p-4 text-center font-bold text-purple-300 bg-purple-500/5">27 Tools</td>
+                        <td class="p-4 text-center font-bold text-orange-400 bg-orange-500/5">27 Native Tools</td>
+                        <td class="p-4 text-center text-white/80 bg-white/[0.02]">Only 4 Tools (Timer only)</td>
                         <td class="p-4 text-center text-white/80">20 Tools</td>
                         <td class="p-4 text-center text-white/80">6 Tools</td>
                         <td class="p-4 text-center text-white/80">8 Tools</td>
-                        <td class="p-4 text-center text-white/80">4 Tools</td>
                     </tr>
                     <tr>
                         <td class="p-4 font-medium text-white">Vertical Menubar & Sidebar</td>
-                        <td class="p-4 text-center text-green-400 font-bold bg-purple-500/5">✓ Included</td>
+                        <td class="p-4 text-center text-green-400 font-bold bg-orange-500/20">✓ Included</td>
                         <td class="p-4 text-center text-red-400">✕ Bottom Dock Only</td>
                         <td class="p-4 text-center text-red-400">✕ None</td>
                         <td class="p-4 text-center text-red-400">✕ None</td>
@@ -1500,7 +1586,7 @@
                     </tr>
                     <tr>
                         <td class="p-4 font-medium text-white">Glowing Edge Motion Flair</td>
-                        <td class="p-4 text-center text-green-400 font-bold bg-purple-500/5">✓ Included</td>
+                        <td class="p-4 text-center text-green-400 font-bold bg-orange-500/20">✓ Included</td>
                         <td class="p-4 text-center text-red-400">✕ None</td>
                         <td class="p-4 text-center text-red-400">✕ None</td>
                         <td class="p-4 text-center text-red-400">✕ None</td>
@@ -1508,7 +1594,7 @@
                     </tr>
                     <tr>
                         <td class="p-4 font-medium text-white">Hardware Mic Killswitch</td>
-                        <td class="p-4 text-center text-green-400 font-bold bg-purple-500/5">✓ Exclusive</td>
+                        <td class="p-4 text-center text-green-400 font-bold bg-orange-500/20">✓ Exclusive</td>
                         <td class="p-4 text-center text-red-400">✕ None</td>
                         <td class="p-4 text-center text-red-400">✕ None</td>
                         <td class="p-4 text-center text-red-400">✕ None</td>
@@ -1516,7 +1602,7 @@
                     </tr>
                     <tr>
                         <td class="p-4 font-medium text-white">On-Device Apple Intelligence</td>
-                        <td class="p-4 text-center text-green-400 font-bold bg-purple-500/5">✓ Included</td>
+                        <td class="p-4 text-center text-green-400 font-bold bg-orange-500/20">✓ Included</td>
                         <td class="p-4 text-center text-green-400">✓ Included</td>
                         <td class="p-4 text-center text-red-400">✕ None</td>
                         <td class="p-4 text-center text-red-400">✕ None</td>
@@ -1524,7 +1610,7 @@
                     </tr>
                     <tr>
                         <td class="p-4 font-medium text-white">Works on Notch-less Displays</td>
-                        <td class="p-4 text-center text-green-400 font-bold bg-purple-500/5">✓ Dynamic Pill</td>
+                        <td class="p-4 text-center text-green-400 font-bold bg-orange-500/20">✓ Dynamic Pill</td>
                         <td class="p-4 text-center text-green-400">✓ Yes</td>
                         <td class="p-4 text-center text-green-400">✓ Yes</td>
                         <td class="p-4 text-center text-green-400">✓ Yes</td>
@@ -1538,13 +1624,13 @@
     <!-- PRICING & CHECKOUT SECTION -->
     <section id="pricing" class="py-20 bg-neutral-950 border-t border-white/10">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-            <h2 class="text-xs uppercase tracking-widest text-purple-400 font-semibold mb-2">Simple Lifetime Pricing</h2>
+            <h2 class="text-xs uppercase tracking-widest text-orange-400 font-semibold mb-2">Simple Lifetime Pricing</h2>
             <h3 class="text-3xl sm:text-4xl font-bold tracking-tight text-white">One payment. Yours forever.</h3>
             <p class="text-apple-subtext text-sm sm:text-base mt-2 mb-12">No subscriptions, no recurring bills, and all future updates included.</p>
 
             <!-- Pricing Card -->
-            <div class="max-w-md mx-auto glass-panel rounded-3xl p-8 sm:p-10 border border-purple-500/40 relative shadow-2xl shadow-purple-900/20">
-                <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-[11px] font-bold uppercase tracking-wider px-4 py-1 rounded-full shadow-md">
+            <div class="max-w-md mx-auto glass-panel rounded-3xl p-8 sm:p-10 border border-orange-500/30 relative shadow-2xl shadow-orange-500/30">
+                <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-orange-600 to-amber-600 text-white text-[11px] font-bold uppercase tracking-wider px-4 py-1 rounded-full shadow-md">
                     75% Off Flash Sale
                 </div>
 
@@ -1577,7 +1663,7 @@
                     </div>
                 </div>
 
-                <button onclick="openCheckoutModal()" class="w-full py-4 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold text-sm hover:from-purple-500 hover:to-blue-500 transition-all shadow-lg shadow-purple-600/30">
+                <button onclick="openCheckoutModal()" class="w-full py-4 rounded-full bg-gradient-to-r from-orange-600 to-amber-600 text-white font-bold text-sm hover:from-orange-500 hover:to-amber-500 transition-all shadow-lg shadow-orange-500/30">
                     Buy AuraNotch Lifetime &rarr;
                 </button>
 
@@ -1592,7 +1678,7 @@
     <!-- FAQ Accordion -->
     <section id="faq" class="py-20 max-w-4xl mx-auto px-4 sm:px-6">
         <div class="text-center mb-14">
-            <h2 class="text-xs uppercase tracking-widest text-purple-400 font-semibold mb-2">Got Questions?</h2>
+            <h2 class="text-xs uppercase tracking-widest text-orange-400 font-semibold mb-2">Got Questions?</h2>
             <h3 class="text-3xl font-bold">Frequently Asked Questions</h3>
         </div>
 
@@ -1600,7 +1686,7 @@
             <div class="glass-panel rounded-xl p-5 border border-white/10 cursor-pointer" onclick="toggleFaq(this)">
                 <div class="flex items-center justify-between font-semibold text-sm">
                     <span>Does AuraNotch work on Macs without a physical notch?</span>
-                    <span class="text-purple-400 text-lg">+</span>
+                    <span class="text-orange-400 text-lg">+</span>
                 </div>
                 <p class="text-xs text-apple-subtext mt-3 hidden leading-relaxed">Yes! If your MacBook Pro, MacBook Air, Mac mini, Mac Studio, or iMac doesn't have a physical camera notch, AuraNotch renders a synthetic rounded floating Dynamic Island at the top of your screen. You get 100% of the functionality regardless of your Mac hardware.</p>
             </div>
@@ -1608,7 +1694,7 @@
             <div class="glass-panel rounded-xl p-5 border border-white/10 cursor-pointer" onclick="toggleFaq(this)">
                 <div class="flex items-center justify-between font-semibold text-sm">
                     <span>Where does my clipboard, notes, and file data go?</span>
-                    <span class="text-purple-400 text-lg">+</span>
+                    <span class="text-orange-400 text-lg">+</span>
                 </div>
                 <p class="text-xs text-apple-subtext mt-3 hidden leading-relaxed">Nowhere. Everything is stored locally on your Mac. AuraNotch has zero cloud servers, zero analytics trackers, and zero telemetry. Sensitive password-manager entries (such as 1Password, Bitwarden, and macOS Keychain) are strictly filtered and never recorded.</p>
             </div>
@@ -1616,7 +1702,7 @@
             <div class="glass-panel rounded-xl p-5 border border-white/10 cursor-pointer" onclick="toggleFaq(this)">
                 <div class="flex items-center justify-between font-semibold text-sm">
                     <span>How does license activation work?</span>
-                    <span class="text-purple-400 text-lg">+</span>
+                    <span class="text-orange-400 text-lg">+</span>
                 </div>
                 <p class="text-xs text-apple-subtext mt-3 hidden leading-relaxed">Immediately after completing checkout, you will receive an Ed25519-signed license key (e.g. AURA-XXXX-XXXX). Enter this key once inside AuraNotch Settings. It is stored securely in your macOS Keychain and verifies cryptographically without requiring constant internet access.</p>
             </div>
@@ -1624,7 +1710,7 @@
             <div class="glass-panel rounded-xl p-5 border border-white/10 cursor-pointer" onclick="toggleFaq(this)">
                 <div class="flex items-center justify-between font-semibold text-sm">
                     <span>Can I get a refund if it isn't for me?</span>
-                    <span class="text-purple-400 text-lg">+</span>
+                    <span class="text-orange-400 text-lg">+</span>
                 </div>
                 <p class="text-xs text-apple-subtext mt-3 hidden leading-relaxed">Absolutely. We offer an unconditional 7-day money-back guarantee. If you're not completely delighted, just email support@auranotch.app and you'll receive a full refund with no questions asked.</p>
             </div>
@@ -1655,7 +1741,7 @@
             <button onclick="closeCheckoutModal()" class="absolute top-5 right-5 text-white/50 hover:text-white text-xl font-bold transition-colors">&times;</button>
             
             <div class="flex items-center gap-3 mb-5">
-                <img src="app_icon.png" alt="AuraNotch Icon" class="w-10 h-10 rounded-xl shadow-lg shadow-purple-500/30">
+                <img src="app_icon.png" alt="AuraNotch Icon" class="w-10 h-10 rounded-xl shadow-lg shadow-orange-500/30">
                 <div>
                     <h3 class="font-bold text-base text-white">Get AuraNotch Pro Lifetime</h3>
                     <p class="text-xs text-apple-subtext">Choose your preferred payment gateway</p>
@@ -1664,7 +1750,7 @@
 
             <!-- Gateway Tabs (Polar.sh / Apple Pay & Cards) -->
             <div class="flex items-center gap-1.5 p-1 bg-white/[0.04] rounded-xl border border-white/10 mb-5 text-[11px] font-semibold">
-                <button onclick="setCheckoutTab('polar')" id="tab-btn-polar" class="flex-1 py-1.5 rounded-lg bg-purple-600 text-white shadow-sm transition-all text-center">
+                <button onclick="setCheckoutTab('polar')" id="tab-btn-polar" class="flex-1 py-1.5 rounded-lg bg-orange-600 text-white shadow-sm transition-all text-center">
                     ⚡️ Polar.sh (0% Fee)
                 </button>
                 <button onclick="setCheckoutTab('stripe')" id="tab-btn-stripe" class="flex-1 py-1.5 rounded-lg text-white/60 hover:text-white transition-all text-center">
@@ -1674,7 +1760,7 @@
 
             <!-- TAB 1: POLAR.SH DIRECT CHECKOUT -->
             <div id="checkout-tab-polar" class="space-y-4">
-                <div class="p-3.5 rounded-xl bg-purple-900/20 border border-purple-500/40 space-y-2">
+                <div class="p-3.5 rounded-xl bg-stone-900/60 border border-orange-500/30 space-y-2">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-bold text-white flex items-center gap-1.5">
                             <span>⚡️</span> Polar.sh Instant Checkout
@@ -1684,13 +1770,13 @@
                     <p class="text-[11px] text-white/70 leading-relaxed">
                         Instant digital fulfillment powered by Polar. Supports Apple Pay, Google Pay, Credit & Debit Cards with instant VIP license key delivery.
                     </p>
-                    <div class="text-[10px] text-purple-300 font-medium">
+                    <div class="text-[10px] text-orange-300 font-medium">
                         License: Lifetime VIP Access · Unlimited Macs
                     </div>
                 </div>
 
                 <div class="flex flex-col gap-2">
-                    <a href="https://buy.polar.sh/polar_cl_kbUCiJQkgYFAtqH2LXEEHbznV6qYJ05HpuOhU1i9gUx" target="_blank" rel="noopener noreferrer" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs transition-all shadow-lg shadow-purple-600/30 flex items-center justify-center gap-2">
+                    <a href="https://buy.polar.sh/polar_cl_kbUCiJQkgYFAtqH2LXEEHbznV6qYJ05HpuOhU1i9gUx" target="_blank" rel="noopener noreferrer" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold text-xs transition-all shadow-lg shadow-orange-500/30 flex items-center justify-center gap-2">
                         <span>Checkout via Polar.sh ($5.00)</span>
                         <span>&rarr;</span>
                     </a>
@@ -1699,7 +1785,7 @@
 
             <!-- TAB 2: STRIPE & APPLE PAY -->
             <div id="checkout-tab-stripe" class="space-y-4 hidden">
-                <div class="p-3.5 rounded-xl bg-white/[0.03] border border-purple-500/40 flex items-center justify-between">
+                <div class="p-3.5 rounded-xl bg-white/[0.03] border border-orange-500/30 flex items-center justify-between">
                     <div class="flex items-center gap-3">
                         <span class="text-2xl">💳</span>
                         <div>
@@ -1707,7 +1793,7 @@
                             <div class="text-[10px] text-white/50">Direct checkout via Polar with Stripe processing</div>
                         </div>
                     </div>
-                    <span class="text-xs font-bold text-purple-300">$5.00 Lifetime</span>
+                    <span class="text-xs font-bold text-orange-300">$5.00 Lifetime</span>
                 </div>
 
                 <div class="p-3 bg-white/[0.02] border border-white/5 rounded-xl space-y-2 text-xs">
@@ -1725,7 +1811,7 @@
                 </div>
 
                 <div class="flex flex-col gap-2">
-                    <a href="https://buy.polar.sh/polar_cl_kbUCiJQkgYFAtqH2LXEEHbznV6qYJ05HpuOhU1i9gUx" target="_blank" rel="noopener noreferrer" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold text-xs transition-all shadow-lg shadow-purple-600/30 flex items-center justify-center gap-2">
+                    <a href="https://buy.polar.sh/polar_cl_kbUCiJQkgYFAtqH2LXEEHbznV6qYJ05HpuOhU1i9gUx" target="_blank" rel="noopener noreferrer" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold text-xs transition-all shadow-lg shadow-orange-500/30 flex items-center justify-center gap-2">
                         <span>Pay $5.00 via Apple Pay / Cards</span>
                         <span>&rarr;</span>
                     </a>
@@ -1740,10 +1826,10 @@
 
     <!-- LICENSE SUCCESS MODAL -->
     <div id="license-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4 overflow-y-auto">
-        <div class="glass-panel bg-neutral-900 rounded-3xl max-w-md w-full p-6 sm:p-8 border border-purple-500/40 shadow-2xl relative text-center my-8">
+        <div class="glass-panel bg-neutral-900 rounded-3xl max-w-md w-full p-6 sm:p-8 border border-orange-500/30 shadow-2xl relative text-center my-8">
             <button onclick="closeLicenseModal()" class="absolute top-5 right-5 text-white/50 hover:text-white text-xl font-bold transition-colors">&times;</button>
             
-            <div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/40 flex items-center justify-center text-2xl mx-auto mb-3 shadow-lg shadow-purple-500/20">✓</div>
+            <div class="w-12 h-12 rounded-full bg-orange-500/20 text-orange-300 border border-orange-500/30 flex items-center justify-center text-2xl mx-auto mb-3 shadow-lg shadow-orange-500/30">✓</div>
             
             <h3 class="font-bold text-lg text-white mb-1">VIP Lifetime License Issued!</h3>
             <p class="text-xs text-apple-subtext mb-5">Your license key has been cryptographically generated and saved.</p>
@@ -1751,30 +1837,30 @@
             <div class="bg-black/80 border border-white/10 rounded-xl p-3.5 mb-5 text-left">
                 <div class="flex items-center justify-between text-[10px] text-white/40 font-mono mb-1.5">
                     <span>YOUR ED25519 PRO LICENSE KEY</span>
-                    <span class="text-purple-400 font-bold">● VERIFIED</span>
+                    <span class="text-orange-400 font-bold">● VERIFIED</span>
                 </div>
-                <div id="generated-key" class="font-mono font-bold text-sm text-purple-300 tracking-wider break-all select-all">AURA-PRO-9842-7619-VIP</div>
+                <div id="generated-key" class="font-mono font-bold text-sm text-orange-300 tracking-wider break-all select-all">AURA-PRO-9842-7619-VIP</div>
             </div>
 
             <!-- Activation Instructions -->
             <div class="bg-white/[0.03] border border-white/5 rounded-xl p-3 text-left text-xs text-white/70 space-y-1 mb-5">
                 <div class="font-bold text-white text-[11px] mb-1">How to activate in AuraNotch:</div>
                 <div class="flex items-start gap-1.5 text-[10px]">
-                    <span class="text-purple-400 font-bold">1.</span>
+                    <span class="text-orange-400 font-bold">1.</span>
                     <span>Press <kbd class="px-1.5 py-0.5 rounded bg-white/10 font-mono text-white">⌥ Option</kbd> + <kbd class="px-1.5 py-0.5 rounded bg-white/10 font-mono text-white">N</kbd> on your Mac.</span>
                 </div>
                 <div class="flex items-start gap-1.5 text-[10px]">
-                    <span class="text-purple-400 font-bold">2.</span>
+                    <span class="text-orange-400 font-bold">2.</span>
                     <span>Click <strong>Unlock VIP</strong> or open <strong>Settings</strong>.</span>
                 </div>
                 <div class="flex items-start gap-1.5 text-[10px]">
-                    <span class="text-purple-400 font-bold">3.</span>
+                    <span class="text-orange-400 font-bold">3.</span>
                     <span>Paste your license key and enjoy all 27 pro tools!</span>
                 </div>
             </div>
 
             <div class="flex gap-3">
-                <button onclick="copyLicenseKey()" id="copy-key-btn" class="flex-1 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs transition-all shadow-md shadow-purple-600/30">
+                <button onclick="copyLicenseKey()" id="copy-key-btn" class="flex-1 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-500/20 text-white font-bold text-xs transition-all shadow-md shadow-orange-500/30">
                     Copy License Key
                 </button>
                 <button onclick="closeLicenseModal()" class="flex-1 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-semibold text-xs transition-colors">
@@ -1788,11 +1874,136 @@
     <script>
         let isExpanded = false;
         let focusSeconds = 25 * 60;
+        let focusTotalSeconds = 25 * 60;
         let focusTimerInterval = null;
         let isFocusRunning = true;
+        let isBreakMode = false;
         let isMusicPlaying = true;
         let isMicMuted = false;
         let isDeskClean = true;
+        let simVolume = 0.75;
+        let isMusicPopoverOpen = false;
+
+        // Initialize 12-dot Rotary Volume Knob Ring
+        function initRotaryDots() {
+            const container = document.getElementById('sim-rotary-dots-container');
+            if (!container) return;
+            container.innerHTML = '';
+            const totalDots = 12;
+            const sweep = 240;
+            const startAngle = -120;
+            const radius = 38;
+
+            for (let i = 0; i < totalDots; i++) {
+                const fraction = i / (totalDots - 1);
+                const angleDeg = startAngle + (fraction * sweep);
+                const angleRad = (angleDeg - 90) * Math.PI / 180;
+                const x = 48 + Math.cos(angleRad) * radius;
+                const y = 48 + Math.sin(angleRad) * radius;
+
+                const dot = document.createElement('div');
+                dot.id = `rotary-dot-${i}`;
+                dot.style.position = 'absolute';
+                dot.style.left = `${x - 2}px`;
+                dot.style.top = `${y - 2}px`;
+                dot.style.width = '4px';
+                dot.style.height = '4px';
+                dot.style.borderRadius = '9999px';
+                dot.className = fraction <= simVolume ? 'bg-[#FF5722] shadow-[0_0_4px_#ff5722]' : 'bg-white/20';
+                container.appendChild(dot);
+            }
+        }
+
+        function setSimVolume(vol) {
+            simVolume = Math.max(0, Math.min(1, vol));
+            const pctEl = document.getElementById('sim-knob-volume-pct');
+            if (pctEl) pctEl.textContent = `${Math.round(simVolume * 100)}%`;
+
+            // Rotate indicator tick (-120deg to +120deg)
+            const indicator = document.getElementById('sim-knob-indicator');
+            if (indicator) {
+                const angle = -120 + (simVolume * 240);
+                indicator.style.transform = `rotate(${angle}deg)`;
+            }
+
+            // Update 12 dots
+            for (let i = 0; i < 12; i++) {
+                const dot = document.getElementById(`rotary-dot-${i}`);
+                if (dot) {
+                    const fraction = i / 11;
+                    dot.className = fraction <= simVolume ? 'bg-[#FF5722] shadow-[0_0_4px_#ff5722]' : 'bg-white/20';
+                }
+            }
+        }
+
+        function toggleMusicPopoverSim() {
+            const popover = document.getElementById('sim-music-popover');
+            if (!popover) return;
+            isMusicPopoverOpen = !isMusicPopoverOpen;
+            if (isMusicPopoverOpen) {
+                popover.classList.remove('hidden');
+                initRotaryDots();
+                setSimVolume(simVolume);
+            } else {
+                popover.classList.add('hidden');
+            }
+        }
+
+        function toggleCoffeeBreakSim() {
+            isBreakMode = !isBreakMode;
+            focusSeconds = isBreakMode ? (5 * 60) : (25 * 60);
+            focusTotalSeconds = focusSeconds;
+            
+            const coffeeBtn = document.getElementById('sim-pill-coffee-btn');
+            if (coffeeBtn) {
+                if (isBreakMode) {
+                    coffeeBtn.className = "w-6 h-6 rounded-full bg-[#FF5722] text-white flex items-center justify-center font-bold shadow-md shadow-orange-500/30 transition-all shrink-0 mr-1.5";
+                } else {
+                    coffeeBtn.className = "w-6 h-6 rounded-full bg-[#1c1c1e] hover:bg-[#2c2c2e] border border-white/10 flex items-center justify-center text-white/70 hover:text-white transition-all shrink-0 mr-1.5";
+                }
+            }
+            updateNotchTimerDisplay();
+        }
+
+        function stopFocusTimerSim() {
+            isFocusRunning = false;
+            clearInterval(focusTimerInterval);
+            focusSeconds = isBreakMode ? (5 * 60) : (25 * 60);
+            updateNotchTimerDisplay();
+            const playIcon = document.getElementById('sim-pill-play-icon');
+            if (playIcon) playIcon.textContent = '▶';
+        }
+
+        function toggleFocusPlaySim() {
+            isFocusRunning = !isFocusRunning;
+            const playIcon = document.getElementById('sim-pill-play-icon');
+            if (isFocusRunning) {
+                if (playIcon) playIcon.textContent = '⏸';
+                startFocusCountdown();
+            } else {
+                if (playIcon) playIcon.textContent = '▶';
+                clearInterval(focusTimerInterval);
+            }
+        }
+
+        function updateNotchTimerDisplay() {
+            const countdownEl = document.getElementById('sim-notch-countdown');
+            if (countdownEl) {
+                countdownEl.textContent = formatTimer(focusSeconds);
+            }
+            const homeTimerDisplay = document.getElementById('sim-timer-display');
+            if (homeTimerDisplay) {
+                homeTimerDisplay.textContent = formatTimer(focusSeconds);
+            }
+
+            // Real-time orange sweep line progress
+            const sweepLine = document.getElementById('sim-sweep-line');
+            if (sweepLine && focusTotalSeconds > 0) {
+                const fraction = (focusTotalSeconds - focusSeconds) / focusTotalSeconds;
+                const leftPct = Math.min(94, Math.max(4, fraction * 100));
+                sweepLine.style.left = `${leftPct}%`;
+            }
+        }
 
         const tabTitles = {
             'home': 'Home Dashboard',
@@ -1821,7 +2032,7 @@
                 expanded.classList.remove('hidden');
                 expanded.classList.add('flex');
             } else {
-                notch.style.width = '250px';
+                notch.style.width = '340px';
                 notch.style.height = '38px';
                 notch.style.borderRadius = '0 0 20px 20px';
                 collapsed.classList.remove('hidden');
@@ -1842,7 +2053,7 @@
             // Update Vertical Sidebar Tabs
             document.querySelectorAll('.sim-vtab').forEach(item => {
                 if (item.id === `vtab-${tabId}`) {
-                    item.className = "sim-vtab w-12 h-10 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs flex flex-col items-center justify-center font-bold shadow-md shadow-purple-600/30 transition-all";
+                    item.className = "sim-vtab w-12 h-10 rounded-lg bg-gradient-to-r from-orange-600 to-amber-600 text-white text-xs flex flex-col items-center justify-center font-bold shadow-md shadow-orange-500/30 transition-all";
                 } else {
                     item.className = "sim-vtab w-12 h-10 rounded-lg bg-white/5 hover:bg-white/10 text-white/70 text-xs flex flex-col items-center justify-center transition-all";
                 }
@@ -1888,8 +2099,7 @@
             focusTimerInterval = setInterval(() => {
                 if (isFocusRunning && focusSeconds > 0) {
                     focusSeconds--;
-                    const display = document.getElementById('sim-timer-display');
-                    if (display) display.textContent = formatTimer(focusSeconds);
+                    updateNotchTimerDisplay();
                 }
             }, 1000);
         }
@@ -1918,7 +2128,7 @@
                 pill.className = "px-2 py-0.5 rounded-md bg-red-500/20 text-red-400 text-[10px] font-semibold border border-red-500/30 flex items-center gap-1.5 transition-all";
                 text.textContent = "Muted (0%)";
             } else {
-                pill.className = "px-2 py-0.5 rounded-md bg-purple-500/20 text-white text-[10px] font-semibold border border-purple-500/30 flex items-center gap-1.5 transition-all";
+                pill.className = "px-2 py-0.5 rounded-md bg-orange-500/20 text-white text-[10px] font-semibold border border-orange-500/30 flex items-center gap-1.5 transition-all";
                 text.textContent = "Mic Live";
             }
         }
@@ -1982,7 +2192,7 @@
                 if (content && btn) {
                     if (t === tab) {
                         content.classList.remove('hidden');
-                        btn.className = "flex-1 py-1.5 rounded-lg bg-purple-600 text-white shadow-sm transition-all text-center";
+                        btn.className = "flex-1 py-1.5 rounded-lg bg-orange-600 text-white shadow-sm transition-all text-center";
                     } else {
                         content.classList.add('hidden');
                         btn.className = "flex-1 py-1.5 rounded-lg text-white/60 hover:text-white transition-all text-center";
@@ -2060,7 +2270,7 @@
             document.getElementById('sim-adhd-timer-display').textContent = formatTimer(simAdhdSeconds);
             document.querySelectorAll('.sim-preset-btn').forEach(btn => {
                 if (btn.getAttribute('data-mins') == mins) {
-                    btn.className = "sim-preset-btn px-2 py-1 rounded bg-purple-600 text-white text-xs font-bold shadow-sm shadow-purple-600/30";
+                    btn.className = "sim-preset-btn px-2 py-1 rounded bg-orange-600 text-white text-xs font-bold shadow-sm shadow-orange-500/30";
                 } else {
                     btn.className = "sim-preset-btn px-2 py-1 rounded bg-white/5 hover:bg-white/10 text-xs text-white/70 font-semibold transition-colors";
                 }
@@ -2128,7 +2338,7 @@
             const text = document.getElementById('sim-adhd-music-toggle-text');
             if (isSimFocusMusicPlaying) {
                 text.textContent = 'Music ON';
-                btn.className = "px-2.5 py-1 rounded-md bg-purple-600/30 text-purple-200 border border-purple-500/40 font-bold text-[10px] flex items-center gap-1 transition-all";
+                btn.className = "px-2.5 py-1 rounded-md bg-orange-600/30 text-orange-200 border border-orange-500/30 font-bold text-[10px] flex items-center gap-1 transition-all";
             } else {
                 text.textContent = 'Music OFF';
                 btn.className = "px-2.5 py-1 rounded-md bg-white/5 text-white/40 border border-white/10 font-bold text-[10px] flex items-center gap-1 transition-all";
@@ -2139,7 +2349,7 @@
             simSelectedTrack = trackName;
             document.querySelectorAll('.sim-audio-track').forEach(btn => {
                 if (btn.getAttribute('data-track') === trackName) {
-                    btn.className = "sim-audio-track p-2 rounded-lg bg-purple-500/20 border border-purple-500/40 font-bold text-purple-200 text-left text-xs transition-colors";
+                    btn.className = "sim-audio-track p-2 rounded-lg bg-orange-500/20 border border-orange-500/30 font-bold text-orange-200 text-left text-xs transition-colors";
                 } else {
                     btn.className = "sim-audio-track p-2 rounded-lg bg-white/5 border border-white/5 text-white/70 hover:bg-white/10 text-left text-xs transition-colors";
                 }
@@ -2168,7 +2378,7 @@
             if (list) {
                 const item = document.createElement('div');
                 item.className = "flex items-center justify-between bg-white/[0.02] p-1.5 rounded border border-white/5 text-[11px] text-white/80";
-                item.innerHTML = `<span class="truncate"><strong class="text-purple-400 font-mono">[${timeStr}]</strong> ${text}</span><button onclick="this.parentElement.remove()" class="text-white/30 hover:text-white/60 px-1">✕</button>`;
+                item.innerHTML = `<span class="truncate"><strong class="text-orange-400 font-mono">[${timeStr}]</strong> ${text}</span><button onclick="this.parentElement.remove()" class="text-white/30 hover:text-white/60 px-1">✕</button>`;
                 list.prepend(item);
             }
             input.value = '';
@@ -2195,7 +2405,7 @@
             const notch = document.getElementById('sim-notch');
             if (isZenLightActive) {
                 text.textContent = 'Zen Active';
-                btn.className = "px-2.5 py-1 rounded-lg bg-purple-600/30 text-purple-200 border border-purple-500/40 font-semibold text-[10px] transition-colors flex items-center gap-1";
+                btn.className = "px-2.5 py-1 rounded-lg bg-orange-600/30 text-orange-200 border border-orange-500/30 font-semibold text-[10px] transition-colors flex items-center gap-1";
                 if (notch) notch.style.boxShadow = '0 0 50px rgba(168, 85, 247, 0.4)';
             } else {
                 text.textContent = 'Zen Light';
